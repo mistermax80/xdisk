@@ -1,4 +1,4 @@
-package xdisk.utils.net;
+package xdisk.net;
 
 public abstract class MessageOutput {
 
