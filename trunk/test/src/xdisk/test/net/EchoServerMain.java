@@ -2,6 +2,7 @@ package xdisk.test.net;
 
 import java.io.IOException;
 
+import xdisk.net.Server;
 import xdisk.test.net.Client;
 
 
@@ -10,14 +11,16 @@ public class EchoServerMain
 	public static void main(String[] args)
 	{
 		try 
-		{
-			EchoServer server = new EchoServer(4444);
+		{ 
+			Server server = new Server(new EchoServer(), 4444);
+			server.setListenerThread(15);
+			server.setMaxConnection(5);
 			server.start();
 			
 			Thread.sleep(200);
 			
-			Client client = new Client();
-			client.run();
+			for (int i=0; i<10; i++)
+				new Client().start();
 		} 
 		catch (IOException e1) 
 		{
