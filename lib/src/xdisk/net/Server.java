@@ -6,25 +6,41 @@ import java.net.Socket;
 
 import xdisk.net.ServerProcess;
 
-// TODO controllo numero massimo di connessioni contemporanee
-public abstract class Server extends ServerSocket implements Runnable
+// TODO inclusione della classe ServerSocket per nascondere le sue funzionalità
+// TODO chiusura del server e delle accept aperte
+public class Server extends ServerSocket implements Runnable
 {
-	private int listenerThread = 5;
-	private boolean inited = false;
+	final static int DEFAULT_LISTENER_THREAD = 5;
 	
-	protected ServerProcess serverProcess;
+	private int listenerThread;
+	
+	protected ServerThreadPool serverConnectionPool;
+	
+	private ServerProcess serverProcess;
 
-	public Server(int port) throws IOException 
+	public Server(ServerProcess serverProcess, int port) throws IOException 
 	{
 		super(port);
-		serverProcess = null;
-	}
-
-	public void addServerProcess(ServerProcess serverProcess) 
-	{
 		this.serverProcess = serverProcess;
+		
+		serverConnectionPool = new ServerThreadPool(this);
 	}
 	
+	public ServerProcess getServerProcess()
+	{
+		return serverProcess;
+	}	
+	
+	public ServerThreadPool getServerConnectionPool() 
+	{
+		return serverConnectionPool;
+	}
+
+	public void setServerConnectionPool(ServerThreadPool serverThread) 
+	{
+		this.serverConnectionPool = serverThread;
+	}
+
 	public void start()
 	{
 		for(int i = 0; i < this.listenerThread; i++) 
@@ -32,7 +48,6 @@ public abstract class Server extends ServerSocket implements Runnable
 			new Thread(this).start();
 		}
 	}
-
 	
 	public int getListenerThread() 
 	{
@@ -43,6 +58,16 @@ public abstract class Server extends ServerSocket implements Runnable
 	{
 		this.listenerThread = listenerThread;
 	}
+	
+	public int getMaxConnection()
+	{
+		return serverConnectionPool.getMaxConnection();
+	}
+	
+	public void setMaxConnection(int maxConnection)
+	{
+		serverConnectionPool.setMaxConnection(maxConnection);
+	}
 
 	public void run()
 	{
@@ -50,15 +75,9 @@ public abstract class Server extends ServerSocket implements Runnable
 		{
 			while (true)
 			{
-				if (serverProcess != null)
-				{
-					Socket client = accept();
-					serverProcess.request(client);
-				}
-				else
-				{
-					throw new Exception("server process non inited");
-				}
+				Socket client = accept();
+					
+				serverConnectionPool.getServerThread(client).start();
 			}
 		} 
 		catch (IOException e) 
@@ -70,5 +89,7 @@ public abstract class Server extends ServerSocket implements Runnable
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }
