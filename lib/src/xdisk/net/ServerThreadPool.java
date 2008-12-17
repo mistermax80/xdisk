@@ -18,19 +18,23 @@ public class ServerThreadPool
 		
 	public synchronized Thread getServerThread(Socket client)
 	{
+		//System.out.println(" + Connessioni attive: " + activeConnection);
 		if (activeConnection < maxConnection)
 		{
+			//System.out.println("    connessione permessa");
 			activeConnection++;
 			return new Connection(client);
 		}
 		else
 		{
+			//System.out.println("    connessione negata");
 			return new ConnectionError(client);
 		}
 	}
 	
 	public synchronized void releaseServerConnection()
 	{
+		//System.out.println(" - connessione rilasciata");
 		if (activeConnection > 0)
 			activeConnection--;
 	}

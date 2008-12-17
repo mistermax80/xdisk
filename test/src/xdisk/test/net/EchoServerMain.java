@@ -21,6 +21,9 @@ public class EchoServerMain
 			
 			for (int i=0; i<10; i++)
 				new Client().start();
+			
+			Thread.sleep(2000);
+			server.stop();
 		} 
 		catch (IOException e1) 
 		{

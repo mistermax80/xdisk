@@ -6,24 +6,28 @@ import java.net.Socket;
 
 import xdisk.net.ServerProcess;
 
-// TODO inclusione della classe ServerSocket per nascondere le sue funzionalità
-// TODO chiusura del server e delle accept aperte
-public class Server extends ServerSocket implements Runnable
+public class Server implements Runnable
 {
 	final static int DEFAULT_LISTENER_THREAD = 5;
 	
 	private int listenerThread;
 	
-	protected ServerThreadPool serverConnectionPool;
+	private ServerSocket serverSocket;
 	
+	protected ServerThreadPool serverConnectionPool;
 	private ServerProcess serverProcess;
+	
+	private Thread[] thread;
 
 	public Server(ServerProcess serverProcess, int port) throws IOException 
 	{
-		super(port);
+		serverSocket = new ServerSocket(port);
+		listenerThread = DEFAULT_LISTENER_THREAD;
 		this.serverProcess = serverProcess;
 		
 		serverConnectionPool = new ServerThreadPool(this);
+		
+		
 	}
 	
 	public ServerProcess getServerProcess()
@@ -43,12 +47,27 @@ public class Server extends ServerSocket implements Runnable
 
 	public void start()
 	{
+		thread = new Thread[listenerThread];
 		for(int i = 0; i < this.listenerThread; i++) 
 		{
-			new Thread(this).start();
+			thread[i] = new Thread(this);
+			thread[i].start();
 		}
 	}
 	
+	public void stop()
+	{
+		try 
+		{
+			serverSocket.close();
+		} 
+		catch (IOException e) 
+		{
+		}
+		
+		//System.out.println("server chiuso...");
+	}
+
 	public int getListenerThread() 
 	{
 		return listenerThread;
@@ -75,18 +94,16 @@ public class Server extends ServerSocket implements Runnable
 		{
 			while (true)
 			{
-				Socket client = accept();
+				Socket client = serverSocket.accept();
 					
 				serverConnectionPool.getServerThread(client).start();
 			}
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
 		} 
 		catch (Exception e) 
 		{	
-			e.printStackTrace();
 		}
 	}
 	
