@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS `appartenenza`;
+DROP TABLE IF EXISTS `contienecartella`;
+DROP TABLE IF EXISTS `disco`;
+DROP TABLE IF EXISTS `download`;
+DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `file`;
+DROP TABLE IF EXISTS `cartella`;
+DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `utente`;
