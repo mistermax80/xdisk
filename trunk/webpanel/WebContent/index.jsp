@@ -38,7 +38,7 @@
 	<p><strong>XDISK </strong> è un nuovo modo di condividere file, il
 	progetto è rilasciato interamente sotto licenza <strong>opensource</strong>
 	è in fase di sviluppo ed è realizzato da un idea di: Gigli Massimo
-	(MisteMax80), Fabrizio Filieri (Biio) e da Stefano Piersanti (Stef)</p>
+	(MisterMax80), Fabrizio Filieri (Biio) e da Stefano Piersanti (Stef)</p>
 	</div>
 	<div class="meta">
 	<p class="links"><a href="http://code.google.com/p/xdisk/"
@@ -83,8 +83,7 @@
 			<li><h:outputLabel value="#{msg.username}"/></li>
 			<li><h:inputText value="#{userBean.userName}" required="true" /></li>
 			<li><h:outputLabel value="#{msg.password}"/></li>
-			<li><h:inputSecret></h:inputSecret> <A>&nbsp;</A><h:commandButton
-				action="login" value="#{msg.login}"></h:commandButton></li>
+			<li><h:inputSecret/><A>&nbsp;</A><h:commandButton action="login" value="#{msg.login}"/></li>
 		</h:form></li>
 		<li><h:form><h:commandLink action="register" value="#{msg.register}"></h:commandLink></h:form></li>
 		<li>&nbsp;</li>
