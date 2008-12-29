@@ -28,10 +28,10 @@
 <!-- end #menu --></div>
 <!-- end #header -->
 <div id="page">
-
 <f:view>
-	<h3><h:outputText value="CIAO " /> <h:outputText
-		value="#{userBean.userName}" /></h3>
+	<h3><h:outputText value="CIAO #{userBean.userName}" /></h3>
+
+	<h:graphicImage url="images/img01.jpg" value="image"></h:graphicImage>
 </f:view></div>
 </body>
 </html>
