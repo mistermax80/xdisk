@@ -11,9 +11,10 @@
 </head>
 <body>
 <f:view>
+<f:loadBundle basename="xdisk.messagesResource" var="msg"/>
 	<div id="header">
 	<div id="logo">
-	<h1><a href="#">XDISK</a></h1>
+	<h1>XDISK</h1>
 	<p>Design by <a href="http://code.google.com/p/xdisk/">MisterMax80-Biio-Stef</a></p>
 	</div>
 	<!-- end #logo -->
@@ -77,15 +78,15 @@
 	<div id="sidebar-content">
 	<ul>
 		<li id="login">
-		<h2>Login</h2>
+		<h2><h:outputLabel value="#{msg.login}"/></h2>
 		<h:form>
-			<li><h:outputLabel>Username</h:outputLabel></li>
-			<li><h:inputText value="#{userBean.userName}"></h:inputText></li>
-			<li><h:outputLabel>Password</h:outputLabel></li>
+			<li><h:outputLabel value="#{msg.username}"/></li>
+			<li><h:inputText value="#{userBean.userName}" required="true" /></li>
+			<li><h:outputLabel value="#{msg.password}"/></li>
 			<li><h:inputSecret></h:inputSecret> <A>&nbsp;</A><h:commandButton
-				action="login" value="Login"></h:commandButton></li>
+				action="login" value="#{msg.login}"></h:commandButton></li>
 		</h:form></li>
-		<li><h:form><h:commandLink action="register" value="Non sei ancora registrato?"></h:commandLink></h:form></li>
+		<li><h:form><h:commandLink action="register" value="#{msg.register}"></h:commandLink></h:form></li>
 		<li>&nbsp;</li>
 		<li id="search">
 		<h2>Search File</h2>
