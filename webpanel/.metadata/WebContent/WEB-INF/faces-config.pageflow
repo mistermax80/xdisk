@@ -2,8 +2,8 @@
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12305447643060" configfile="/webpanel/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="home" x="60" y="48" id="pf12305462444571" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf12305462444582" path="/home.jsp"/>
   <nodes xsi:type="pageflow:PFPage" name="index" x="192" y="48" id="pf12305462444583" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12305462444584 pf12305462444585" inlinks="pf12305462444582" path="/index.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="registrer" x="324" y="48" id="pf12305462444586" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" outlinks="pf12305467326820" inlinks="pf12305462444585" path="/registrer.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="secondaPagina" x="175" y="156" id="pf12305462444597" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12305462444584 pf12305467326820" path="/secondaPagina.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="registrer" x="324" y="48" id="pf12305462444586" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf12305467326820" inlinks="pf12305462444585" path="/registrer.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="secondaPagina" x="175" y="156" id="pf12305462444597" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf12305462444584 pf12305467326820" path="/secondaPagina.jsp"/>
   <links id="pf12305462444582" target="pf12305462444583" source="pf12305462444571"/>
   <links id="pf12305462444584" target="pf12305462444597" source="pf12305462444583" outcome="login"/>
   <links id="pf12305462444585" target="pf12305462444586" source="pf12305462444583" outcome="register"/>
