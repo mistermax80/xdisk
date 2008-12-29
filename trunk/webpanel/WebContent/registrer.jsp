@@ -38,7 +38,7 @@
 <li><h:inputText></h:inputText></li>
 <li><h:outputText value="sito"></h:outputText></li>
 <li><h:inputText></h:inputText>
-<h:commandButton value="Registra" action="doLogin"/></li>
+<h:commandButton value="Registra" action="login"/></li>
 
 </h:form>
 </f:view>

@@ -83,7 +83,7 @@
 			<li><h:inputText value="#{userBean.userName}"></h:inputText></li>
 			<li><h:outputLabel>Password</h:outputLabel></li>
 			<li><h:inputSecret></h:inputSecret> <A>&nbsp;</A><h:commandButton
-				action="doLogin" value="Login"></h:commandButton></li>
+				action="login" value="Login"></h:commandButton></li>
 		</h:form></li>
 		<li><h:form><h:commandLink action="register" value="Non sei ancora registrato?"></h:commandLink></h:form></li>
 		<li>&nbsp;</li>

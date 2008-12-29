@@ -1,3 +1,6 @@
+<!-- Questa pagina è utilizzata soltanto per la redirezione dell'effettiva home page index.jsp
+che per attivare le JSF viene chiamata come index.jsf-->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core"%>
