@@ -21,15 +21,15 @@ class UserDAO {
 
 	private static final String INSERT_SQL = 
 		"INSERT INTO user" +
-		"(userid,nome,password,email) " +
-		"VALUES (?, ?, ?, ?)";
+		"(userid,nome,password,email,admin) " +
+		"VALUES (?, ?, ?, ?, ?)";
 
 	private static final String UPDATE_BY_USERID_SQL = 
-		"UPDATE user SET password = ?, nome = ?,  email = ? " +
+		"UPDATE user SET password = ?, nome = ?,  email = ? , admin = ? " +
 		"WHERE userid = ?";
 
 	private static final String SELECT_BY_USERID_SQL = 
-		"SELECT nuserid,nome,password,email " +
+		"SELECT nuserid,nome,password,email,admin " +
 		"FROM user " +
 		"WHERE userid = ?";
 
@@ -58,6 +58,7 @@ class UserDAO {
 			user.setName(rst.getString("nome"));
 			user.setName(rst.getString("password"));
 			user.setName(rst.getString("email"));
+			user.setAdmin(rst.getBoolean("admin"));
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
 		}
@@ -84,6 +85,7 @@ class UserDAO {
 			stm.setString(2,user.getName());
 			stm.setString(3,user.getPassword());
 			stm.setString(4,user.getEmail());
+			stm.setBoolean(5,user.getAdmin());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
@@ -106,7 +108,7 @@ class UserDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(DELETE_BY_USERID_SQL);
-			stm.setString(1,user.getName());
+			stm.setString(1,user.getUsername());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
@@ -133,6 +135,7 @@ class UserDAO {
 			stm.setString(2,user.getName());
 			stm.setString(3,user.getPassword());
 			stm.setString(4,user.getEmail());
+			stm.setBoolean(5,user.getAdmin());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
