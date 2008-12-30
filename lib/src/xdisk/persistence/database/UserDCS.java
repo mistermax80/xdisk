@@ -9,18 +9,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.Disk;
+import xdisk.persistence.User;
 
-public class DiskDCS
+public class UserDCS
 {
-	private DiskDCS(){}
+	private UserDCS(){}
 
 	/**
-	 * Rimuove tutte le tuple della tabella disk
+	 * Rimuove tutte le tuple della tabella xst_users
 	 * @return il numero di tuple eliminate
 	 * @throws PersistenceException
 	 */
-	private static final String REMOVE_ALL_SQL = "DELETE FROM disk";
+	private static final String REMOVE_ALL_SQL = "DELETE FROM user";
 	public static int removeAll() throws PersistenceException
 	{
 		Connection con = DatabaseConnectionFactory.getConnection();
@@ -41,17 +41,17 @@ public class DiskDCS
 
 	/**
 	 * 
-	 * @return un collection di oggetti Disk tutti quelli presenti nel DB
+	 * @return un collection di oggetti User tutti quelli presenti nel DB
 	 * @throws PersistenceException 
 	 */
 	private static final String SELECT_ALL_SQL = 
-		"SELECT nome,userid,cartellaroot,dimensione " +
-		"FROM disk";
-	public static Collection<Disk> getAll() throws PersistenceException
+		"SELECT userid,nome,password,email " +
+		"FROM user";
+	public static Collection<User> getAll() throws PersistenceException
 	{
 		Connection con=null;
 		PreparedStatement stm=null;
-		Collection<Disk> all=null;
+		Collection<User> all=null;
 		ResultSet rst=null;
 
 		con = DatabaseConnectionFactory.getConnection();
@@ -73,11 +73,11 @@ public class DiskDCS
 	/**
 	 * 
 	 * @param rst result set di una query
-	 * @return una collezione di oggetti Disk
+	 * @return una collezione di oggetti User
 	 * @throws SQLException
 	 */
-	private static Collection<Disk> processCollectionResultSet(ResultSet rst) throws SQLException{
-		LinkedList<Disk> all = new LinkedList<Disk>();
+	private static Collection<User> processCollectionResultSet(ResultSet rst) throws SQLException{
+		LinkedList<User> all = new LinkedList<User>();
 		while (rst.next()) {
 			all.add(objectFromCursor(rst));
 		}
@@ -87,24 +87,24 @@ public class DiskDCS
 	/**
 	 * 
 	 * @param rst result set di una query
-	 * @return oggetto Disk
+	 * @return oggetto User
 	 * @throws SQLException
 	 */
-	private static Disk objectFromCursor(ResultSet rst) throws SQLException{
-		Disk disk= new Disk();
-		disk.setName(rst.getString("nome"));
-		disk.setAdmin(rst.getString("userid"));
-		disk.setIdRoot(rst.getInt("cartellaroot"));
-		disk.setDimension(rst.getInt("dimensione"));
-		return disk;
+	private static User objectFromCursor(ResultSet rst) throws SQLException{
+		User user= new User();
+		user.setUsername(rst.getString("username"));
+		user.setPassword(rst.getString("password"));
+		user.setName(rst.getString("name"));
+		user.setEmail(rst.getString("email"));
+		return user;
 	}
 
 	private static final String SELECT_SQL_BY_USERNAME = 
-		"SELECT nome,userid,cartellaroot,dimensione " +
-		"FROM disk " +
-		"WHERE nome = ?";
-	public static Disk getUserByUsername(String name) throws PersistenceException {
-		Disk disk = null;
+		"SELECT userid, username, password, last_login, name, surname, tel, " +
+		"cell, description FROM user " +
+		"WHERE username = ?";
+	public static User getUserByUsername(String username) throws PersistenceException {
+		User user = null;
 		Connection con=null;
 		PreparedStatement stm=null;
 		ResultSet rst=null;
@@ -112,10 +112,10 @@ public class DiskDCS
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(SELECT_SQL_BY_USERNAME);
-			stm.setString(1, name);
+			stm.setString(1, username);
 			rst=stm.executeQuery();
 			if (rst.next())
-				disk = objectFromCursor(rst);
+				user = objectFromCursor(rst);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}
@@ -124,7 +124,7 @@ public class DiskDCS
 			  if (stm != null) try {stm.close();} catch (Exception e) {}
 			  if (con != null) try {con.close();} catch (Exception e) {}
 		}
-		return disk;
+		return user;
 	}
 }
 

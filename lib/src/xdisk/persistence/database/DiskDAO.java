@@ -12,6 +12,7 @@ import java.sql.*;
  * Unici possibili metodi presenti, insert(),load(),delete(),update()
  */
 
+import xdisk.exception.PersistenceException;
 import xdisk.persistence.Disk;
 
 class DiskDAO {
@@ -21,16 +22,16 @@ class DiskDAO {
 		"(nome,userid,cartellaroot,dimensione) " +
 		"VALUES (?, ?, ?, ?)";
 
-	private static final String UPDATE_BY_USERID_SQL = 
+	private static final String UPDATE_BY_NAME_SQL = 
 		"UPDATE disk SET nome = ?, dimensione = ?, cartellaroot = ? " +
-		"WHERE userid = ?";
+		"WHERE nome = ?";
 
-	private static final String SELECT_BY_USERID_SQL = 
+	private static final String SELECT_BY_NAME_SQL = 
 		"SELECT nome,dimensione,userid,cartellaroot " +
 		"FROM disk " +
-		"WHERE userid = ?";
+		"WHERE nome = ?";
 
-	private static final String DELETE_BY_USERID_SQL = 
+	private static final String DELETE_BY_NAME_SQL = 
 		"DELETE FROM disk WHERE nome = ?";
 
 	private DiskDAO(){}
@@ -47,7 +48,7 @@ class DiskDAO {
 		ResultSet rst=null;
 		con = DatabaseConnectionFactory.getConnection();
 		try {
-			stm = con.prepareStatement(SELECT_BY_USERID_SQL);
+			stm = con.prepareStatement(SELECT_BY_NAME_SQL);
 			stm.setString(1, disk.getName());
 			rst=stm.executeQuery();
 			rst.next();
@@ -102,7 +103,7 @@ class DiskDAO {
 		PreparedStatement stm=null;
 		con = DatabaseConnectionFactory.getConnection();
 		try {
-			stm = con.prepareStatement(DELETE_BY_USERID_SQL);
+			stm = con.prepareStatement(DELETE_BY_NAME_SQL);
 			stm.setString(1,disk.getName());
 			stm.executeUpdate();
 		} catch (SQLException e) {
@@ -125,7 +126,7 @@ class DiskDAO {
 		PreparedStatement stm=null;
 		con = DatabaseConnectionFactory.getConnection();
 		try {
-			stm = con.prepareStatement(UPDATE_BY_USERID_SQL);
+			stm = con.prepareStatement(UPDATE_BY_NAME_SQL);
 			stm.setString(1,disk.getName());
 			stm.setString(2,disk.getAdmin());
 			stm.setInt(3,disk.getIdRoot());
