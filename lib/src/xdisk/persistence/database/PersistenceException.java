@@ -2,6 +2,11 @@ package xdisk.persistence.database;
 
 public class PersistenceException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7722423773888974482L;
+
 	public PersistenceException() {
 		super();
 	}
