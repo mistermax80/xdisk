@@ -10,6 +10,17 @@ public class Disk {
 	private int dimension;
 	private String useridAdmin;
 	private int idRoot;
+	
+	public Disk(String name, int dimension, String useridAdmin, int idRoot) {
+		super();
+		this.name = name;
+		this.dimension = dimension;
+		this.useridAdmin = useridAdmin;
+		this.idRoot = idRoot;
+	}
+	public Disk() {
+		super();
+	}
 	public String getName() {
 		return name;
 	}
