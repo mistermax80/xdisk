@@ -1,27 +1,14 @@
 package xdisk.persistence;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import xdisk.persistence.database.DatabaseConnectionFactory;
+import xdisk.persistence.database.DiskController;
 
 public class Test {
-
-	/**
-	 * @param args
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 */
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Connection con = DatabaseConnectionFactory.getConnection();
-		Statement stmt=null;
-		
-		stmt = con.createStatement();
-		String query="CREATE TABLE example (id INT,data VARCHAR(100));";
-		stmt.executeUpdate(query);
-		
-		
+	public static void main(String[] args) throws Exception{
+		Disk disco = new Disk("disco1",123,"picchio",23);
+		DiskController.insert(disco);
+		System.out.println("Inserimento avvenuto con successo!!!");
+		DiskController.delete(disco);
+		System.out.println("Cancellazione avvenuta con successo!!!");
 		
 	}
 }

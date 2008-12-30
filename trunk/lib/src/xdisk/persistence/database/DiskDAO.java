@@ -31,7 +31,7 @@ class DiskDAO {
 		"WHERE userid = ?";
 
 	private static final String DELETE_BY_USERID_SQL = 
-		"DELETE FROM xst_users WHERE userid = ?";
+		"DELETE FROM disk WHERE nome = ?";
 
 	private DiskDAO(){}
 
