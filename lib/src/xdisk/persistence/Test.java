@@ -1,8 +1,10 @@
-package xdisk.persistence.database;
+package xdisk.persistence;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import xdisk.persistence.database.DatabaseConnectionFactory;
 
 public class Test {
 
@@ -12,7 +14,7 @@ public class Test {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Connection con = ConnectionManager.getConnection();
+		Connection con = DatabaseConnectionFactory.getConnection();
 		Statement stmt=null;
 		
 		stmt = con.createStatement();
