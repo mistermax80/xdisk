@@ -1,4 +1,4 @@
-package xdisk.persistence.database;
+package xdisk.exception;
 
 public class PersistenceException extends Exception{
 
