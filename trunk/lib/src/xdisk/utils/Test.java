@@ -19,5 +19,9 @@ public class Test {
 		System.out.println("Inserimento avvenuto con successo!!!"+disco);
 		/*DiskController.delete(disco);
 		System.out.println("Cancellazione avvenuta con successo!!!"+disco);*/
+		
+		System.out.println("JSP inizio");
+		User user = UserController.login("picchio", "max");
+		System.out.println(user);
 	}
 }
