@@ -92,18 +92,18 @@ public class UserDCS
 	 */
 	private static User objectFromCursor(ResultSet rst) throws SQLException{
 		User user= new User();
-		user.setUsername(rst.getString("username"));
+		user.setUsername(rst.getString("userid"));
 		user.setPassword(rst.getString("password"));
-		user.setName(rst.getString("name"));
+		user.setName(rst.getString("nome"));
 		user.setEmail(rst.getString("email"));
 		return user;
 	}
 
 	private static final String SELECT_SQL_BY_USERNAME = 
-		"SELECT userid, username, password, last_login, name, surname, tel, " +
-		"cell, description FROM user " +
-		"WHERE username = ?";
-	public static User getUserByUsername(String username) throws PersistenceException {
+		"SELECT userid, nome, password, email " +
+		"FROM user " +
+		"WHERE userid = ?";
+	public static User getUserByUsername(String userid) throws PersistenceException {
 		User user = null;
 		Connection con=null;
 		PreparedStatement stm=null;
@@ -112,7 +112,7 @@ public class UserDCS
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(SELECT_SQL_BY_USERNAME);
-			stm.setString(1, username);
+			stm.setString(1, userid);
 			rst=stm.executeQuery();
 			if (rst.next())
 				user = objectFromCursor(rst);
