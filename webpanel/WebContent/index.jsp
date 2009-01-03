@@ -30,33 +30,6 @@
 		class="google_code">Home del progetto&nbsp;&raquo;</a></p>
 	</div>
 	</div>
-	<div class="post">
-	<h2 class="title">Lorem Ipsum Dolor Volutpat</h2>
-	<p class="byline"><small>Posted by FreeCssTemplates</small></p>
-	<div class="entry">
-	<p>MASSIMO E CIIPS Curabitur tellus. Phasellus tellus turpis,
-	iaculis in, faucibus lobortis, posuere in, lorem. Donec a ante. Donec
-	neque purus, adipiscing id, eleifend a, cursus vel, odio. Vivamus
-	varius justo sit amet leo. Morbi sed libero. Vestibulum blandit augue
-	at mi. Praesent fermentum lectus eget diam. Nam cursus, orci sit amet
-	porttitor iaculis, ipsum massa aliquet nulla, non elementum mi elit a
-	mauris.</p>
-	<p>Praesent fermentum lectus eget diam. Nam cursus, orci sit amet
-	porttitor iaculis, ipsum massa aliquet nulla, non elementum mi elit a
-	mauris.</p>
-	<ul>
-		<li><a href="#">Magna lacus bibendum mauris</a></li>
-		<li><a href="#">Velit semper nisi molestie</a></li>
-		<li><a href="#">Magna lacus bibendum mauris</a></li>
-		<li><a href="#">Velit semper nisi molestie</a></li>
-	</ul>
-	</div>
-	<div class="meta">
-	<p class="links"><a href="#" class="comments">Comments (32)</a>
-	&nbsp;&bull;&nbsp;&nbsp; <a href="#" class="more">Read full post
-	&raquo;</a></p>
-	</div>
-	</div>
 	</div>
 	<!-- end #content -->
 	<div id="sidebar">
@@ -83,30 +56,6 @@
 		<fieldset><input type="text" id="s" name="s" value="" /> <input
 			type="submit" id="x" value="Search" /></fieldset>
 		</form>
-		</li>
-		<li>
-		<h2>titolo1</h2>
-		<ul>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-		</ul>
-		</li>
-		<li>
-		<h2>titolo2</h2>
-		<ul>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-			<li><a href="#">link</a></li>
-		</ul>
 		</li>
 	</ul>
 	</div>
