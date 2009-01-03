@@ -3,23 +3,23 @@ package xdisk.persistence.database;
 import java.util.Collection;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.Disk;
+import xdisk.persistence.Client;
 
 public class ClientController {
 
-	public static void load(Disk disk) throws PersistenceException{DiskDAO.load(disk);}
+	public static void load(Client client) throws PersistenceException{ClientDAO.load(client);}
 
-	public static void insert(Disk disk) throws PersistenceException{DiskDAO.insert(disk);}
+	public static void insert(Client client) throws PersistenceException{ClientDAO.insert(client);}
 
-	public static void delete(Disk disk) throws PersistenceException{DiskDAO.delete(disk);}
+	public static void delete(Client client) throws PersistenceException{ClientDAO.delete(client);}
 
-	public static void update(Disk disk) throws PersistenceException{DiskDAO.update(disk);}
+	public static void update(Client client) throws PersistenceException{ClientDAO.update(client);}
 	
 	public static int removeAll() throws PersistenceException{
-		return DiskDCS.removeAll();
+		return ClientDCS.removeAll();
 	}
 
-	public static Collection<Disk> getAll() throws PersistenceException{
-		return DiskDCS.getAll();
+	public static Collection<Client> getAll() throws PersistenceException{
+		return ClientDCS.getAll();
 	}
 }

@@ -56,7 +56,6 @@ class DownloadDAO {
 			download.setFile(rst.getInt("file"));
 			download.setUser(rst.getString("utente"));
 			download.setTimestamp(rst.getTimestamp("timestamp"));
-			
 		} catch (SQLException e) {
 			throw new PersistenceException(download.toString(),e);
 		}

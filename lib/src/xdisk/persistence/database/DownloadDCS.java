@@ -9,18 +9,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.Disk;
+import xdisk.persistence.Download;
 
 public class DownloadDCS
 {
 	private DownloadDCS(){}
 
 	/**
-	 * Rimuove tutte le tuple della tabella disk
+	 * Rimuove tutte le tuple della tabella download
 	 * @return il numero di tuple eliminate
 	 * @throws PersistenceException
 	 */
-	private static final String REMOVE_ALL_SQL = "DELETE FROM disk";
+	private static final String REMOVE_ALL_SQL = "DELETE FROM download";
 	public static int removeAll() throws PersistenceException
 	{
 		Connection con = DatabaseConnectionFactory.getConnection();
@@ -41,17 +41,17 @@ public class DownloadDCS
 
 	/**
 	 * 
-	 * @return un collection di oggetti Disk tutti quelli presenti nel DB
+	 * @return un collection di oggetti Download tutti quelli presenti nel DB
 	 * @throws PersistenceException 
 	 */
 	private static final String SELECT_ALL_SQL = 
 		"SELECT nome,userid,cartellaroot,dimensione " +
-		"FROM disk";
-	public static Collection<Disk> getAll() throws PersistenceException
+		"FROM download";
+	public static Collection<Download> getAll() throws PersistenceException
 	{
 		Connection con=null;
 		PreparedStatement stm=null;
-		Collection<Disk> all=null;
+		Collection<Download> all=null;
 		ResultSet rst=null;
 
 		con = DatabaseConnectionFactory.getConnection();
@@ -73,11 +73,11 @@ public class DownloadDCS
 	/**
 	 * 
 	 * @param rst result set di una query
-	 * @return una collezione di oggetti Disk
+	 * @return una collezione di oggetti Download
 	 * @throws SQLException
 	 */
-	private static Collection<Disk> processCollectionResultSet(ResultSet rst) throws SQLException{
-		LinkedList<Disk> all = new LinkedList<Disk>();
+	private static Collection<Download> processCollectionResultSet(ResultSet rst) throws SQLException{
+		LinkedList<Download> all = new LinkedList<Download>();
 		while (rst.next()) {
 			all.add(objectFromCursor(rst));
 		}
@@ -87,35 +87,35 @@ public class DownloadDCS
 	/**
 	 * 
 	 * @param rst result set di una query
-	 * @return oggetto Disk
+	 * @return oggetto Download
 	 * @throws SQLException
 	 */
-	private static Disk objectFromCursor(ResultSet rst) throws SQLException{
-		Disk disk= new Disk();
-		disk.setName(rst.getString("nome"));
-		disk.setAdmin(rst.getString("userid"));
-		disk.setIdRoot(rst.getInt("cartellaroot"));
-		disk.setDimension(rst.getInt("dimensione"));
-		return disk;
+	private static Download objectFromCursor(ResultSet rst) throws SQLException{
+		Download download= new Download();
+		download.setTicket(rst.getInt("ticket"));
+		download.setFile(rst.getInt("file"));
+		download.setUser(rst.getString("utente"));
+		download.setTimestamp(rst.getTimestamp("timestamp"));
+		return download;
 	}
 
-	private static final String SELECT_SQL_BY_USERNAME = 
+	private static final String SELECT_SQL_BY_TICKET = 
 		"SELECT nome,userid,cartellaroot,dimensione " +
-		"FROM disk " +
+		"FROM download " +
 		"WHERE nome = ?";
-	public static Disk getUserByUsername(String name) throws PersistenceException {
-		Disk disk = null;
+	public static Download getUserByUsername(String ticket) throws PersistenceException {
+		Download download = null;
 		Connection con=null;
 		PreparedStatement stm=null;
 		ResultSet rst=null;
 
 		con = DatabaseConnectionFactory.getConnection();
 		try {
-			stm = con.prepareStatement(SELECT_SQL_BY_USERNAME);
-			stm.setString(1, name);
+			stm = con.prepareStatement(SELECT_SQL_BY_TICKET);
+			stm.setString(1, ticket);
 			rst=stm.executeQuery();
 			if (rst.next())
-				disk = objectFromCursor(rst);
+				download = objectFromCursor(rst);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}
@@ -124,7 +124,7 @@ public class DownloadDCS
 			  if (stm != null) try {stm.close();} catch (Exception e) {}
 			  if (con != null) try {con.close();} catch (Exception e) {}
 		}
-		return disk;
+		return download;
 	}
 }
 

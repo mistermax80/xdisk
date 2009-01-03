@@ -3,23 +3,23 @@ package xdisk.persistence.database;
 import java.util.Collection;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.Disk;
+import xdisk.persistence.Ownership;
 
 public class OwnershipController {
 
-	public static void load(Disk disk) throws PersistenceException{DiskDAO.load(disk);}
+	public static void load(Ownership ownership) throws PersistenceException{OwnershipDAO.load(ownership);}
 
-	public static void insert(Disk disk) throws PersistenceException{DiskDAO.insert(disk);}
+	public static void insert(Ownership ownership) throws PersistenceException{OwnershipDAO.insert(ownership);}
 
-	public static void delete(Disk disk) throws PersistenceException{DiskDAO.delete(disk);}
+	public static void delete(Ownership ownership) throws PersistenceException{OwnershipDAO.delete(ownership);}
 
-	public static void update(Disk disk) throws PersistenceException{DiskDAO.update(disk);}
+	//public static void update(Ownership ownership) throws PersistenceException{OwnershipDAO.update(ownership);}
 	
 	public static int removeAll() throws PersistenceException{
-		return DiskDCS.removeAll();
+		return OwnershipDCS.removeAll();
 	}
 
-	public static Collection<Disk> getAll() throws PersistenceException{
-		return DiskDCS.getAll();
+	public static Collection<Ownership> getAll() throws PersistenceException{
+		return OwnershipDCS.getAll();
 	}
 }
