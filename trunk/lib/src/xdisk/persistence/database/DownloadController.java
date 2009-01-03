@@ -3,23 +3,23 @@ package xdisk.persistence.database;
 import java.util.Collection;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.Disk;
+import xdisk.persistence.Download;
 
 public class DownloadController {
 
-	public static void load(Disk disk) throws PersistenceException{DiskDAO.load(disk);}
+	public static void load(Download download) throws PersistenceException{DownloadDAO.load(download);}
 
-	public static void insert(Disk disk) throws PersistenceException{DiskDAO.insert(disk);}
+	public static void insert(Download download) throws PersistenceException{DownloadDAO.insert(download);}
 
-	public static void delete(Disk disk) throws PersistenceException{DiskDAO.delete(disk);}
+	public static void delete(Download download) throws PersistenceException{DownloadDAO.delete(download);}
 
-	public static void update(Disk disk) throws PersistenceException{DiskDAO.update(disk);}
+	public static void update(Download download) throws PersistenceException{DownloadDAO.update(download);}
 	
 	public static int removeAll() throws PersistenceException{
-		return DiskDCS.removeAll();
+		return DownloadDCS.removeAll();
 	}
 
-	public static Collection<Disk> getAll() throws PersistenceException{
-		return DiskDCS.getAll();
+	public static Collection<Download> getAll() throws PersistenceException{
+		return DownloadDCS.getAll();
 	}
 }

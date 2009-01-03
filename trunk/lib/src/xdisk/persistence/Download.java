@@ -21,6 +21,10 @@ public class Download {
 		this.timestamp = timestamp;
 	}
 
+	public Download() {
+		super();
+	}
+
 	public int getTicket() {
 		return ticket;
 	}
