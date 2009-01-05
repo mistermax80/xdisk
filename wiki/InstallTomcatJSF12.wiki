@@ -1,9 +1,11 @@
-= Introduction =
-Wiki per la realizzazione di un server Tomcat Jsf 1.2 utilizzanto l'IDE Eclipse Ganymede 
+= INDRODUZIONE =
+Wiki per la realizzazione di un server Tomcat Jsf 1.2 utilizzando l'IDE Eclipse Ganymede 
 
-= Details =
+= DETTAGLI =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
+
+http://code.google.com/images/code_sm.png
