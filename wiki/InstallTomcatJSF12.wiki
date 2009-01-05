@@ -18,4 +18,4 @@ Add your content here.  Format your content with:
 
 
 
-<a href="http://xs.to" alt="Free image hosting" target="_blank">Free Image Hosting</a><img>http://xs.to/images/xs_logo.gif</img>
+<a href="http://xs.to" alt="Free image hosting" target="_blank"><img>http://xs.to/images/xs_logo.gif</img></a>
