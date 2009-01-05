@@ -3,10 +3,14 @@ Wiki per la realizzazione di un server Tomcat Jsf 1.2 utilizzando l'IDE Eclipse 
 
 = DETTAGLI =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Per prima cosa creiamo un nuovo progetto, da Eclipse, scegliamo il menu:
+
+  * FILE->new Project->Others
+
+
+Poi selezioniamo il progetto "Dynamic Web Project"
+
+
 <img>http://xs135.xs.to/xs135/09021/eclipse_wizard181.png</img>
 
 
