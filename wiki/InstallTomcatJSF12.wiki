@@ -1,3 +1,4 @@
+#labels Phase-Deploy,Featured,Phase-Implementation
 = Introduzione =
 Wiki per la realizzazione di un server Tomcat Jsf 1.2 utilizzando l'IDE Eclipse Ganymede 
 
@@ -8,7 +9,7 @@ Scaricare i seguenti file:
   # JSF    -> https://javaserverfaces.dev.java.net/
 
 = Dettagli =
-Innanzitutto dobbiamo installare Tomcat provare il corretto funzionamento.
+Innanzitutto dobbiamo installare Tomcat e provare il corretto funzionamento.
 
 
 Per prima cosa creiamo un nuovo progetto, da Eclipse, scegliamo il menu:
