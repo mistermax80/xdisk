@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<faces-config
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
-    version="1.2">
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
 	<application>
+		<action-listener>xdisk.addUser</action-listener>
 		<message-bundle>xdisk.messagesResource</message-bundle>
 	</application>
 	<managed-bean>
@@ -14,34 +14,19 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<navigation-rule>
-		<display-name>home</display-name>
-		<from-view-id>/home.jsp</from-view-id>
-		<navigation-case>
-			<to-view-id>/index.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
 		<display-name>index</display-name>
 		<from-view-id>/index.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>register</from-outcome>
-			<to-view-id>/registrer.jsp</to-view-id>
+			<from-outcome>loginAdmin</from-outcome>
+			<to-view-id>/admin.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<display-name>admin</display-name>
+		<from-view-id>/admin.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>noLogin</from-outcome>
-			<to-view-id>/error.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/personalPage.jsp</to-view-id>
+			<from-outcome>newUser</from-outcome>
+			<to-view-id>/user/add.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

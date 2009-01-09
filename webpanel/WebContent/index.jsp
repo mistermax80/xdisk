@@ -40,8 +40,8 @@
 		<h2><h:outputLabel value="#{msg.login}" /></h2>
 		<h:form>
 			<li><h:outputLabel value="#{msg.username}" /></li>
-			<li><h:inputText id="user" value="#{userBean.username}">
-			<f:validateLength minimum="6"/></h:inputText>
+			<li><h:messages><h:inputText id="user" value="#{userBean.username}">
+			<f:validateLength minimum="1"/></h:inputText></h:messages>
 			</li>
 			<li><h:outputLabel value="#{msg.password}" /></li>
 			<li><h:inputSecret value="#{userBean.password}"/><A>&nbsp;</A><h:commandButton
