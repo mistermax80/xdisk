@@ -29,7 +29,7 @@ class UserDAO {
 		"WHERE userid = ?";
 
 	private static final String SELECT_BY_USERID_SQL = 
-		"SELECT nuserid,nome,password,email,admin " +
+		"SELECT userid,nome,password,email,admin " +
 		"FROM user " +
 		"WHERE userid = ?";
 
@@ -51,13 +51,14 @@ class UserDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(SELECT_BY_USERID_SQL);
-			stm.setString(1, user.getName());
+			stm.setString(1, user.getUsername());
+			System.out.println("********"+stm);
 			rst=stm.executeQuery();
 			rst.next();
-			user.setName(rst.getString("userid"));
+			user.setUsername(rst.getString("userid"));
 			user.setName(rst.getString("nome"));
-			user.setName(rst.getString("password"));
-			user.setName(rst.getString("email"));
+			user.setPassword(rst.getString("password"));
+			user.setEmail(rst.getString("email"));
 			user.setAdmin(rst.getBoolean("admin"));
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
