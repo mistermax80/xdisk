@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12305447643060" configfile="/webpanel/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="home" x="48" y="132" id="pf12305462444571" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12307358864887" path="/home.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="registrer" x="336" y="132" id="pf12305462444586" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf12307358864888" path="/registrer.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="error" x="252" y="24" id="pf12307247006441" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" inlinks="pf123073660353112" path="/error.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="index" x="180" y="132" id="pf12307358864889" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12307358864888 pf123073660353112 pf123073660353113" inlinks="pf12307358864887" path="/index.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="personalPage" x="194" y="250" id="pf123073660353114" inlinks="pf123073660353113" path="/personalPage.jsp"/>
-  <links id="pf12307358864887" target="pf12307358864889" source="pf12305462444571"/>
-  <links id="pf12307358864888" target="pf12305462444586" source="pf12307358864889" outcome="register"/>
-  <links id="pf123073660353112" target="pf12307247006441" source="pf12307358864889" outcome="noLogin"/>
-  <links id="pf123073660353113" target="pf123073660353114" source="pf12307358864889" outcome="login"/>
+  <nodes xsi:type="pageflow:PFPage" name="index" x="82" y="74" id="pf12311059240660" outlinks="pf12311059240661" path="/index.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="admin" x="216" y="24" id="pf12311059240662" outlinks="pf12311063123465" inlinks="pf12311059240661" path="/admin.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="user/add" x="384" y="24" id="pf12311063123466" inlinks="pf12311063123465" path="/user/add.jsp"/>
+  <links id="pf12311059240661" target="pf12311059240662" source="pf12311059240660" outcome="loginAdmin"/>
+  <links id="pf12311063123465" target="pf12311063123466" source="pf12311059240662" outcome="newUser"/>
 </pageflow:Pageflow>

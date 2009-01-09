@@ -12,13 +12,12 @@
 </head>
 <body>
 <f:view>
-	<c:import url="header.jsp"></c:import>
+	<c:import url="../header.jsp"></c:import>
 	<div id="page">
 	<div id="content">
-	<h3><h:outputText value="CIAO #{userBean.username}" /></h3>
 	</div>
 	</div>
-	<c:import url="footer.jsp"></c:import>
+	<c:import url="../footer.jsp"></c:import>
 </f:view>
 </body>
 </html>
