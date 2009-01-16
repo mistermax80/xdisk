@@ -5,7 +5,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
 	version="1.2">
 	<application>
-		<action-listener>xdisk.addUser</action-listener>
 		<message-bundle>xdisk.messagesResource</message-bundle>
 	</application>
 	<managed-bean>
@@ -26,8 +25,15 @@
 		<from-view-id>/admin.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>newUser</from-outcome>
-			<to-view-id>/user/add.jsp</to-view-id>
+			<to-view-id>/add.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
+	<navigation-rule>
+		<display-name>add</display-name>
+		<from-view-id>/add.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>/admin.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

@@ -12,7 +12,7 @@
 </head>
 <body>
 <f:view>
-	<c:import url="../header.jsp"></c:import>
+	<c:import url="/header.jsp"></c:import>
 	<div id="page">
 	<div id="content">
 		<h2><h:outputLabel value="Aggiungi Utente" /></h2>
@@ -28,14 +28,12 @@
 			<li><h:outputLabel value="Admin" /></li>
 			<li><h:inputText id="admin" value="#{userBean.user.admin}"/></li>
 			<li><A>&nbsp;</A>
-			<h:commandButton id="addBu" value="Click">
-				
-			</h:commandButton></li>
+			<h:commandButton value="Click" action="return" actionListener="#{userBean.saveUser}"/></li>
 				<li><h:outputLabel value="errore" /></li>
 		</h:form>
 	</div>
 	</div>
-	<c:import url="../footer.jsp"></c:import>
+	<c:import url="/footer.jsp"></c:import>
 </f:view>
 </body>
 </html>
