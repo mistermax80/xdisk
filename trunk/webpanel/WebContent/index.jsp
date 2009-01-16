@@ -39,9 +39,15 @@
 		<li id="login">
 		<h2><h:outputLabel value="#{msg.login}" /></h2>
 		<h:form>
+		<h:outputText value="PASSWORD(minimum 6 characters)"/><br>
+<h:inputSecret id="PWD" value="gagag" required="true" >
+<f:validateLength maximum="15" minimum="6"/>
+</h:inputSecret> 
+<h:message for="PWD"/>
+
 			<li><h:outputLabel value="#{msg.username}" /></li>
-			<li><h:messages><h:inputText id="user" value="#{userBean.username}">
-			<f:validateLength minimum="1"/></h:inputText></h:messages>
+			<li><h:inputText id="user" value="#{userBean.username}">
+			<f:validateLength minimum="1"/></h:inputText><h:message for="user"/>
 			</li>
 			<li><h:outputLabel value="#{msg.password}" /></li>
 			<li><h:inputSecret value="#{userBean.password}"/><A>&nbsp;</A><h:commandButton
