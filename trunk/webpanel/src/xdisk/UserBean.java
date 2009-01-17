@@ -1,11 +1,5 @@
 package xdisk;
 
-import java.util.Map;
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-
 import xdisk.exception.PasswordLoginException;
 import xdisk.exception.PersistenceException;
 import xdisk.exception.UsernameLoginException;
@@ -59,24 +53,12 @@ public class UserBean{
 	public void setMsgError(String msgError) {
 		this.msgError = msgError;
 	}
-
-	public void saveUser(ActionEvent arg0) throws AbortProcessingException {
-		try {
-			Map<String,Object> sss = FacesContext.getCurrentInstance().getExternalContext().getSessionMap(); 
-			UserBean us = (UserBean)sss.get("userBean");
-			User user = us.getUser();
-			System.out.println("Sono nell'action listener"+user);
-			UserController.insert(user);
-			System.out.println("Salvato nel db");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public String selectPage(){
 		String ret = "";
 		error=true;
 		try {
+			System.out.println("Controllo login!");
 			user=UserController.login(this.username, this.password);
 			if(true)
 				ret = "loginAdmin";
