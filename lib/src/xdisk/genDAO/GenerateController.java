@@ -9,9 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import xdisk.exception.PersistenceException;
 import xdisk.persistence.database.DatabaseConnectionFactory;
 
-public class GenerateDCS {
+public class GenerateController {
 
 	private String[][] arrayFields;
 	private String className;
@@ -26,7 +27,7 @@ public class GenerateDCS {
 	private static final int TYPE=1;
 	private static final int FIELD=0;
 
-	public GenerateDCS(String className, String tableName, String path, String pack) throws SQLException {
+	public GenerateController(String className, String tableName, String path, String pack) throws SQLException {
 		super();
 		this.className = className;
 		this.tableName = tableName;
@@ -52,74 +53,28 @@ public class GenerateDCS {
 
 	public String genConstructor() throws SQLException{
 		//Costruttore 0 argomenti privato
-		String text="\n\nprivate "+className+"DAO() {\nsuper();\n}";
+		String text="\nprivate "+className+"Controller() {\nsuper();\n}";
 		return text;
 	}
 
 	public String createClass() throws FileNotFoundException, SQLException{
 		String text = "package "+pack+";\n\n";
-		text+="\nimport java.sql.*;\nimport xdisk.exception.PersistenceException;" +
+		text+="\nimport java.util.Collection;\nimport xdisk.exception.PersistenceException;" +
 		"\nimport xdisk.persistence."+className+";";
-		text+= "\n\npublic class "+className+"DAO {\n";
-		text+= genQuery()+genConstructor()+genLoad()+genInsert()+genDelete()+genUpdate();
+		text+= "\n\npublic class "+className+"Controller {\n";
+		text+= genConstructor()+genCrud();
 		return text+"\n}";
 	}
 
-	public String genQuery() throws SQLException{
-		getArrayFields();		
-		//INSERT
-		String text = "\nprivate static final String INSERT_SQL = \"INSERT INTO "+tableName;
-		text+="(";
-		for(int i=0;i<arrayFields.length;i++){
-			text+=arrayFields[i][FIELD];
-			if(i<arrayFields.length-1)
-				text=text+",";
-		}
-		text+=") VALUES (";
-		for(int i=0;i<arrayFields.length;i++){
-			text+="?";
-			if(i<arrayFields.length-1)
-				text=text+",";
-		}
-		text+=")\";";
-		//SELECT
-		text += "\nprivate static final String SELECT_SQL = \"SELECT ";
-		for(int i=0;i<arrayFields.length;i++){
-			text+=arrayFields[i][FIELD];
-			if(i<arrayFields.length-1)
-				text=text+",";
-		}
-		text+=" FROM "+tableName+" WHERE "+key+"=?\";";
-		//UPDATE
-		text+= "\nprivate static final String UPDATE_SQL = \"UPDATE "+tableName+" ";
-		for(int i=0;i<arrayFields.length;i++){
-			text+=arrayFields[i][FIELD]+"=?";
-			if(i<arrayFields.length-1)
-				text=text+", ";
-		}
-		text+=" WHERE "+key+"=?\";";
-		//DELETE
-		text+= "\nprivate static final String DELETE_SQL = \"DELETE FROM "+tableName+" WHERE "+key+"=?\";";
-		return text;
-	}
-
-	public String genInsert(){
-		String prefix="get";
-		String text="\n\nstatic void insert ("+className+" object) throws PersistenceException { " +
-		"\nConnection con=null;\nPreparedStatement stm=null;" +
-		"\ncon = DatabaseConnectionFactory.getConnection(); \ntry {\nstm = con.prepareStatement(INSERT_SQL);";
-
-		for(int i=0;i<arrayFields.length;i++){
-			if(arrayFields[i][TYPE].equalsIgnoreCase("boolean"))
-				prefix = "is";
-			text+="\nstm.set"+toCamel(arrayFields[i][TYPE])+"("+(i+1)+",object."+prefix+toCamel(arrayFields[i][FIELD])+"());";
-		}
-
-		text+="\nstm.executeUpdate();" +
-		"\n} catch (SQLException e) { " +
-		"\nthrow new PersistenceException(object.toString(),e);\n}\nfinally {" +
-		"\nif (stm != null) try {stm.close();} catch (Exception e) {}" +
-		"\nif (con != null) try {con.close();} catch (Exception e) {}\n}\n}";
+	public String genCrud(){
+		String text="\n\npublic static void load("+GenerateDAO.toCamel(className)+" object) throws PersistenceException{"
+			+GenerateDAO.toCamel(className)+"DAO.load(object);}";
+		text+="\n\npublic static void insert("+GenerateDAO.toCamel(className)+" object) throws PersistenceException{"
+			+GenerateDAO.toCamel(className)+"DAO.insert(object);}";
+		text+="\n\npublic static void delete("+GenerateDAO.toCamel(className)+" object) throws PersistenceException{"
+			+GenerateDAO.toCamel(className)+"DAO.delete(object);}";
+		text+="\n\npublic static void update("+GenerateDAO.toCamel(className)+" object) throws PersistenceException{"
+			+GenerateDAO.toCamel(className)+"DAO.update(object);}";
 		return text;
 	}
 
@@ -142,7 +97,7 @@ public class GenerateDCS {
 		"\nif (con != null) try {con.close();} catch (Exception e) {}\n}\n}";
 		return text;
 	}
-	
+
 	public String genLoad(){
 		String text="\n\nstatic void load ("+className+" object) throws PersistenceException { " +
 		"\nConnection con=null;\nPreparedStatement stm=null;\nResultSet rst=null;" +
@@ -158,7 +113,7 @@ public class GenerateDCS {
 		"\nif (con != null) try {con.close();} catch (Exception e) {}\n}\n}";
 		return text;
 	}
-	
+
 	public String genDelete(){
 		String text="\n\nstatic void delete ("+className+" object) throws PersistenceException { " +
 		"\nConnection con=null;\nPreparedStatement stm=null;" +
@@ -215,9 +170,9 @@ public class GenerateDCS {
 		ret = ret.toUpperCase();
 		return ret+word.substring(1);
 	}
-	
+
 	public void generate() throws Exception{		
-		File f=new File(path+"database/"+className+"DAO.java");
+		File f=new File(path+"database/"+className+"Controller.java");
 		f.setWritable(true);
 		FileOutputStream fos=new FileOutputStream(f);
 		PrintStream ps=new PrintStream(fos);

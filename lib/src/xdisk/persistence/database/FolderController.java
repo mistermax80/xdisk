@@ -1,70 +1,21 @@
 package xdisk.persistence.database;
 
-import java.util.Collection;
 
+import java.util.Collection;
 import xdisk.exception.PersistenceException;
-import xdisk.exception.UsernameLoginException;
-import xdisk.exception.PasswordLoginException;
-import xdisk.persistence.User;
+import xdisk.persistence.Folder;
 
 public class FolderController {
-	private FolderController(){}
 
-    public static void load(User user) throws PersistenceException{UserDAO.load(user);}
-    
-    public static void insert(User user) throws PersistenceException{UserDAO.insert(user);}
-    
-    public static void delete(User user) throws PersistenceException{UserDAO.delete(user);}
-    
-    public static void update(User user) throws PersistenceException{UserDAO.update(user);}
-    
-    /**
-     * rimuove tutti gli elementidi tipo User dalla persistenza
-     * @return il numero di elementi rimossi
-     * @throws PersistenceException
-     */
-	public static int removeAll() throws PersistenceException
-	{
-		return UserDCS.removeAll();
+	private FolderController() {
+		super();
 	}
 
-	/**
-	 * 
-	 * @return tutti gli elementi di tipo User presenti nella pesistenza
-	 * @throws PersistenceException
-	 */
-	public static Collection<User> getAll() throws PersistenceException{
-		return UserDCS.getAll();
-	}
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @return  l'oggetto user della persistenza che ha come username il campo
-	 * username e la password corrispondente a password
-	 * @throws PersistenceException
-	 * @throws LoginException
-	 */
-	public static User login(String username, String password) throws PersistenceException, UsernameLoginException, PasswordLoginException{
-		User user = UserDCS.getUserByUsername(username);
-		if (user == null)
-			throw new UsernameLoginException();
-		if (!FolderController.checkPassword(user,password))
-			throw new PasswordLoginException();
-		return user;
-	}
+	public static void load(Folder object) throws PersistenceException{FolderDAO.load(object);}
 
-	public static boolean checkPassword(User user, String password) {
-		return user.getPassword().equals(password);
-	}
+	public static void insert(Folder object) throws PersistenceException{FolderDAO.insert(object);}
+
+	public static void delete(Folder object) throws PersistenceException{FolderDAO.delete(object);}
+
+	public static void update(Folder object) throws PersistenceException{FolderDAO.update(object);}
 }
-
-
-
-
-
-
-
-
-
-
