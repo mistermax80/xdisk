@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import xdisk.persistence.database.DatabaseConnectionFactory;
 
-public class GenerateDao {
+public class GenerateDCS {
 
 	private String[][] arrayFields;
 	private String className;
@@ -26,7 +26,7 @@ public class GenerateDao {
 	private static final int TYPE=1;
 	private static final int FIELD=0;
 
-	public GenerateDao(String className, String tableName, String path, String pack) throws SQLException {
+	public GenerateDCS(String className, String tableName, String path, String pack) throws SQLException {
 		super();
 		this.className = className;
 		this.tableName = tableName;

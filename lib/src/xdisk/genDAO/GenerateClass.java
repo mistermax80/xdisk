@@ -55,7 +55,7 @@ public class GenerateClass {
 		int i=0;
 		while(rst.next()){
 			field = rst.getString("FIELD").toLowerCase();
-			type = GenerateDao.selectType(rst);
+			type = GenerateDAO.selectType(rst);
 			fields= fields+ "\nprivate "+type+" "+field+";";
 			arrayFields[i][FIELD]=field;
 			arrayFields[i][TYPE]=type;
@@ -106,11 +106,11 @@ public class GenerateClass {
 		rst=stm.executeQuery();
 		while(rst.next()){
 			field = rst.getString("FIELD").toLowerCase();
-			type = GenerateDao.selectType(rst);
+			type = GenerateDAO.selectType(rst);
 			if(type.equalsIgnoreCase("boolean"))
 				prefix = "is";
-			text+="\n\npublic "+type+" "+prefix+GenerateDao.toCamel(field)+"() {\nreturn "+field+";\n}";
-			text+="\n\npublic void set"+GenerateDao.toCamel(field)+"("+type+" "+field+") {\nthis."+field+"="+field+";\n}";
+			text+="\n\npublic "+type+" "+prefix+GenerateDAO.toCamel(field)+"() {\nreturn "+field+";\n}";
+			text+="\n\npublic void set"+GenerateDAO.toCamel(field)+"("+type+" "+field+") {\nthis."+field+"="+field+";\n}";
 		}		
 		return text;
 	}
