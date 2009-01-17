@@ -18,7 +18,7 @@ public class Generate {
 		
 		GenerateClass genClass = new GenerateClass(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
 		genClass.generate();
-		GenerateDao genDao = new GenerateDao(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
+		GenerateDAO genDao = new GenerateDAO(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
 		genDao.generate();
 	}
 
