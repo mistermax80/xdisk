@@ -37,14 +37,14 @@
 	<div id="sidebar-content">
 	<ul>
 		<li id="login">
-		<h2><h:outputLabel value="#{msg.login}" /></h2>
-		<h:form>
+		<!--<h2><h:outputLabel value="#{msg.login}" /></h2>
 		<h:outputText value="PASSWORD(minimum 6 characters)"/><br>
 <h:inputSecret id="PWD" value="gagag" required="true" >
 <f:validateLength maximum="15" minimum="6"/>
 </h:inputSecret> 
 <h:message for="PWD"/>
-
+-->
+		<h:form>
 			<li><h:outputLabel value="#{msg.username}" /></li>
 			<li><h:inputText id="user" value="#{userBean.username}">
 			<f:validateLength minimum="1"/></h:inputText><h:message for="user"/>

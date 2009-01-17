@@ -12,6 +12,22 @@
 		<managed-bean-class>xdisk.UserBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<description>utilizzato per la registrazione di nuovi utenti</description>
+		<managed-bean-name>newUserBean</managed-bean-name>
+		<managed-bean-class>xdisk.persistence.User</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>actionAddNewUser</managed-bean-name>
+		<managed-bean-class>xdisk.ActionAddNewUser</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>dataTable</managed-bean-name>
+		<managed-bean-class>xdisk.DataTable</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>index</display-name>
 		<from-view-id>/index.jsp</from-view-id>
@@ -21,16 +37,39 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
+		<display-name>home</display-name>
+		<from-view-id>/home.jsp</from-view-id>
+		<navigation-case>
+			<to-view-id>/index.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
 		<display-name>admin</display-name>
 		<from-view-id>/admin.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>newUser</from-outcome>
-			<to-view-id>/add.jsp</to-view-id>
+			<to-view-id>/addUser.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>add</display-name>
-		<from-view-id>/add.jsp</from-view-id>
+		<display-name>admin</display-name>
+		<from-view-id>/admin.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>listUser</from-outcome>
+			<to-view-id>/listUser.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>addUser</display-name>
+		<from-view-id>/addUser.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>/admin.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>listUser</display-name>
+		<from-view-id>/listUser.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>return</from-outcome>
 			<to-view-id>/admin.jsp</to-view-id>

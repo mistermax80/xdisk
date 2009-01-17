@@ -17,19 +17,20 @@
 	<div id="content">
 		<h2><h:outputLabel value="Aggiungi Utente" /></h2>
 		<h:form>
-			<li><h:outputLabel value="Username" /></li>
-			<li><h:inputText id="username" value="#{userBean.user.username}"/></li>
-			<li><h:outputLabel value="Password" /></li>
-			<li><h:inputText id="password" value="#{userBean.user.password}"/></li>
-			<li><h:outputLabel value="Nome" /></li>
-			<li><h:inputText id="name" value="#{userBean.user.name}"/></li>
-			<li><h:outputLabel value="Email" /></li>
-			<li><h:inputText id="email" value="#{userBean.user.email}"/></li>
-			<li><h:outputLabel value="Admin" /></li>
-			<li><h:inputText id="admin" value="#{userBean.user.admin}"/></li>
-			<li><A>&nbsp;</A>
-			<h:commandButton value="Click" action="return" actionListener="#{userBean.saveUser}"/></li>
-				<li><h:outputLabel value="errore" /></li>
+		<h:panelGrid columns="2" cellpadding="3" title="Compila i campi">
+			<h:outputLabel value="Username" />
+			<h:inputText id="username" value="#{newUserBean.username}"/>
+			<h:outputLabel value="Password" />
+			<h:inputText id="password" value="#{newUserBean.password}"/>
+			<h:outputLabel value="Nome" />
+			<h:inputText id="name" value="#{newUserBean.name}"/>
+			<h:outputLabel value="Email" />
+			<h:inputText id="email" value="#{newUserBean.email}"/>
+			<h:outputLabel value="Admin" />
+			<h:selectBooleanCheckbox id="checkbox" value="#{newUserBean.admin}" title="click it to select or deselect"/>
+			<h:commandButton value="Indietro" action="return"/>
+			<h:commandButton value="Aggiungi" action="#{actionAddNewUser.selectPage}" actionListener="#{actionAddNewUser.saveUser}"/>
+		</h:panelGrid>
 		</h:form>
 	</div>
 	</div>
