@@ -45,7 +45,7 @@ public class UserDCS
 	 * @throws PersistenceException 
 	 */
 	private static final String SELECT_ALL_SQL = 
-		"SELECT userid,nome,password,email " +
+		"SELECT userid,nome,password,email,admin " +
 		"FROM user";
 	public static Collection<User> getAll() throws PersistenceException
 	{
@@ -96,11 +96,12 @@ public class UserDCS
 		user.setPassword(rst.getString("password"));
 		user.setName(rst.getString("nome"));
 		user.setEmail(rst.getString("email"));
+		user.setAdmin(rst.getBoolean("admin"));
 		return user;
 	}
 
 	private static final String SELECT_SQL_BY_USERNAME = 
-		"SELECT userid, nome, password, email " +
+		"SELECT userid, nome, password, email ,admin " +
 		"FROM user " +
 		"WHERE userid = ?";
 	public static User getUserByUsername(String userid) throws PersistenceException {

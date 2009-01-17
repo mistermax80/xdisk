@@ -66,7 +66,9 @@ public class User {
 						"\nname:"+name+
 						"\npassword:"+password+
 						"\nemail:"+email+
+						"\nadmin:"+admin+
 						"\n*******************";
 		return res;
 	}
 }
+
