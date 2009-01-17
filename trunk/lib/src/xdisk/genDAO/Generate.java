@@ -20,6 +20,8 @@ public class Generate {
 		genClass.generate();
 		GenerateDAO genDao = new GenerateDAO(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
 		genDao.generate();
+		GenerateController genControll = new GenerateController(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
+		genControll.generate();
 	}
 
 }
