@@ -42,7 +42,7 @@ public class GenerateDAO {
 			if(rst.getString("Key").equalsIgnoreCase("PRI")){
 				key=rst.getString("FIELD").toLowerCase();
 				typeKey=selectType(rst);
-				System.out.println("Trovata chiave"+key+" "+typeKey);
+				System.out.println("----Trovata chiave:"+key+" tipo:"+typeKey);
 			}
 			numFields++;
 		}
@@ -191,18 +191,18 @@ public class GenerateDAO {
 
 	public static String selectType(ResultSet rst) throws SQLException {
 		String type="";
-		System.out.print("field:"+rst.getString("FIELD")+" type:"+rst.getString("TYPE")+"->");
+		System.out.print("-------selectType field:"+rst.getString("FIELD")+" type:"+rst.getString("TYPE")+"->");
 		if(rst.getString("TYPE").contains("varchar")){
 			type="String";
-			System.out.println("stringa");
+			System.out.println(type);
 		}
 		else if(rst.getString("TYPE").contains("tinyint")){
 			type="boolean";
-			System.out.println("boolean");
+			System.out.println(type);
 		}
 		else if(rst.getString("TYPE").contains("int")){
 			type="int";
-			System.out.println("intero");
+			System.out.println(type);
 		}
 		else{
 			throw new RuntimeException("Non ho il tipo corrispondente");

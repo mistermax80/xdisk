@@ -42,7 +42,7 @@ public class GenerateDCS {
 			if(rst.getString("Key").equalsIgnoreCase("PRI")){
 				key=rst.getString("FIELD").toLowerCase();
 				typeKey=GenerateDAO.selectType(rst);
-				System.out.println("Trovata chiave"+key+" "+typeKey);
+				System.out.println("----Trovata chiave:"+key+" tipo:"+typeKey);
 			}
 			numFields++;
 		}
