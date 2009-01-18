@@ -40,8 +40,8 @@ public class GenerateController {
 		while(rst.next()){
 			if(rst.getString("Key").equalsIgnoreCase("PRI")){
 				key=rst.getString("FIELD").toLowerCase();
-				typeKey=selectType(rst);
-				System.out.println("Trovata chiave"+key+" "+typeKey);
+				typeKey=GenerateDAO.selectType(rst);
+				System.out.println("----Trovata chiave:"+key+" tipo:"+typeKey);
 			}
 			numFields++;
 		}
@@ -87,7 +87,7 @@ public class GenerateController {
 		for(int i=0;i<arrayFields.length;i++){
 			if(arrayFields[i][TYPE].equalsIgnoreCase("boolean"))
 				prefix = "is";
-			text+="\nstm.set"+toCamel(arrayFields[i][TYPE])+"("+(i+1)+",object."+prefix+toCamel(arrayFields[i][FIELD])+"());";
+			text+="\nstm.set"+GenerateDAO.toCamel(arrayFields[i][TYPE])+"("+(i+1)+",object."+prefix+GenerateDAO.toCamel(arrayFields[i][FIELD])+"());";
 		}
 
 		text+="\nstm.executeUpdate();" +
@@ -102,9 +102,9 @@ public class GenerateController {
 		String text="\n\nstatic void load ("+className+" object) throws PersistenceException { " +
 		"\nConnection con=null;\nPreparedStatement stm=null;\nResultSet rst=null;" +
 		"\ncon = DatabaseConnectionFactory.getConnection(); \ntry {\nstm = con.prepareStatement(SELECT_SQL);";
-		text+="\nstm.set"+toCamel(typeKey)+"(1,object.get"+toCamel(key)+"());\nrst=stm.executeQuery();\nrst.next();";
+		text+="\nstm.set"+GenerateDAO.toCamel(typeKey)+"(1,object.get"+GenerateDAO.toCamel(key)+"());\nrst=stm.executeQuery();\nrst.next();";
 		for(int i=0;i<arrayFields.length;i++){
-			text+="\nobject.set"+toCamel(arrayFields[i][FIELD])+"(rst.get"+toCamel(arrayFields[i][TYPE])+"(\""+arrayFields[i][FIELD]+"\"));";
+			text+="\nobject.set"+GenerateDAO.toCamel(arrayFields[i][FIELD])+"(rst.get"+GenerateDAO.toCamel(arrayFields[i][TYPE])+"(\""+arrayFields[i][FIELD]+"\"));";
 		}
 		text+="\n} catch (SQLException e) { " +
 		"\nthrow new PersistenceException(object.toString(),e);\n}\nfinally {" +
@@ -136,39 +136,12 @@ public class GenerateController {
 		int i=0;
 		while(rst.next()){
 			field = rst.getString("FIELD").toLowerCase();
-			type = selectType(rst);
+			type = GenerateDAO.selectType(rst);
 			arrayFields[i][FIELD]=field;
 			arrayFields[i][TYPE]=type;
 			i++;
 		}
 		return arrayFields;
-	}
-
-	public static String selectType(ResultSet rst) throws SQLException {
-		String type="";
-		System.out.print("field:"+rst.getString("FIELD")+" type:"+rst.getString("TYPE")+"->");
-		if(rst.getString("TYPE").contains("varchar")){
-			type="String";
-			System.out.println("stringa");
-		}
-		else if(rst.getString("TYPE").contains("tinyint")){
-			type="boolean";
-			System.out.println("boolean");
-		}
-		else if(rst.getString("TYPE").contains("int")){
-			type="int";
-			System.out.println("intero");
-		}
-		else{
-			throw new RuntimeException("Non ho il tipo corrispondente");
-		}
-		return type;
-	}
-
-	public static String toCamel(String word){
-		String ret= String.valueOf(word.charAt(0));
-		ret = ret.toUpperCase();
-		return ret+word.substring(1);
 	}
 
 	public void generate() throws Exception{		
