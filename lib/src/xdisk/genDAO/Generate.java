@@ -9,19 +9,24 @@ public class Generate {
 	 * @throws SQLException 
 	 */
 	public static void main(String[] args) throws Exception {
+
+		String path = "/home/massimo/workspace/lib/src/xdisk/persistence/";
+		String pack = "xdisk.persistence";
+		
 		//SELECT table_name FROM `TABLES` T WHERE table_schema="xdisk";
 		
-		String CLASS_NAME = "Folder";
-		String TABLE_NAME = "folder";
-		String PATH = "/home/massimo/workspace/lib/src/xdisk/persistence/";
-		String PACKAGE = "xdisk.persistence";
+
+		String className = "Folder";
+		String tableName = "folder";
 		
-		GenerateClass genClass = new GenerateClass(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
+		GenerateClass genClass = new GenerateClass(className,tableName,path,pack);
 		genClass.generate();
-		GenerateDAO genDao = new GenerateDAO(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
+		GenerateDAO genDao = new GenerateDAO(className,tableName,path,pack);
 		genDao.generate();
-		GenerateController genControll = new GenerateController(CLASS_NAME,TABLE_NAME,PATH,PACKAGE);
-		genControll.generate();
+		GenerateController genController = new GenerateController(className,tableName,path,pack);
+		genController.generate();
+		GenerateDCS genDCS = new GenerateDCS(className,tableName,path,pack);
+		genDCS.generate();
 	}
 
 }
