@@ -8,8 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 import xdisk.exception.PersistenceException;
+import xdisk.persistence.Client;
+import xdisk.persistence.database.ClientDCS;
 import xdisk.persistence.database.DatabaseConnectionFactory;
 
 public class GenerateController {
@@ -75,6 +78,8 @@ public class GenerateController {
 			+GenerateDAO.toCamel(className)+"DAO.delete(object);}";
 		text+="\n\npublic static void update("+GenerateDAO.toCamel(className)+" object) throws PersistenceException{"
 			+GenerateDAO.toCamel(className)+"DAO.update(object);}";
+		text+="\n\npublic static int removeAll() throws PersistenceException{\nreturn "+GenerateDAO.toCamel(className)+"DCS.removeAll();\n}";
+		text+="\n\npublic static Collection<"+GenerateDAO.toCamel(className)+"> getAll() throws PersistenceException{\nreturn "+GenerateDAO.toCamel(className)+"DCS.getAll();\n}\n";
 		return text;
 	}
 

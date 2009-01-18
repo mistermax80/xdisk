@@ -213,7 +213,7 @@ public class GenerateDAO {
 	public static String toCamel(String word){
 		String ret= String.valueOf(word.charAt(0));
 		ret = ret.toUpperCase();
-		return ret+word.substring(1);
+		return ret+word.substring(1).toLowerCase();
 	}
 	
 	public void generate() throws Exception{		
