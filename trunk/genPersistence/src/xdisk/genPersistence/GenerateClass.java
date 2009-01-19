@@ -126,10 +126,15 @@ public class GenerateClass {
 
 	public void generate() throws Exception{
 		File f=new File(path+className+".java");
-		f.setWritable(true);
-		FileOutputStream fos=new FileOutputStream(f);
-		PrintStream ps=new PrintStream(fos);		
-		ps.println(createClass());
-		ps.close();
+		if(f.exists()){
+			f.setWritable(true);
+			FileOutputStream fos=new FileOutputStream(f);
+			PrintStream ps=new PrintStream(fos);		
+			ps.println(createClass());
+			ps.close();
+		}
+		else{
+			System.out.println("Il file "+f+"già esiste non lo sovrascrivo!!!");
+		}
 	}
 }

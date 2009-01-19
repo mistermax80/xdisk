@@ -20,13 +20,14 @@ public class Generate {
 		String path = "/home/massimo/workspace/lib/src/xdisk/persistence/";
 		String pack = "xdisk.persistence";
 		String schema = "xdisk";
+		String[] exclusionTable = {"client","disk","download","user","file","ownership","folder"};
 
+		
 		Connection con;
 		con = DatabaseConnectionFactory.getConnection();
 		PreparedStatement stm=null;
 		ResultSet rstTable=null;
 		ResultSet rstFields=null;
-		String[] exclusionTable = {"client","disk","download","user","file","ownership","folder"};
 		int numTables=0;
 		int numTablesExclusion=0;
 
