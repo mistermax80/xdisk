@@ -1,25 +1,28 @@
 package xdisk.genPersistence;
 
+import it.multiarte.exception.PersistenceException;
+import it.multiarte.xstone.persistence.database.DatabaseConnectionFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import xdisk.persistence.database.DatabaseConnectionFactory;
-
 public class Generate {
 
 	/**
 	 * @param args
+	 * @throws PersistenceException 
 	 * @throws SQLException 
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) throws PersistenceException{
 
 		String path = "/home/massimo/workspace/lib/src/xdisk/persistence/";
 		String pack = "xdisk.persistence";
 		String schema = "xdisk";
 
-		Connection con = DatabaseConnectionFactory.getConnection();
+		Connection con;
+		con = DatabaseConnectionFactory.getConnection();
 		PreparedStatement stm=null;
 		ResultSet rstTable=null;
 		ResultSet rstFields=null;
