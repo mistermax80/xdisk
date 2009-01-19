@@ -17,10 +17,10 @@ public class Generate {
 	 */
 	public static void main(String[] args) throws PersistenceException{
 
-		String path = "/home/massimo/workspace/lib/src/xdisk/persistence/";
-		String pack = "xdisk.persistence";
-		String schema = "xdisk";
-		String[] exclusionTable = {"client","disk","download","user","file","ownership","folder"};
+		String path = "/home/fabrizio/workspace/XStonePlugin/src/it/multiarte/xstone/plugin/dvs/persistence";//"/home/massimo/workspace/lib/src/xdisk/persistence/";
+		String pack = "it.multiarte.xstone.plugin.dvs.persistence";//"xdisk.persistence";
+		String schema = "dvs_dev";
+		String[] exclusionTable = {};//{"client","disk","download","user","file","ownership","folder"};
 
 		
 		Connection con;
