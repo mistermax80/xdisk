@@ -1,5 +1,8 @@
 package xdisk.genPersistence;
 
+import it.multiarte.exception.PersistenceException;
+import it.multiarte.xstone.persistence.database.DatabaseConnectionFactory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import xdisk.persistence.database.DatabaseConnectionFactory;
 
 public class GenerateDAO {
 
@@ -26,7 +28,7 @@ public class GenerateDAO {
 	private static final int TYPE=1;
 	private static final int FIELD=0;
 
-	public GenerateDAO(String className, String tableName, String path, String pack) throws SQLException {
+	public GenerateDAO(String className, String tableName, String path, String pack) throws SQLException, PersistenceException {
 		super();
 		this.className = className;
 		this.tableName = tableName;
