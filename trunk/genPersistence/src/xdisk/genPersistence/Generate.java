@@ -58,12 +58,12 @@ public class Generate {
 
 	public static void main(String[] args) throws PersistenceException{
 
-		String path = "/home/fabrizio/workspace/XStonePlugin/src/it/multiarte/xstone/plugin/dvs/persistence";//"/home/massimo/workspace/lib/src/xdisk/persistence/";
+		String path = "/home/fabrizio/workspace/XStonePlugin/src/it/multiarte/xstone/plugin/dvs/persistence/";//"/home/massimo/workspace/lib/src/xdisk/persistence/";
 		String pack = "it.multiarte.xstone.plugin.dvs.persistence";//"xdisk.persistence";
 		String schema = "dvs_dev";
 		String[] exclusionTable = {};//{"client","disk","download","user","file","ownership","folder"};
 
-		String tableName = "dvs_role";
+		String tableName = "dvs_roles";
 		boolean onlyTable = true;
 
 		Connection con = DatabaseConnectionFactory.getConnection();
