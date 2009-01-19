@@ -1,7 +1,7 @@
 package xdisk.genPersistence;
 
-import it.multiarte.exception.PersistenceException;
-import it.multiarte.xstone.persistence.database.DatabaseConnectionFactory;
+import xdisk.exception.PersistenceException;
+import xdisk.persistence.database.DatabaseConnectionFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
