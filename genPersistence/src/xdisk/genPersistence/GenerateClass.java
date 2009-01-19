@@ -126,7 +126,7 @@ public class GenerateClass {
 
 	public void generate() throws Exception{
 		File f=new File(path+className+".java");
-		if(f.exists()){
+		if(!f.exists()){
 			f.setWritable(true);
 			FileOutputStream fos=new FileOutputStream(f);
 			PrintStream ps=new PrintStream(fos);		
