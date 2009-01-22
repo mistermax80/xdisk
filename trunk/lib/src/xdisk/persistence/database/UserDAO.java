@@ -132,11 +132,12 @@ class UserDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(UPDATE_BY_USERID_SQL);
-			stm.setString(1,user.getUsername());
+			stm.setString(1,user.getPassword());
 			stm.setString(2,user.getName());
-			stm.setString(3,user.getPassword());
-			stm.setString(4,user.getEmail());
-			stm.setBoolean(5,user.getAdmin());
+			stm.setString(3,user.getEmail());
+			stm.setBoolean(4,user.getAdmin());
+			stm.setString(5,user.getUsername());
+			System.out.println(stm);
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
