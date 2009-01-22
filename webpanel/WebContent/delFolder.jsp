@@ -19,12 +19,12 @@
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
 	<div id="content"><h:form>
-	<h:outputLabel value="Aggiungi cartella sotto a:"></h:outputLabel>
+	<h:outputLabel value="Elimina cartella:"></h:outputLabel>
 			<ul>
-				<h:selectOneListbox size="5" title="Seleziona la cartella che vuoi eliminare"
+				<h:selectOneMenu title="Seleziona la cartella che vuoi eliminare"
 					value="#{folder.codice}">
 					<f:selectItems value="#{itemFolders.options}" />
-				</h:selectOneListbox>
+				</h:selectOneMenu>
 			</ul>
 			<ul>
 				<h:commandButton value="#{msg.del}" action="listFolder"

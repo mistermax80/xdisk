@@ -48,6 +48,11 @@
 		<managed-bean-class>xdisk.ActionGeneric</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>itemUser</managed-bean-name>
+		<managed-bean-class>xdisk.ItemUser</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>index</display-name>
 		<from-view-id>/index.jsp</from-view-id>
@@ -125,6 +130,14 @@
 		<navigation-case>
 			<from-outcome>deleteFolder</from-outcome>
 			<to-view-id>/delFolder.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>deleteUser</from-outcome>
+			<to-view-id>/delUser.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>
