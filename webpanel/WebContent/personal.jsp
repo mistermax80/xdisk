@@ -32,9 +32,7 @@
 		<h:inputText value="#{userBean.user.email}"/>
 		<h:outputLabel value="Admin:"/>
 		<h:selectBooleanCheckbox value="#{userBean.user.admin}"/>
-		<f:facet name="footer">
 		<h:commandButton value="Salva" action="personal" actionListener="#{actionAddNew.updateUser}"/>
-		</f:facet>
 	</h:panelGrid>
 	</h:form>
 	</div>
@@ -45,8 +43,8 @@
 				<li>
 					<h2><h:outputText value="Menu"/></h2>
 					<ul><h:form>
-						<li><h:form><h:commandLink value="Home" action="return"></h:commandLink></h:form></li>
-						<li><h:form><h:commandLink value="Profilo" action="personal"></h:commandLink></h:form></li>
+						<li><h:commandLink value="Home" action="return"></h:commandLink></li>
+						<li><h:commandLink value="Profilo" action="personal"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>

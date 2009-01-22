@@ -22,15 +22,12 @@
 	<div id="page">
 	<div id="content">
 	<h2><h:outputText value="#{msg.welcome} #{userBean.username}" /></h2>
-	<h3>Informazioni Amministratore</h3>
+	<h3><h:outputText value="#{msg.infoAdmin}" /></h3>
 	<%
 	FacesContext facesContext = FacesContext.getCurrentInstance();
-	//facesContext.getExternalContext().getRequestParameterMap().get();
 	Map<String,Object> sss = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-	//String usern = facesContext.getExternalContext().getRequestParameterMap().get("userBean"); 
 	UserBean us = (UserBean)sss.get("userBean");
 	User user = us.getUser();
-//	UserController.load(user);	
 	%>
 	<table>
 		<tr>
@@ -56,10 +53,11 @@
 		<div id="sidebar-content">
 			<ul>
 				<li>
-					<h2><h:outputText value="Menu"/></h2>
+					<h2><h:outputText value="Menu #{userBean.username}"/></h2>
 					<ul><h:form>
-						<li><h:form><h:commandLink value="Home" action="return"></h:commandLink></h:form></li>
-						<li><h:form><h:commandLink value="Profilo" action="personal"></h:commandLink></h:form></li>
+						<li><h:commandLink value="Home" action="return"></h:commandLink></li>
+						<li><h:commandLink value="Profilo" action="personal"></h:commandLink></li>
+						<li><h:commandLink value="Logout" action="logout" actionListener="#{actionGeneric.logout}"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>
@@ -68,6 +66,7 @@
 					<ul><h:form>
 						<li><h:commandLink value="#{msg.users}" action="listUser"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.add} #{msg.user}" action="newUser"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.del} #{msg.user}" action="newUser"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>
@@ -75,6 +74,26 @@
 					<h2><h:outputText value="#{msg.manage} #{msg.folders}"/></h2>
 					<ul><h:form>
 						<li><h:commandLink value="#{msg.folders}" action="listFolder"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.add} #{msg.folder}" action="newFolder"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.del} #{msg.folder}" action="deleteFolder"></h:commandLink></li>
+						</h:form>
+					</ul>
+				</li>
+				<li>
+					<h2><h:outputText value="#{msg.manage} #{msg.extensions}"/></h2>
+					<ul><h:form>
+						<li><h:commandLink value="#{msg.extensions}" action="listExtension"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.add} #{msg.extension}" action="newExtension"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.del} #{msg.extension}" action="newExtension"></h:commandLink></li>
+						</h:form>
+					</ul>
+				</li>
+				<li>
+					<h2><h:outputText value="#{msg.manage} #{msg.files}"/></h2>
+					<ul><h:form>
+						<li><h:commandLink value="#{msg.file}" action="listExtension"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.add} #{msg.files}" action="newExtension"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.del} #{msg.files}" action="newExtension"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>

@@ -3,6 +3,9 @@
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core"%>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="d"
+	uri="http://java.sun.com/blueprints/ee5/components/ui"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,12 +17,28 @@
 <f:view>
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
-	<div id="content">
-	</div>
-	<h:form>
-	<h:outputLabel value="Cartella aggiunta!!!"/>
-	<h:commandButton value="Torna a cartelle" action="listFolder"/>
-	</h:form>
+	<div id="content"><h:form>
+	<h:outputLabel value="Aggiungi cartella sotto a:"></h:outputLabel>
+			<ul>
+				<h:selectOneListbox size="5" title="Seleziona una cartella"
+					value="#{folder.parent}">
+					<f:selectItems value="#{itemFolders.options}" />
+				</h:selectOneListbox>
+			</ul>
+			<ul>
+				<h:outputText value="Nome nuova cartella:" />
+				<h:inputText value="#{folder.nome}" />
+				<h:commandButton value="Aggiungi" action="listFolder"
+					actionListener="#{actionAddNew.saveFolder}" />
+			</ul>
+			<d:stylesheet path="/tree-control-test.css" />
+			<ul>
+				<d:graph_menutree id="menu4" value="#{FolderBean.treeGraph}"
+					styleClass="tree-control" selectedClass="tree-control-selected"
+					unselectedClass="tree-control-unselected" immediate="true"
+					actionListener="#{FolderBean.processGraphEvent}" />
+			</ul>
+	</h:form></div>
 	</div>
 	<c:import url="footer.jsp"></c:import>
 </f:view>

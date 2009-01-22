@@ -4,6 +4,14 @@
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@page import="xdisk.persistence.User"%>
+<%@page import="xdisk.persistence.database.UserController"%>
+<%@page import="xdisk.UserBean"%>
+<%@page import="javax.faces.context.FacesContext"%>
+<%@page import="java.util.*"%>
+<%@page import="javax.faces.context.*"%>
+<%@page import="javax.servlet.http.*"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -36,25 +44,19 @@
 	<div id="sidebar-bgtop"></div>
 	<div id="sidebar-content">
 	<ul>
-		<li id="login">
-		<!--<h2><h:outputLabel value="#{msg.login}" /></h2>
-		<h:outputText value="PASSWORD(minimum 6 characters)"/><br>
-<h:inputSecret id="PWD" value="gagag" required="true" >
-<f:validateLength maximum="15" minimum="6"/>
-</h:inputSecret> 
-<h:message for="PWD"/>
--->
-		<h:form>
+		<li id="login"><h:form>
 			<li><h:outputLabel value="#{msg.username}" /></li>
 			<li><h:inputText id="user" value="#{userBean.username}">
-			<f:validateLength minimum="1"/></h:inputText><h:message for="user"/>
-			</li>
+				<f:validateLength minimum="1" />
+			</h:inputText><h:message for="user" /></li>
 			<li><h:outputLabel value="#{msg.password}" /></li>
-			<li><h:inputSecret value="#{userBean.password}"/><A>&nbsp;</A><h:commandButton
+			<li><h:inputSecret value="#{userBean.password}" /><A>&nbsp;</A><h:commandButton
 				action="#{userBean.selectPage}" value="#{msg.login}" /></li>
-				<li><h:outputLabel value="#{userBean.msgError}" /></li>
+			<li><h:outputLabel value="#{userBean.msgError}" /></li>
 		</h:form></li>
-		<h:form><li><h:commandLink action="register" value="#{msg.register}"></h:commandLink></li></h:form>
+		<h:form>
+			<li><h:commandLink action="register" value="#{msg.register}"></h:commandLink></li>
+		</h:form>
 		<li>&nbsp;</li>
 		<li id="search">
 		<h2>Search File</h2>

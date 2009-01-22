@@ -15,9 +15,21 @@
 </head>
 <body>
 <f:view>
+	<f:loadBundle basename="xdisk.messagesResource" var="msg" />
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
 	<div id="content"><h:form>
+	<h:outputLabel value="Aggiungi cartella sotto a:"></h:outputLabel>
+			<ul>
+				<h:selectOneListbox size="5" title="Seleziona la cartella che vuoi eliminare"
+					value="#{folder.codice}">
+					<f:selectItems value="#{itemFolders.options}" />
+				</h:selectOneListbox>
+			</ul>
+			<ul>
+				<h:commandButton value="#{msg.del}" action="listFolder"
+					actionListener="#{actionAddNew.delFolder}" />
+			</ul>
 			<d:stylesheet path="/tree-control-test.css" />
 			<ul>
 				<d:graph_menutree id="menu4" value="#{FolderBean.treeGraph}"
