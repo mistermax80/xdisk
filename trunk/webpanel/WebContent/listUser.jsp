@@ -52,7 +52,13 @@
 			<h:outputText value="Admin" />
 		</f:facet>
 		<h:selectBooleanCheckbox value="#{user.admin}" disabled="true" />
-	</h:column> 
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Elimina" />
+		</f:facet>
+		<h:selectBooleanCheckbox value="#{user.admin}" />
+	</h:column>
 	</h:dataTable>
 	</div>
 	</div>

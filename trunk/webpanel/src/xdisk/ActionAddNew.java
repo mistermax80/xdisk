@@ -31,9 +31,9 @@ public class ActionAddNew{
 	
 	public void updateUser(ActionEvent arg0) throws AbortProcessingException {
 
-		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		System.out.println(session.values());
-		User user = (User)session.get("newUserBean");
+		User user = ((UserBean)session.get("userBean")).getUser();
 		//JOptionPane.showMessageDialog(null,user);
 
 		try {
@@ -64,6 +64,25 @@ public class ActionAddNew{
 			e.printStackTrace();
 			error  = true;
 			JOptionPane.showMessageDialog(null,"Cartella non inserita!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void delFolder(ActionEvent arg0) throws AbortProcessingException {
+
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 
+		System.out.println(session.values());
+		Folder folder = (Folder)session.get("folder");
+
+		try {
+			FolderController.load(folder);
+			JOptionPane.showMessageDialog(null,folder);
+			FolderController.delete(folder);
+			error=false;
+			JOptionPane.showMessageDialog(null,"Cartella eliminata!");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			error  = true;
+			JOptionPane.showMessageDialog(null,"Cartella non eliminata!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

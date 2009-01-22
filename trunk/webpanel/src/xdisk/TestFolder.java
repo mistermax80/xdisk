@@ -14,7 +14,6 @@ public class TestFolder {
 		System.out.println(rootFolder);
 		
 		FolderBean.addFolder();
-		
 		//FolderBean.addChilds(parent)
 		
 
