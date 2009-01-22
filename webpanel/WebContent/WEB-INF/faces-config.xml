@@ -19,13 +19,28 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>actionAddNewUser</managed-bean-name>
-		<managed-bean-class>xdisk.ActionAddNewUser</managed-bean-class>
+		<managed-bean-name>dataTable</managed-bean-name>
+		<managed-bean-class>xdisk.DataTable</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>dataTable</managed-bean-name>
-		<managed-bean-class>xdisk.DataTable</managed-bean-class>
+	 	<managed-bean-name>FolderBean</managed-bean-name>
+	 	<managed-bean-class>xdisk.FolderBean</managed-bean-class>
+	 	<managed-bean-scope>request</managed-bean-scope>
+	 </managed-bean>
+	<managed-bean>
+	 	<managed-bean-name>itemFolders</managed-bean-name>
+	 	<managed-bean-class>xdisk.ItemFolders</managed-bean-class>
+	 	<managed-bean-scope>application</managed-bean-scope>
+	 </managed-bean>
+	<managed-bean>
+	 	<managed-bean-name>folder</managed-bean-name>
+	 	<managed-bean-class>xdisk.persistence.Folder</managed-bean-class>
+	 	<managed-bean-scope>request</managed-bean-scope>
+	 </managed-bean>
+	<managed-bean>
+		<managed-bean-name>actionAddNew</managed-bean-name>
+		<managed-bean-class>xdisk.ActionAddNew</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<navigation-rule>
@@ -44,32 +59,40 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>admin</display-name>
-		<from-view-id>/admin.jsp</from-view-id>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>newUser</from-outcome>
 			<to-view-id>/addUser.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>admin</display-name>
-		<from-view-id>/admin.jsp</from-view-id>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>okNewFolder</from-outcome>
+			<to-view-id>/addFolder.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>listFolder</from-outcome>
+			<to-view-id>/listFolder.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>listUser</from-outcome>
 			<to-view-id>/listUser.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>addUser</display-name>
-		<from-view-id>/addUser.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>return</from-outcome>
-			<to-view-id>/admin.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<display-name>listUser</display-name>
-		<from-view-id>/listUser.jsp</from-view-id>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>return</from-outcome>
 			<to-view-id>/admin.jsp</to-view-id>

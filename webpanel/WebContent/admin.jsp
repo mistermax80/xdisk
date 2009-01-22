@@ -56,6 +56,13 @@
 		<div id="sidebar-content">
 			<ul>
 				<li>
+					<h2><h:outputText value="Menu"/></h2>
+					<ul><h:form>
+						<li><h:form><h:commandLink value="Home" action="return"></h:commandLink></h:form></li>
+						</h:form>
+					</ul>
+				</li>
+				<li>
 					<h2><h:outputText value="#{msg.manage} #{msg.users}"/></h2>
 					<ul><h:form>
 						<li><h:commandLink value="#{msg.users}" action="listUser"></h:commandLink></li>
@@ -66,8 +73,7 @@
 				<li>
 					<h2><h:outputText value="#{msg.manage} #{msg.folders}"/></h2>
 					<ul><h:form>
-						<li><h:commandLink value="#{msg.folder}" action="listUser"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add} #{msg.folder}" action="listUser"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.folders}" action="listFolder"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>

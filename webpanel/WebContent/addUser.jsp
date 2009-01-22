@@ -29,7 +29,8 @@
 			<h:outputLabel value="Admin" />
 			<h:selectBooleanCheckbox id="checkbox" value="#{newUserBean.admin}" title="click it to select or deselect"/>
 			<h:commandButton value="Indietro" action="return"/>
-			<h:commandButton value="Aggiungi" action="#{actionAddNewUser.selectPage}" actionListener="#{actionAddNewUser.saveUser}"/>
+			<h:commandButton value="Utenti" action="returnList"/>
+			<h:commandButton value="Aggiungi" action="#{actionAddNew.selectPage}" actionListener="#{actionAddNew.saveUser}"/>
 		</h:panelGrid>
 		</h:form>
 	</div>
