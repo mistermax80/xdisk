@@ -5,16 +5,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@page import="xdisk.persistence.User"%>
-<%@page import="xdisk.persistence.database.UserController"%>
-<%@page import="xdisk.UserBean"%>
-<%@page import="javax.faces.context.FacesContext"%>
-<%@page import="java.util.*"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>XDISK the new sharing file</title>
 <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 </head>
+<html>
 <body>
 <f:view>
 	<f:loadBundle basename="xdisk.messagesResource" var="msg" />
@@ -22,34 +18,25 @@
 	<div id="page">
 	<div id="content">
 	<h2><h:outputText value="#{msg.welcome} #{userBean.username}" /></h2>
-	<h3>Informazioni Amministratore</h3>
-	<%
-	FacesContext facesContext = FacesContext.getCurrentInstance();
-	//facesContext.getExternalContext().getRequestParameterMap().get();
-	Map<String,Object> sss = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-	//String usern = facesContext.getExternalContext().getRequestParameterMap().get("userBean"); 
-	UserBean us = (UserBean)sss.get("userBean");
-	User user = us.getUser();
-//	UserController.load(user);	
-	%>
-	<table>
-		<tr>
-			<td>Username</td>
-			<td><%=user.getUsername() %></td>
-		</tr>
-		<tr>
-			<td>Nome</td>
-			<td><%=user.getName() %></td>
-		</tr>
-		<tr>
-			<td>Password</td>
-			<td><%=user.getPassword() %></td>
-		</tr>
-		<tr>
-			<td>Email</td>
-			<td><%=user.getEmail() %></td>
-		</tr>
-	</table>
+	<h3>Profilo Personale</h3>
+	<h:form>
+	<h:panelGrid columns="2">
+		
+		<h:outputLabel value="Nome:"/>
+		<h:inputText value="#{userBean.user.name}"/>
+		<h:outputLabel value="Username:"/>
+		<h:inputText value="#{userBean.user.username}"/>
+		<h:outputLabel value="Password:"/>
+		<h:inputText value="#{userBean.user.password}"/>
+		<h:outputLabel value="Email:"/>
+		<h:inputText value="#{userBean.user.email}"/>
+		<h:outputLabel value="Admin:"/>
+		<h:selectBooleanCheckbox value="#{userBean.user.admin}"/>
+		<f:facet name="footer">
+		<h:commandButton value="Salva" action="personal" actionListener="#{actionAddNew.updateUser}"/>
+		</f:facet>
+	</h:panelGrid>
+	</h:form>
 	</div>
 	<div id="sidebar">
 		<div id="sidebar-bgtop"></div>
