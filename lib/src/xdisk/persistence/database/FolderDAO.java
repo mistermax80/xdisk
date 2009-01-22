@@ -68,6 +68,7 @@ public class FolderDAO {
 		con = DatabaseConnectionFactory.getConnection(); 
 		try {
 			stm = con.prepareStatement(DELETE_SQL);
+			stm.setInt(1, object.getCodice());
 			stm.execute();
 		} catch (SQLException e) { 
 			throw new PersistenceException(object.toString(),e);
