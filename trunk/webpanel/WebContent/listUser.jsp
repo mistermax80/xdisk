@@ -18,7 +18,7 @@
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
 	<div id="content">
-	<h:dataTable id="dt1" value="#{dataTable.users}" var="user" cellpadding="3" rows="20" rules="all">
+	<h:dataTable id="dt1" value="#{dataTable.users}" var="user" cellpadding="3" rules="all">
 	
 	<f:facet name="header">
 		<h:outputText value="Utenti registrati" />
@@ -53,11 +53,6 @@
 		</f:facet>
 		<h:selectBooleanCheckbox value="#{user.admin}" disabled="true" />
 	</h:column> 
-	<f:facet name="footer">
-	<h:form>
-		<h:commandButton value="Indietro" action="return"/>
-	</h:form>
-	</f:facet> 
 	</h:dataTable>
 	</div>
 	</div>
