@@ -29,6 +29,24 @@ public class ActionAddNew{
 		return page;
 	}
 	
+	public void updateUser(ActionEvent arg0) throws AbortProcessingException {
+
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 
+		System.out.println(session.values());
+		User user = (User)session.get("newUserBean");
+		//JOptionPane.showMessageDialog(null,user);
+
+		try {
+			UserController.update(user);
+			error=false;
+			JOptionPane.showMessageDialog(null,"Utente Modificato!");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			error  = true;
+			JOptionPane.showMessageDialog(null,"Utente non modifcato!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	public void saveFolder(ActionEvent arg0) throws AbortProcessingException {
 
 		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 

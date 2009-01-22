@@ -98,4 +98,12 @@
 			<to-view-id>/admin.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>personal</from-outcome>
+			<to-view-id>/personal.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>
