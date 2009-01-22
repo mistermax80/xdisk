@@ -47,6 +47,27 @@ public class ActionAddNew{
 		}
 	}
 	
+	public void deleteUser(ActionEvent arg0) throws AbortProcessingException {
+
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+		System.out.println(session.values());
+		String username = ((User)session.get("newUserBean")).getUsername();
+		User user = new User();
+		user.setUsername(username);
+
+		try {
+			UserController.load(user);
+			//JOptionPane.showMessageDialog(null,user);
+			UserController.delete(user);
+			error=false;
+			JOptionPane.showMessageDialog(null,"Utente Eliminato!");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			error  = true;
+			JOptionPane.showMessageDialog(null,"Utente non eliminato!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	public void saveFolder(ActionEvent arg0) throws AbortProcessingException {
 
 		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 

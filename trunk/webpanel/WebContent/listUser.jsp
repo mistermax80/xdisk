@@ -18,6 +18,7 @@
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
 	<div id="content">
+	<h:form>
 	<h:dataTable id="dt1" value="#{dataTable.users}" var="user" cellpadding="3" rules="all">
 	
 	<f:facet name="header">
@@ -53,13 +54,8 @@
 		</f:facet>
 		<h:selectBooleanCheckbox value="#{user.admin}" disabled="true" />
 	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="Elimina" />
-		</f:facet>
-		<h:selectBooleanCheckbox value="#{user.admin}" />
-	</h:column>
 	</h:dataTable>
+	</h:form>
 	</div>
 	</div>
 	<c:import url="footer.jsp"></c:import>

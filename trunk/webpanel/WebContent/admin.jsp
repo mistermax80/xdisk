@@ -66,7 +66,7 @@
 					<ul><h:form>
 						<li><h:commandLink value="#{msg.users}" action="listUser"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.add} #{msg.user}" action="newUser"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.del} #{msg.user}" action="newUser"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.del} #{msg.user}" action="deleteUser"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>

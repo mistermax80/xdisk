@@ -15,28 +15,20 @@
 </head>
 <body>
 <f:view>
+	<f:loadBundle basename="xdisk.messagesResource" var="msg" />
 	<c:import url="header.jsp"></c:import>
 	<div id="page">
 	<div id="content"><h:form>
-	<h:outputLabel value="Aggiungi cartella sotto a:"></h:outputLabel>
+	<h:outputLabel value="Seleziona l'utente da eliminare:"></h:outputLabel>
 			<ul>
-				<h:selectOneMenu title="Seleziona una cartella"
-					value="#{folder.parent}">
-					<f:selectItems value="#{itemFolders.options}" />
+				<h:selectOneMenu title="Seleziona un utente"
+					value="#{newUserBean.username}">
+					<f:selectItems value="#{itemUser.options}" />
 				</h:selectOneMenu>
 			</ul>
 			<ul>
-				<h:outputText value="Nome nuova cartella:" />
-				<h:inputText value="#{folder.nome}" />
-				<h:commandButton value="Aggiungi" action="listFolder"
-					actionListener="#{actionAddNew.saveFolder}" />
-			</ul>
-			<d:stylesheet path="/tree-control-test.css" />
-			<ul>
-				<d:graph_menutree id="menu4" value="#{FolderBean.treeGraph}"
-					styleClass="tree-control" selectedClass="tree-control-selected"
-					unselectedClass="tree-control-unselected" immediate="true"
-					actionListener="#{FolderBean.processGraphEvent}" />
+				<h:commandButton value="#{msg.del}" action="listUser"
+					actionListener="#{actionAddNew.deleteUser}" />
 			</ul>
 	</h:form></div>
 	</div>
