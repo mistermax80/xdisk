@@ -34,7 +34,7 @@ class UserDAO {
 		"WHERE userid = ?";
 
 	private static final String DELETE_BY_USERID_SQL = 
-		"DELETE FROM user WHERE nome = ?";
+		"DELETE FROM user WHERE userid = ?";
 
 	private UserDAO(){}
 
@@ -110,7 +110,8 @@ class UserDAO {
 		try {
 			stm = con.prepareStatement(DELETE_BY_USERID_SQL);
 			stm.setString(1,user.getUsername());
-			stm.executeUpdate();
+			System.out.println(stm);
+			stm.execute();
 		} catch (SQLException e) {
 			throw new PersistenceException(user.toString(),e);
 		}
