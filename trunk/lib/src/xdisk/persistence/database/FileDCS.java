@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 import xdisk.exception.PersistenceException;
 import xdisk.persistence.File;
+import xdisk.persistence.Folder;
 
 public class FileDCS
 {
@@ -33,8 +34,8 @@ public class FileDCS
 			throw new PersistenceException(e);
 		}
 		finally {
-			  if (stm != null) try {stm.close();} catch (Exception e) {}
-			  if (con != null) try {con.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
 		}
 		return rowsDeleted;
 	}
@@ -63,9 +64,9 @@ public class FileDCS
 			throw new PersistenceException(e);
 		}
 		finally {
-			  if (rst != null) try {rst.close();} catch (Exception e) {}
-			  if (stm != null) try {stm.close();} catch (Exception e) {}
-			  if (con != null) try {con.close();} catch (Exception e) {}
+			if (rst != null) try {rst.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
 		}
 		return all;
 	}
@@ -92,12 +93,12 @@ public class FileDCS
 	 */
 	private static File objectFromCursor(ResultSet rst) throws SQLException{
 		File file= new File();
-		file.setCode(rst.getInt("code"));
+		file.setCode(rst.getInt("codice"));
 		file.setName(rst.getString("nome"));
 		file.setDimension(rst.getInt("dimensione"));
 		file.setFolder(rst.getInt("cartella"));
 		file.setAuthor(rst.getString("autore"));
-		file.setLoaderUserid(rst.getString("utenteinn"));
+		file.setLoaderUserid(rst.getString("utenteins"));
 		return file;
 	}
 
@@ -122,11 +123,39 @@ public class FileDCS
 			throw new PersistenceException(e);
 		}
 		finally {
-			  if (rst != null) try {rst.close();} catch (Exception e) {}
-			  if (stm != null) try {stm.close();} catch (Exception e) {}
-			  if (con != null) try {con.close();} catch (Exception e) {}
+			if (rst != null) try {rst.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
 		}
 		return file;
+	}
+
+	private static final String SELECT_SQL_BY_FOLDER = 
+		"SELECT * " +
+		"FROM file " +
+		"WHERE cartella = ?";
+	public static Collection<File> getFile(Folder folder) throws PersistenceException {
+		Collection<File> files = new LinkedList<File>();
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_SQL_BY_FOLDER);
+			stm.setInt(1, folder.getCodice());
+			System.out.println(stm);
+			rst=stm.executeQuery();
+			files = processCollectionResultSet(rst);
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			if (rst != null) try {rst.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return files;
 	}
 }
 

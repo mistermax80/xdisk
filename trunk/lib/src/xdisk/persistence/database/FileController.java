@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import xdisk.exception.PersistenceException;
 import xdisk.persistence.File;
+import xdisk.persistence.Folder;
 
 public class FileController {
 
@@ -21,5 +22,9 @@ public class FileController {
 
 	public static Collection<File> getAll() throws PersistenceException{
 		return FileDCS.getAll();
+	}
+	
+	public static Collection<File> getFile(Folder folder) throws PersistenceException{
+		return FileDCS.getFile(folder);
 	}
 }
