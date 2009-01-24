@@ -53,6 +53,26 @@
 		<managed-bean-class>xdisk.ItemUser</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>itemExtension</managed-bean-name>
+		<managed-bean-class>xdisk.ItemExtension</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>extension</managed-bean-name>
+		<managed-bean-class>xdisk.persistence.Extension</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>itemFile</managed-bean-name>
+		<managed-bean-class>xdisk.ItemFile</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>file</managed-bean-name>
+		<managed-bean-class>xdisk.persistence.File</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>index</display-name>
 		<from-view-id>/index.jsp</from-view-id>
@@ -138,6 +158,38 @@
 		<navigation-case>
 			<from-outcome>deleteUser</from-outcome>
 			<to-view-id>/delUser.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>extension</from-outcome>
+			<to-view-id>/addDelExtension.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>listExtension</from-outcome>
+			<to-view-id>/listExtension.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>listFile</from-outcome>
+			<to-view-id>/listFile.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>file</from-outcome>
+			<to-view-id>/addDelFile.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

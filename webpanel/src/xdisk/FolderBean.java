@@ -4,10 +4,11 @@ import javax.faces.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import xdisk.exception.PersistenceException;
+import xdisk.persistence.File;
 import xdisk.persistence.Folder;
+import xdisk.persistence.database.FileController;
 import xdisk.persistence.database.FolderController;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class FolderBean {
 
 	private static String link = "addFolder.jsf";
 	private static String icon = "folder_16_pad.gif";
-
+	private static String icon_file = "folder_16_pad.gif";
 
 	public FolderBean() {
 	}
@@ -40,6 +41,50 @@ public class FolderBean {
 			addChilds(root);
 		}
 		return treeGraph;
+	}
+	
+	public Graph getTreeGraphFile() throws PersistenceException {
+		if (treeGraph == null) {
+			
+			Folder rootFolder = FolderController.getRoot();
+			String name = String.valueOf(rootFolder.getCodice());
+			String label = rootFolder.getNome();
+			Node root = new Node(name, label+"-"+name, link,  icon, false, true);
+			treeGraph = new Graph(root);			
+			addChildsFile(root);
+		}
+		return treeGraph;
+	}
+	
+	public static void addChildsFile(Node parent) throws PersistenceException {
+		Node child = null;
+		Node file = null;
+		
+		Folder folder = new Folder();
+		folder.setCodice(Integer.parseInt(parent.getName()));
+		FolderController.load(folder);
+		LinkedList<Folder> childs = new LinkedList<Folder>();
+		childs.addAll(FolderController.getChilds(folder));
+		LinkedList<File> files = new LinkedList<File>();
+		files.addAll(FileController.getFile(folder));
+		System.out.println("files:"+files);
+
+		for(int i=0;i<childs.size();i++){
+			String name = String.valueOf(childs.get(i).getCodice());
+			String label = childs.get(i).getNome();
+			child = new Node(name, label+"-"+name, link, icon , false, true);
+			parent.addChild(child);
+			addChildsFile(child);
+		}
+
+		for(int i=0;i<files.size();i++){
+			files.addAll(FileController.getFile(childs.get(0)));
+			String name = String.valueOf(files.get(i).getCode());
+			String label = files.get(i).getName();
+			file = new Node("f_"+name, "file:"+label+"-"+name, link, icon_file , false, true);
+			System.out.println("file:"+file);
+			parent.addChild(file);
+		}
 	}
 
 	public static void addChilds(Node parent) throws PersistenceException {

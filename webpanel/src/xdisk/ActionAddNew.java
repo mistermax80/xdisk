@@ -8,8 +8,10 @@ import javax.faces.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import xdisk.exception.PersistenceException;
+import xdisk.persistence.Extension;
 import xdisk.persistence.Folder;
 import xdisk.persistence.User;
+import xdisk.persistence.database.ExtensionController;
 import xdisk.persistence.database.FolderController;
 import xdisk.persistence.database.UserController;
 
@@ -122,6 +124,42 @@ public class ActionAddNew{
 			e.printStackTrace();
 			error  = true;
 			JOptionPane.showMessageDialog(null,"Utente non inserito!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void delExtension(ActionEvent arg0) throws AbortProcessingException {
+
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 
+		System.out.println(session.values());
+		Extension extension = (Extension)session.get("extension");
+
+		try {
+			//JOptionPane.showMessageDialog(null,extension);
+			ExtensionController.delete(extension);
+			error=false;
+			JOptionPane.showMessageDialog(null,"Estensione eliminata!");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			error  = true;
+			JOptionPane.showMessageDialog(null,"Estensione non eliminata!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void saveExtension(ActionEvent arg0) throws AbortProcessingException {
+
+		Map<String,Object> session = FacesContext.getCurrentInstance().getExternalContext().getRequestMap(); 
+		System.out.println(session.values());
+		Extension extension = (Extension)session.get("extension");
+
+		try {
+			//JOptionPane.showMessageDialog(null,extension);
+			ExtensionController.insert(extension);
+			error=false;
+			JOptionPane.showMessageDialog(null,"Estensione aggiunta!");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			error  = true;
+			JOptionPane.showMessageDialog(null,"Estensione non inserita!","Errore accesso dati!",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

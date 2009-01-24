@@ -71,29 +71,15 @@
 					</ul>
 				</li>
 				<li>
-					<h2><h:outputText value="#{msg.manage} #{msg.folders}"/></h2>
+					<h2><h:outputText value="#{msg.manage} #{msg.folders} e #{msg.files}"/></h2>
 					<ul><h:form>
 						<li><h:commandLink value="#{msg.folders}" action="listFolder"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.add} #{msg.folder}" action="newFolder"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.del} #{msg.folder}" action="deleteFolder"></h:commandLink></li>
-						</h:form>
-					</ul>
-				</li>
-				<li>
-					<h2><h:outputText value="#{msg.manage} #{msg.extensions}"/></h2>
-					<ul><h:form>
+						<li><h:commandLink value="#{msg.file}" action="listFile"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.add}/#{msg.del} #{msg.files}" action="file"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.extensions}" action="listExtension"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add} #{msg.extension}" action="newExtension"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.del} #{msg.extension}" action="newExtension"></h:commandLink></li>
-						</h:form>
-					</ul>
-				</li>
-				<li>
-					<h2><h:outputText value="#{msg.manage} #{msg.files}"/></h2>
-					<ul><h:form>
-						<li><h:commandLink value="#{msg.file}" action="listExtension"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add} #{msg.files}" action="newExtension"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.del} #{msg.files}" action="newExtension"></h:commandLink></li>
+						<li><h:commandLink value="#{msg.add}/#{msg.del} #{msg.extension}" action="extension"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>
