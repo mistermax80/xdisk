@@ -86,7 +86,7 @@ public class FolderDCS {
 		try {
 			stm = con.prepareStatement(SELECT_CHILDS_SQL);
 			stm.setInt(1, folder.getCodice());
-			//System.out.println(stm);
+			System.out.println(stm);
 			rst=stm.executeQuery();
 			all = processCollectionResultSet(rst);
 		} catch (SQLException e) { 
