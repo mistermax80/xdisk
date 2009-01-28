@@ -46,7 +46,7 @@ public class FileDCS
 	 * @throws PersistenceException 
 	 */
 	private static final String SELECT_ALL_SQL = 
-		"SELECT nome,userid,cartellaroot,dimensione " +
+		"SELECT codice,nome,dimensione,cartella,autore,utenteins " +
 		"FROM file";
 	public static Collection<File> getAll() throws PersistenceException
 	{
