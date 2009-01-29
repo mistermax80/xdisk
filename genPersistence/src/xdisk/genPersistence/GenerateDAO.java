@@ -206,6 +206,10 @@ public class GenerateDAO {
 			type="int";
 			System.out.println(type);
 		}
+		else if(rst.getString("TYPE").contains("text")){
+			type="String";
+			System.out.println(type);
+		}
 		else{
 			throw new RuntimeException("Non ho il tipo corrispondente");
 		}
