@@ -35,7 +35,7 @@ public class Xdisk {
 		JPanel search = new Search();
 		
 		
-		JTabbedPane tab = new JTabbedPane(SwingConstants.BOTTOM);
+		JTabbedPane tab = new JTabbedPane(SwingConstants.TOP);
 
 		tab.addTab("Home",home);
 		tab.addTab("Upload",upload);
