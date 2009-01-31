@@ -2,9 +2,12 @@ package xdisk.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import xdisk.client.core.Prefs;
@@ -19,61 +22,76 @@ public class Home extends JPanel{
 	private JLabel passwordLabel;
 	private JLabel stateLabel;
 	private JLabel imageLabel;
-	
+
 	private JTextField urlText;
 	private JTextField portText;
 	private JTextField usernameText;
 	private JPasswordField passwordText;
 	private JTextField stateText;
-	
-	private ImageIcon image;
-	
+
 	private JButton button1;
 	private JButton button2;
 	private JButton button3;
 	private JButton button4;
-	
+
 	private String url;
 	private String port;
 	private String username;
 	private String password;
 	private String state;
-	
+
 	private Prefs prefs;
-	
+
+	Image imageBackground;
+	Image imageConnect;
+	Image imageDisconnect;
+	Image imageSave;
+	Image imageDefault;
+
 	public Home() {
 		super(new BorderLayout());
 		JPanel panel = new JPanel(new GridLayout(6,2));
 		JPanel panel3 = new JPanel(new GridLayout(1,4));
-		
+
 		prefs=new Prefs();
-		
-		imageLabel = new JLabel(new ImageIcon("../client/src/xdisk/client/images/background.jpg"));
-		
+
 		url = prefs.getUrl();
 		port = prefs.getPort();
 		username = prefs.getUsername();
 		password = prefs.getPassword();
-		
+
 		urlLabel = new JLabel("Url server:");
 		portLabel = new JLabel("Porta server:");
 		usernameLabel = new JLabel("Username:");
 		passwordLabel = new JLabel("Password:");
 		stateLabel = new JLabel("Stato:");
-		
+
 		urlText = new JTextField(url);
 		portText = new JTextField(port);
 		usernameText = new JTextField(username);
 		passwordText = new JPasswordField(password);
 		stateText = new JTextField(state);
+
+		try {
+			imageBackground = ImageIO.read(Xdisk.class.getResource("images/disk.png"));
+			imageConnect = ImageIO.read(Xdisk.class.getResource("images/connect.png"));
+			imageDisconnect = ImageIO.read(Xdisk.class.getResource("images/disconnect.png"));
+			imageSave = ImageIO.read(Xdisk.class.getResource("images/save1.png"));
+			imageDefault = ImageIO.read(Xdisk.class.getResource("images/reset.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Errore nel recupero delle immagini", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
 		
-		button1 = new JButton("Connetti",new ImageIcon("../client/src/xdisk/client/images/connect.png"));
-		button2 = new JButton("Disconnetti",new ImageIcon("../client/src/xdisk/client/images/disconnect.png"));
-		button3 = new JButton("Salva Modifiche",new ImageIcon("../client/src/xdisk/client/images/save1.png"));
-		button4 = new JButton("Carica Default",new ImageIcon("../client/src/xdisk/client/images/reset.png"));
+		imageLabel = new JLabel(new ImageIcon(imageBackground));
+
+		button1 = new JButton("Connetti",new ImageIcon(imageConnect));
+		button2 = new JButton("Disconnetti",new ImageIcon(imageDisconnect));
+		button3 = new JButton("Salva Modifiche",new ImageIcon(imageSave));
+		button4 = new JButton("Carica Default",new ImageIcon(imageDefault));
 		button3.addActionListener(new ActionUpdate());
 		button4.addActionListener(new ActionDefault());
-		
+
 		stateText.setEditable(false);
 		panel.add(urlLabel);
 		panel.add(urlText);
@@ -85,17 +103,17 @@ public class Home extends JPanel{
 		panel.add(passwordText);
 		panel.add(stateLabel);
 		panel.add(stateText);
-				
+
 		panel3.add(button1);
 		panel3.add(button2);
 		panel3.add(button3);
 		panel3.add(button4);
-		
+
 		this.add(panel,BorderLayout.NORTH);
 		this.add(imageLabel,BorderLayout.CENTER);
 		this.add(panel3,BorderLayout.SOUTH);
 	}
-	
+
 	public class ActionUpdate implements ActionListener {
 
 		@SuppressWarnings("deprecation")
@@ -110,7 +128,7 @@ public class Home extends JPanel{
 			}
 		}
 	}
-	
+
 	public class ActionDefault implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
