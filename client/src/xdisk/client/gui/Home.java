@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 
 import javax.swing.*;
 
@@ -20,12 +18,15 @@ public class Home extends JPanel{
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
 	private JLabel stateLabel;
+	private JLabel imageLabel;
 	
 	private JTextField urlText;
 	private JTextField portText;
 	private JTextField usernameText;
 	private JPasswordField passwordText;
 	private JTextField stateText;
+	
+	private ImageIcon image;
 	
 	private JButton button1;
 	private JButton button2;
@@ -47,6 +48,8 @@ public class Home extends JPanel{
 		
 		prefs=new Prefs();
 		
+		imageLabel = new JLabel(new ImageIcon("../client/src/xdisk/client/images/background.jpg"));
+		
 		url = prefs.getUrl();
 		port = prefs.getPort();
 		username = prefs.getUsername();
@@ -64,10 +67,10 @@ public class Home extends JPanel{
 		passwordText = new JPasswordField(password);
 		stateText = new JTextField(state);
 		
-		button1 = new JButton("Connetti");
-		button2 = new JButton("Disconnetti");
-		button3 = new JButton("Salva Modifiche");
-		button4 = new JButton("Carica Default");
+		button1 = new JButton("Connetti",new ImageIcon("../client/src/xdisk/client/images/connect.png"));
+		button2 = new JButton("Disconnetti",new ImageIcon("../client/src/xdisk/client/images/disconnect.png"));
+		button3 = new JButton("Salva Modifiche",new ImageIcon("../client/src/xdisk/client/images/save1.png"));
+		button4 = new JButton("Carica Default",new ImageIcon("../client/src/xdisk/client/images/reset.png"));
 		button3.addActionListener(new ActionUpdate());
 		button4.addActionListener(new ActionDefault());
 		
@@ -80,16 +83,16 @@ public class Home extends JPanel{
 		panel.add(usernameText);
 		panel.add(passwordLabel);
 		panel.add(passwordText);
-
 		panel.add(stateLabel);
 		panel.add(stateText);
-		
+				
 		panel3.add(button1);
 		panel3.add(button2);
 		panel3.add(button3);
 		panel3.add(button4);
 		
 		this.add(panel,BorderLayout.NORTH);
+		this.add(imageLabel,BorderLayout.CENTER);
 		this.add(panel3,BorderLayout.SOUTH);
 	}
 	

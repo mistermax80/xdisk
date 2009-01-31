@@ -34,18 +34,17 @@ public class Xdisk {
 		JPanel download = new Download();
 		JPanel search = new Search();
 		
-		
 		JTabbedPane tab = new JTabbedPane(SwingConstants.TOP);
 
-		tab.addTab("Home",home);
-		tab.addTab("Upload",upload);
-		tab.addTab("Download",download);
-		tab.addTab("Search",search);
+		tab.addTab("Home",new ImageIcon("../client/src/xdisk/client/images/kfm_home.png"),home);
+		tab.addTab("Upload",new ImageIcon("../client/src/xdisk/client/images/upload.png"),upload);
+		tab.addTab("Download",new ImageIcon("../client/src/xdisk/client/images/download1.png"),download);
+		tab.addTab("Search",new ImageIcon("../client/src/xdisk/client/images/search.png"),search);
 
 		frame.getContentPane().add(tab, BorderLayout.CENTER);
 		//Display the window.
 		frame.pack();
-		frame.setSize(500, 500);
+		frame.setSize(640, 500);
 		frame.setVisible(true);
 	}
 }
