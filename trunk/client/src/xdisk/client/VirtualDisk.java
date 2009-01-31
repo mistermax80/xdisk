@@ -24,6 +24,8 @@ public class VirtualDisk
 	private String userid;
 	private String password;
 	
+	private String sessionId;
+	
 	/**
 	 * Crea un nuovo disco virtuale.
 	 * 
@@ -57,6 +59,15 @@ public class VirtualDisk
 	 * Effettua la disconnessione dal server del disco virtuale
 	 */
 	public void disconnect()
+	{
+		
+	}
+
+	/**
+	 * Invia il segnale di keep alive al server, per segnalare la presenza 
+	 * del client nella rete virtuale del disco.
+	 */	
+	public void keepAlive()
 	{
 		
 	}
