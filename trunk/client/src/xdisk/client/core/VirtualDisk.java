@@ -1,11 +1,17 @@
 package xdisk.client.core;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualResource;
+import xdisk.net.MessageInputStream;
+import xdisk.net.XDiskInputStream;
+import xdisk.net.XDiskOutputStream;
 
 /**
  * Client del disco virtuale. Fornisce le funzionaltà di connessione e 
@@ -19,12 +25,17 @@ import xdisk.VirtualResource;
 public class VirtualDisk 
 {
 	private String name;
-	private URL url;
+	private String url;
 	private int serverPort;
 	private String userid;
 	private String password;
 	
 	private String sessionId;
+	
+	private Socket socket;
+	private XDiskOutputStream output;
+	private XDiskInputStream input;
+	
 	
 	/**
 	 * Crea un nuovo disco virtuale.
@@ -35,7 +46,7 @@ public class VirtualDisk
 	 * @param username lo userid di connessione al disco
 	 * @param password la password per la connessione al disco
 	 */
-	public VirtualDisk(String name, URL url, int serverPort, String userid, 
+	public VirtualDisk(String name, String url, int serverPort, String userid, 
 			String password) 
 	{
 		this.name = name;
@@ -48,9 +59,35 @@ public class VirtualDisk
 	/**
 	 * Effettua la connessione al disco
 	 * @return true se la connessione riesce, false altrimenti
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public boolean connect()
+	public boolean connect() throws UnknownHostException, IOException
 	{
+		String response;
+		
+		// creazione dell classi di connessione
+		socket = new Socket(url.toString(), serverPort);
+		
+		output = new XDiskOutputStream(socket.getOutputStream());
+		input = new XDiskInputStream(socket.getInputStream());
+		
+		
+		System.out.println(input);
+
+		// messaggio di saluto
+		output.writeUTF("HELO");
+		output.send();
+
+		
+		input.receive();
+		response = input.readUTF();
+		
+		if (response.equals("HELO"))
+		{
+			response = input.readUTF();
+			System.out.println("Server: " + response);
+		}
 		
 		return true;
 	}
@@ -172,7 +209,7 @@ public class VirtualDisk
 	 * Ritorna l'url del disco
 	 * @return l'url del disco
 	 */
-	public URL getUrl() 
+	public String getUrl() 
 	{
 		return url;
 	}
