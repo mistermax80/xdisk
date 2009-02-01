@@ -1,9 +1,12 @@
 package xdisk.client.core;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class XDiskClient {
 
@@ -15,9 +18,10 @@ public class XDiskClient {
 		try 
 		{
 			VirtualDisk disk = new VirtualDisk("massimo", "192.168.1.11", 
-					4444, "ciips", "c");
+					4444, "ciips", "c2");
 			
 			disk.connect();
+
 		} 
 		catch (MalformedURLException e) 
 		{
