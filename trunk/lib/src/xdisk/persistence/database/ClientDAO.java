@@ -19,15 +19,15 @@ class ClientDAO {
 
 	private static final String INSERT_SQL = 
 		"INSERT INTO client" +
-		"(userid,indip,porta,tipoconn) " +
-		"VALUES (?, ?, ?, ?)";
+		"(userid,indip,porta,tipoconn,session_id) " +
+		"VALUES (?, ?, ?, ?, ?)";
 
 	private static final String UPDATE_BY_USERID_SQL = 
-		"UPDATE client SET userid = ?, indip = ?, tipoconn = ? " +
+		"UPDATE client SET indip = ?, porta = ?, tipoconn = ?, session_id = ? " +
 		"WHERE userid = ?";
 
 	private static final String SELECT_BY_USERID_SQL = 
-		"SELECT userid,indip,porta,tipoconn " +
+		"SELECT userid,indip,porta,tipoconn,session_id" +
 		"FROM client " +
 		"WHERE userid = ?";
 
@@ -56,6 +56,7 @@ class ClientDAO {
 			client.setIpAddress(rst.getString("indip"));
 			client.setConnType(rst.getString("porta"));
 			client.setPortNumber(rst.getInt("tipoconn"));
+			client.setIdSession(rst.getString("session_id"));
 		} catch (SQLException e) {
 			throw new PersistenceException(client.toString(),e);
 		}
@@ -82,6 +83,7 @@ class ClientDAO {
 			stm.setString(2,client.getIpAddress());
 			stm.setInt(3,client.getPortNumber());
 			stm.setString(4,client.getConnType());
+			stm.setString(5,client.getIdSession());			
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(client.toString(),e);
@@ -104,7 +106,7 @@ class ClientDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(DELETE_BY_USERID_SQL);
-			stm.setString(1,client.getName());
+			stm.setString(1,client.getUserid());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(client.toString(),e);
@@ -127,11 +129,11 @@ class ClientDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(UPDATE_BY_USERID_SQL);
-			stm.setString(1,client.getUserid());
-			stm.setString(2,client.getIpAddress());
-			stm.setInt(3,client.getPortNumber());
-			stm.setString(4,client.getConnType());
-			stm.executeUpdate();
+			stm.setString(1,client.getIpAddress());
+			stm.setInt(2,client.getPortNumber());
+			stm.setString(3,client.getConnType());
+			stm.setString(4,client.getIdSession());
+			stm.setString(5,client.getUserid());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(client.toString(),e);

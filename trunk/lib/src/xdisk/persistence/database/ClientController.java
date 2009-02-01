@@ -26,4 +26,8 @@ public class ClientController {
 	public static boolean isPresent(Client client) throws PersistenceException{
 		return ClientDCS.isPresent(client);
 	}
+
+	public static boolean checkSession(String id) throws PersistenceException {
+		return ClientDCS.checkSession(id);
+	}
 }

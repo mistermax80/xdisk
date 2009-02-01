@@ -141,7 +141,6 @@ public class ClientDCS
 		try {
 			stm = con.prepareStatement(SELECT_SQL_PRESENT_USERID);
 			stm.setString(1, client.getUserid());
-			System.out.println(stm);
 			rst=stm.executeQuery();
 			rst.next();
 			if(rst.getInt("num")>0)
@@ -155,6 +154,37 @@ public class ClientDCS
 			  if (con != null) try {con.close();} catch (Exception e) {}
 		}
 		return present;
+	}
+	
+	private static final String SELECT_SQL_CHECK_SESSION = 
+		"SELECT count(userid) as num " +
+		"FROM client " +
+		"WHERE " +
+		"session_id = ?";
+
+	public static boolean checkSession(String id) throws PersistenceException {
+		boolean validate=false;		
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_SQL_CHECK_SESSION);
+			stm.setString(1, id);
+			rst=stm.executeQuery();
+			rst.next();
+			if(rst.getInt("num")>0)
+				validate=true;
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return validate;
 	}
 }
 

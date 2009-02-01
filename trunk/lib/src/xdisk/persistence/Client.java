@@ -63,6 +63,7 @@ public class Client extends User{
 
 	public String toString(){
 		String res = "\n*****" +this.getClass()+"*****"+
+		"\nuserId:"+userid+
 		"\nidSession:"+idSession+
 		"\nipAddress:"+ipAddress+
 		"\nportNumber:"+portNumber+
