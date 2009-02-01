@@ -1,0 +1,32 @@
+
+    HELO(string)
+        Comando di saluto al server
+        
+        Risposte:
+            1) HELO(string) nomeserver(string)
+                Risposta di saluto del server
+                
+            2) ERR(string)
+                Risposta di errore del server
+                
+            3) TOO MANY CONNECTIONS(string)
+                Troppe connessioni presenti sul server
+                
+                
+    HELO I(string) sessionid(string)
+        Messaggio di saluto al server dopo che la fase di login è stata 
+        completata.
+        
+        Risposte:
+            1) OK(string)
+                Risposta di saluto e convalida del server di sessione 
+                riconosciuta
+                
+            2) ERR(string)
+                Risposta di errore del server
+                
+            3) TOO MANY CONNECTIONS(string)
+                Troppe connessioni presenti sul server
+                
+                
+    GETLIST 
