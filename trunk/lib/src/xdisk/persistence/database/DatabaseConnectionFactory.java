@@ -9,7 +9,7 @@ public class DatabaseConnectionFactory {
 	private static boolean driverLoaded = false;
 	
 	private static final String MY_DRIVER ="com.mysql.jdbc.Driver";
-	private static final String MY_URL ="jdbc:mysql://localhost/xdisk";
+	private static final String MY_URL ="jdbc:mysql://192.168.1.11/xdisk";
 	private static final String LOGIN = "xdisk";
 	private static final String PASSWD = "xdisk";
 
