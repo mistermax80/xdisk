@@ -52,7 +52,6 @@ class UserDAO {
 		try {
 			stm = con.prepareStatement(SELECT_BY_USERID_SQL);
 			stm.setString(1, user.getUsername());
-			System.out.println("********"+stm);
 			rst=stm.executeQuery();
 			rst.next();
 			user.setUsername(rst.getString("userid"));

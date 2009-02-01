@@ -126,6 +126,36 @@ public class ClientDCS
 		}
 		return client;
 	}
+	
+	private static final String SELECT_SQL_PRESENT_USERID = 
+		"SELECT count(userid) as num " +
+		"FROM client " +
+		"WHERE userid = ?";
+	public static boolean isPresent(Client client) throws PersistenceException {
+		boolean present=false;		
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_SQL_PRESENT_USERID);
+			stm.setString(1, client.getUserid());
+			System.out.println(stm);
+			rst=stm.executeQuery();
+			rst.next();
+			if(rst.getInt("num")>0)
+				present=true;
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return present;
+	}
 }
 
 

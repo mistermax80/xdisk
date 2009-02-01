@@ -3,13 +3,15 @@ package xdisk.persistence;
 public class Client extends User{
 
 	private String userid;
+	private String idSession;
 	private String ipAddress;
 	private int portNumber;
 	private String connType;
 
-	public Client(String userid, String ipAddress, int portNumber, String connType) {
+	public Client(String userid, String idSession, String ipAddress, int portNumber, String connType) {
 		super();
 		this.userid = userid;
+		this.idSession = idSession;
 		this.ipAddress = ipAddress;
 		this.portNumber = portNumber;
 		this.connType = connType;
@@ -50,9 +52,18 @@ public class Client extends User{
 	public void setConnType(String connType) {
 		this.connType = connType;
 	}
+	
+	public String getIdSession() {
+		return idSession;
+	}
+
+	public void setIdSession(String idSession) {
+		this.idSession = idSession;
+	}
 
 	public String toString(){
 		String res = "\n*****" +this.getClass()+"*****"+
+		"\nidSession:"+idSession+
 		"\nipAddress:"+ipAddress+
 		"\nportNumber:"+portNumber+
 		"\nconnType:"+connType+

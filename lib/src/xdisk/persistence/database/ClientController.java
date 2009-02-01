@@ -22,4 +22,8 @@ public class ClientController {
 	public static Collection<Client> getAll() throws PersistenceException{
 		return ClientDCS.getAll();
 	}
+
+	public static boolean isPresent(Client client) throws PersistenceException{
+		return ClientDCS.isPresent(client);
+	}
 }
