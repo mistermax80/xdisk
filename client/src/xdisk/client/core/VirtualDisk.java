@@ -10,6 +10,7 @@ import sun.security.provider.MD5;
 
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
+import xdisk.VirtualFolder;
 import xdisk.VirtualResource;
 import xdisk.net.MessageInputStream;
 import xdisk.net.XDiskInputStream;
@@ -68,52 +69,13 @@ public class VirtualDisk
 	{
 		String response;
 		
-		// creazione dell classi di connessione
-		socket = new Socket(url.toString(), serverPort);
-		
-		output = new XDiskOutputStream(socket.getOutputStream());
-		input = new XDiskInputStream(socket.getInputStream());
+		// inizializzazione della connessione
+		initConnection();		
 		
 		
-		System.out.println(input);
-
-		// messaggio di saluto
-		output.writeUTF("HELO");
-		output.send();
-
 		
-		input.receive();
-		response = input.readUTF();
-		
-		if (response.equals("HELO"))
-		{
-			response = input.readUTF();
-			System.out.println("Server: " + response);
-			
-			output.writeUTF("LOGIN");
-			output.writeUTF(userid);
-			output.writeUTF(password);
-			output.send();
-			
-			input.receive();
-			response = input.readUTF();
-			
-			if (response.equals("OK"))
-			{
-				sessionId = input.readUTF();
-				System.out.println("Login eseguito con successo, sessionId = " + 
-						sessionId);
-			}
-			else
-			{
-				System.out.println("Login fallito...");
-				return false;
-			}
-		}
-		
-		input.close();
-		output.close();
-		socket.close();
+		// deinizializzazione della connessione
+		deinitConnection();
 		
 		return true;
 	}
@@ -145,37 +107,49 @@ public class VirtualDisk
 	{
 		String response;
 		ArrayList<VirtualResource> result = new ArrayList<VirtualResource>();
-		
-		// invio il messaggio di saluto
-		
-		
-		// invio la richiesta al server
-		output.writeUTF("GETLIST");
-		output.writeUTF(path);
-		
-		
-		// ricevo e analizzo la risposta
-		input.receive();
-		response = input.readUTF(); 
-		if (response.equals("OK"))
-		{
-			int numFolder = input.readInt();
-			for (int i=0; i<numFolder; i++)
-			{
-				result.add(input.readVirtualFolder());
-			}
-			
-			int numFile = input.readInt();
-			for (int i=0; i<numFile; i++)
-			{
-				result.add(input.readVirtualFile());
-			}			
-		}
-		else
-		{
-			System.out.println("Impossibile recuperare la lista delle risorse");
-		}
 
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta path...");
+			// invio la richiesta al server
+			output.writeUTF("GETLIST");
+			output.writeUTF(path);
+			output.send();
+			
+			
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF(); 
+			if (response.equals("OK"))
+			{
+				System.out.println("\nRicevuta lista delle risorse:");
+				int numFolder = input.readInt();
+				for (int i=0; i<numFolder; i++)
+				{
+					VirtualFolder folder = input.readVirtualFolder();
+					System.out.println("\tFOLDER: " + folder);
+					result.add(folder);
+				}
+				
+				int numFile = input.readInt();
+				for (int i=0; i<numFile; i++)
+				{
+					VirtualFile file = input.readVirtualFile();
+					System.out.println("\tFILE: " + file);
+					result.add(file);
+				}			
+				
+				System.out.println("\n\n");
+			}
+			else
+			{
+				System.out.println("Impossibile recuperare la lista delle risorse");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
 		
 		return result;
 	}
@@ -302,7 +276,79 @@ public class VirtualDisk
 		return password;
 	}
 	
-//	protected boolean 
+	private boolean initConnection() throws UnknownHostException, IOException
+	{
+		String response;
+		
+		// creazione dell classi di connessione
+		socket = new Socket(url.toString(), serverPort);
+		
+		output = new XDiskOutputStream(socket.getOutputStream());
+		input = new XDiskInputStream(socket.getInputStream());
+		
+		if (sessionId == null)
+		{
+			// messaggio di saluto
+			output.writeUTF("HELO");
+			output.send();
+	
+			
+			input.receive();
+			response = input.readUTF();
+			
+			if (response.equals("HELO"))
+			{
+				response = input.readUTF();
+				System.out.println("Server: " + response);
+				
+				output.writeUTF("LOGIN");
+				output.writeUTF(userid);
+				output.writeUTF(password);
+				output.send();
+				
+				input.receive();
+				response = input.readUTF();
+				
+				if (response.equals("OK"))
+				{
+					sessionId = input.readUTF();
+					System.out.println("Login eseguito con successo, sessionId = " + 
+							sessionId);
+				}
+				else
+				{
+					System.out.println("Login fallito...");
+					return false;
+				}
+			}
+		}
+		else // già loggati
+		{
+			// messaggio di saluto
+			System.out.println("Send HELO I");
+			output.writeUTF("HELO I");
+			output.writeUTF(sessionId);
+			output.send();
+	
+			
+			input.receive();
+			response = input.readUTF();
+			
+			if (!response.equals("OK"))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private void deinitConnection() throws IOException
+	{
+		input.close();
+		output.close();
+		socket.close();
+	}
 	
 
 }
