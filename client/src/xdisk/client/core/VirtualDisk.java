@@ -1,4 +1,4 @@
-package xdisk.client;
+package xdisk.client.core;
 
 import java.net.URL;
 import java.util.ArrayList;
