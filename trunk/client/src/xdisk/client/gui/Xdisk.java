@@ -42,7 +42,7 @@ public class Xdisk {
 			Image imageHome = ImageIO.read(Xdisk.class.getResource("images/kfm_home.png"));
 			Image imageUpload = ImageIO.read(Xdisk.class.getResource("images/upload.png"));
 			Image imageDownload = ImageIO.read(Xdisk.class.getResource("images/download1.png"));
-			Image imageSearch = ImageIO.read(Xdisk.class.getResource("images/seaddrch.png"));
+			Image imageSearch = ImageIO.read(Xdisk.class.getResource("images/search.png"));
 			
 			tab.addTab("Home",new ImageIcon(imageHome),home);
 			tab.addTab("Upload",new ImageIcon(imageUpload),upload);
