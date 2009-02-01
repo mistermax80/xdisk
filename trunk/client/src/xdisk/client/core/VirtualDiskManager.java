@@ -1,6 +1,7 @@
-package xdisk.client;
+package xdisk.client.core;
 
 import java.util.ArrayList;
+
 
 /**
  * Classe singleton per la gestione dei dischi del client.
