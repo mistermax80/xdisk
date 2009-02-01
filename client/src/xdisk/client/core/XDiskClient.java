@@ -21,6 +21,8 @@ public class XDiskClient {
 					4444, "ciips", "c");
 			
 			disk.connect();
+			
+			disk.getList("/");
 
 		} 
 		catch (MalformedURLException e) 
