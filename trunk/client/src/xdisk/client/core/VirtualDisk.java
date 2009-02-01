@@ -6,6 +6,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import sun.security.provider.MD5;
+
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualResource;
@@ -87,7 +89,31 @@ public class VirtualDisk
 		{
 			response = input.readUTF();
 			System.out.println("Server: " + response);
+			
+			output.writeUTF("LOGIN");
+			output.writeUTF(userid);
+			output.writeUTF(password);
+			output.send();
+			
+			input.receive();
+			response = input.readUTF();
+			
+			if (response.equals("OK"))
+			{
+				sessionId = input.readUTF();
+				System.out.println("Login eseguito con successo, sessionId = " + 
+						sessionId);
+			}
+			else
+			{
+				System.out.println("Login fallito...");
+				return false;
+			}
 		}
+		
+		input.close();
+		output.close();
+		socket.close();
 		
 		return true;
 	}
@@ -113,10 +139,45 @@ public class VirtualDisk
 	 * Ritorna la lista dei file e delle directory di uno specifico path 
 	 * @param path il path di cui ottenere la lista dei file e delle directory
 	 * @return La lista dei file e delle directory
+	 * @throws IOException 
 	 */
-	public ArrayList<VirtualResource> getList(String path)
+	public ArrayList<VirtualResource> getList(String path) throws IOException
 	{
-		return null;
+		String response;
+		ArrayList<VirtualResource> result = new ArrayList<VirtualResource>();
+		
+		// invio il messaggio di saluto
+		
+		
+		// invio la richiesta al server
+		output.writeUTF("GETLIST");
+		output.writeUTF(path);
+		
+		
+		// ricevo e analizzo la risposta
+		input.receive();
+		response = input.readUTF(); 
+		if (response.equals("OK"))
+		{
+			int numFolder = input.readInt();
+			for (int i=0; i<numFolder; i++)
+			{
+				result.add(input.readVirtualFolder());
+			}
+			
+			int numFile = input.readInt();
+			for (int i=0; i<numFile; i++)
+			{
+				result.add(input.readVirtualFile());
+			}			
+		}
+		else
+		{
+			System.out.println("Impossibile recuperare la lista delle risorse");
+		}
+
+		
+		return result;
 	}
 	
 	/**
@@ -240,5 +301,8 @@ public class VirtualDisk
 	{
 		return password;
 	}
+	
+//	protected boolean 
+	
 
 }
