@@ -173,6 +173,10 @@ public class VirtualFile implements VirtualResource
 		this.path = path;
 	}
 	
+	public String toString()
+	{
+		return this.getFilename();
+	}
 	
 
 }

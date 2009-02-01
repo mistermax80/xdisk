@@ -39,6 +39,12 @@ public class VirtualFolder implements VirtualResource
 		this.path = path;
 	}
 	
+	public String toString()
+	{
+		return this.getPath();
+	}
+
+	
 	
 
 }
