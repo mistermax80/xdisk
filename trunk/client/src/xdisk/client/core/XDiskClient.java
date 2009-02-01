@@ -18,7 +18,7 @@ public class XDiskClient {
 		try 
 		{
 			VirtualDisk disk = new VirtualDisk("massimo", "192.168.1.11", 
-					4444, "ciips", "c2");
+					4444, "ciips", "c");
 			
 			disk.connect();
 
