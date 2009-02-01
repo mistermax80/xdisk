@@ -8,9 +8,9 @@ package xdisk;
 public class ClientResource 
 {
 	private String ip;
-	private String port;
+	private int port;
 	
-	public ClientResource(String ip, String port) 
+	public ClientResource(String ip, int port) 
 	{
 		this.ip = ip;
 		this.port = port;
@@ -29,7 +29,7 @@ public class ClientResource
 	 * Ritorna la porta del client
 	 * @return la porta del client
 	 */
-	public String getPort() 
+	public int getPort() 
 	{
 		return port;
 	}
