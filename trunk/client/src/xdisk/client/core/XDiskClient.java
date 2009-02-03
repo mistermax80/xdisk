@@ -21,7 +21,7 @@ public class XDiskClient {
 			
 			disk.connect();
 			Thread.sleep(1000);
-			System.out.println("===============================");
+/*			System.out.println("===============================");
 			disk.getList("/");
 			Thread.sleep(1000);
 			System.out.println("===============================");
@@ -29,8 +29,8 @@ public class XDiskClient {
 			Thread.sleep(1000);
 			System.out.println("===============================");
 			
-			VirtualFile file = new VirtualFile();
-			file.setFilename("docoun");
+		*/	VirtualFile file = new VirtualFile();
+			file.setFilename("docounc");
 			file.setExtension("sys");
 			file.setDescription("description");
 			file.setOwner("ciips");
@@ -38,7 +38,7 @@ public class XDiskClient {
 			file.setSize(2324);
 			file.setMime("mime");
 			file.setPath("/prova/picchio/");
-			
+			/*
 			disk.insertFile(file);
 			Thread.sleep(1000);
 			disk.getList("/prova/");
@@ -62,7 +62,9 @@ public class XDiskClient {
 			file.setMime("mime");
 			file.setPath("/prova/picchio/");
 			System.err.println("===============================");
-			System.out.println(disk.getSource(file));
+			System.out.println(disk.getSource(file));*/
+			System.out.println("===============================");
+			disk.gotFile(file);
 		} 
 		catch (MalformedURLException e) 
 		{

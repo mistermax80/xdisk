@@ -339,10 +339,44 @@ public class VirtualDisk
 	 * segnala la possibilità di fornire il file alla rete 
 	 * @param file il file da segnalare come presente sul disco locale
 	 * @return true se l'operazione riesce, false altrimenti.
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public boolean gotFile(VirtualFile file)
+	public boolean gotFile(VirtualFile file) throws UnknownHostException, IOException
 	{
-		return false;
+		boolean ret=false;
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta GOT...");
+			// invio la richiesta al server
+			output.writeUTF("GOT");
+			output.writeVirtualFile(file);
+			output.send();
+
+
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				ret=true;
+				System.out.println("Presenza file inviata correttamente!");
+			}
+			else if(response.equals("NOTPRESENT")){
+				System.err.println("Il file non è presente puoi inserirlo!!!");
+			}
+			else
+			{
+				System.err.println("Impossibile inserire il file!!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return ret;
 	}
 
 	/**

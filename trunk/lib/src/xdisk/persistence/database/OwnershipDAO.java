@@ -19,11 +19,11 @@ class OwnershipDAO {
 
 	private static final String INSERT_SQL = 
 		"INSERT INTO ownership" +
-		"(file,user) " +
+		"(file,utente) " +
 		"VALUES (?, ?)";
 
 	private static final String SELECT_SQL = 
-		"SELECT file,user " +
+		"SELECT file,utente " +
 		"FROM ownership " +
 		"WHERE file = ?";
 
