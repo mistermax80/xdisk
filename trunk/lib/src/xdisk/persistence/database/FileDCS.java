@@ -137,4 +137,36 @@ public class FileDCS {
 		}
 		return files;
 	}
+
+	private static final String SEARCH_SQL = 
+		"SELECT * " +
+		"FROM file " +
+		"WHERE  " +
+		"description LIKE ? OR " +
+		"name LIKE ? OR " +
+		"tags LIKE ?";
+	public static Collection<File> search(String query) throws PersistenceException {
+		Collection<File> files = new LinkedList<File>();
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SEARCH_SQL);
+			stm.setString(1, "%"+query+"%");
+			stm.setString(2, "%"+query+"%");
+			stm.setString(3, "%"+query+"%");
+			rst=stm.executeQuery();
+			files = processCollectionResultSet(rst);
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			if (rst != null) try {rst.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return files;
+	}
 }

@@ -75,4 +75,8 @@ public class FileController {
 		}
 	}
 
+	public static Collection<File> search(String query) throws PersistenceException {
+		return FileDCS.search(query);
+	}
+
 }

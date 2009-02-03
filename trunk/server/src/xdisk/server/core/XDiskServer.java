@@ -50,7 +50,7 @@ public class XDiskServer implements ServerProcess{
 		int portClient = client.getPort();
 		Client userClient = new Client();
 
-		System.out.println("\n\nConnection required from \nhost:"+hostname+"\nip client:"+ipClient+"\nport:"+portClient);
+		System.out.println("\n\nConnection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport:"+portClient);
 		try {
 			output = new XDiskOutputStream(client.getOutputStream());
 			input = new XDiskInputStream(client.getInputStream());
@@ -141,7 +141,7 @@ public class XDiskServer implements ServerProcess{
 						output.writeUTF("OK");
 						//Invio lista folders
 						LinkedList<Folder> folders = new LinkedList<Folder>();
-						folders.addAll(FolderController.getFolder(path));
+						folders.addAll(FolderController.getFolders(path));
 						//invio num risorse
 						int numFolders = folders.size();
 						System.out.print("\n\t#folders:"+numFolders);
@@ -160,7 +160,6 @@ public class XDiskServer implements ServerProcess{
 						System.out.print("\t#files:"+numFiles);
 						output.writeInt(numFiles);
 						for(int i=0;i<numFiles;i++){
-							System.out.println(files.get(i));
 							VirtualFile file = new VirtualFile();
 							file.setFilename(files.get(i).getName());
 							file.setExtension(files.get(i).getExtension());
@@ -177,8 +176,8 @@ public class XDiskServer implements ServerProcess{
 						System.out.print(":OK");
 					}
 					catch (Exception e) {
-						//Da pulire l'output stream ????COME????
-						// TODO IMPORTANTE
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
 						System.err.print("Non è possibile soddisfare la richiesta");
 						output.writeUTF("ERROR");
 						output.send();
@@ -186,7 +185,7 @@ public class XDiskServer implements ServerProcess{
 					}
 				}
 				else if(response.equals("INSERT")){//INSERT
-					System.out.print("\nRequest INSERT");
+					System.out.print("\tRequest INSERT");
 					try{
 						//Ricevo il file
 						VirtualFile vFile = input.readVirtualFile();
@@ -195,9 +194,11 @@ public class XDiskServer implements ServerProcess{
 						files.addAll(FileController.getFile(vFile.getPath()));
 						int i=0;
 						boolean present=false;
+						System.out.println("\n\t\tControllo se inserimento possibile: " + vFile.getPath()+vFile.getFilename()+"."+vFile.getExtension());
 						while(!present && i<files.size()){
 							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename()))
 								present=true;
+							i++;
 						}
 						if(!present){
 							//Invio conferma del caricamento
@@ -212,21 +213,21 @@ public class XDiskServer implements ServerProcess{
 							file.setTags(vFile.getTags());
 							file.setSize(vFile.getSize());
 							file.setMime(vFile.getMime());
-							file.setParent(38);
+							file.setParent(FolderController.getFolder(vFile.getPath()).getCodice());
 							FileController.insert(file);
 							output.send();
 							System.out.print(":OK");
 						}
 						else{
-							//Invio conferma del caricamento
+							//Invio Errore perchè file già presente
 							output.writeUTF("PRESENT");
 							output.send();
-							System.out.print(":OK - file già presente, non è possibile aggiungere il file!");
+							System.err.print(":OK - file già presente, non è possibile aggiungere il file!");
 						}
 					}
 					catch (Exception e) {
-						//Da pulire l'output stream ????COME????
-						// TODO IMPORTANTE
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
 						System.err.print("Non è possibile soddisfare la richiesta");
 						output.writeUTF("ERROR");
 						output.send();
@@ -235,21 +236,104 @@ public class XDiskServer implements ServerProcess{
 				}
 				else if(response.equals("SEARCH")){//SEARCH
 					System.out.print("\nRequest SEARCH");
+					try{
+						//Letto il file da cercare
+						String query = input.readUTF();
+						LinkedList<File> files = new LinkedList<File>();
+						files.addAll(FileController.search(query));
+						int numFiles=files.size();
+						output.writeUTF("OK");
+						output.writeInt(numFiles);
+						for(int i=0;i<numFiles;i++){
+							VirtualFile file = new VirtualFile();
+							file.setFilename(files.get(i).getName());
+							file.setExtension(files.get(i).getExtension());
+							file.setDescription(files.get(i).getDescription());
+							file.setOwner(files.get(i).getOwner());
+							file.setTags(files.get(i).getTags());
+							file.setSize(files.get(i).getSize());
+							file.setMime(files.get(i).getMime());
+							Folder folder = new Folder();
+							folder.setCodice(files.get(i).getParent());
+							FolderController.load(folder);
+							file.setPath(FolderController.getPath(folder));
+							output.writeVirtualFile(file);
+						}
+						output.send();
+						System.out.print(":OK");
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else if(response.equals("GET")){//GET
 					System.out.print("\nRequest GET");
+					try{
+
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else if(response.equals("GETSOURCE")){//GETSOURCE
 					System.out.print("\nRequest GETSOURCE");
+					try{
+
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else if(response.equals("NOTGOT")){//NOTGOT
 					System.out.print("\nRequest NOTGOT");
+					try{
+
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else if(response.equals("GOT")){//GOT
 					System.out.print("\nRequest GOT");
+					try{
+
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else if(response.equals("ISVALIDETIKET")){//ISVALIDETIKET
 					System.out.print("\nRequest ISVALIDETIKET");
+					try{
+
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
 				else{
 					System.err.print("PROTOCOL COMMAND UNKNOWN!!!");

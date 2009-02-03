@@ -138,7 +138,7 @@ public class VirtualDisk
 				for (int i=0; i<numFile; i++)
 				{
 					VirtualFile file = input.readVirtualFile();
-					System.out.println("\tFILE: " + file);
+					System.out.println("\tFILE: " + file.getPath()+file.getFilename()+"."+file.getExtension());
 					result.add(file);
 				}			
 				
@@ -146,7 +146,7 @@ public class VirtualDisk
 			}
 			else
 			{
-				System.out.println("Impossibile recuperare la lista delle risorse");
+				System.err.println("Impossibile recuperare la lista delle risorse");
 			}
 
 			// deinizializzazione della connessione
@@ -185,9 +185,12 @@ public class VirtualDisk
 				ret=true;
 				System.out.println("File inserito correttamente!");
 			}
+			else if(response.equals("PRESENT")){
+				System.err.println("Impossibile inserire il file file già presente!!!");
+			}
 			else
 			{
-				System.err.println("Impossibile inserire il file!!");
+				System.err.println("Impossibile inserire il file!!!");
 			}
 
 			// deinizializzazione della connessione
@@ -203,10 +206,44 @@ public class VirtualDisk
 	 * @param query il parametro di ricerca
 	 * @return una lista di file virtuali corrispondenti alla ricerca, o null
 	 * in caso non venga trovata alcun file corrispondente alla ricerca.
+	 * @throws IOException 
 	 */
-	public ArrayList<VirtualFile> search(String query)
+	public ArrayList<VirtualFile> search(String query) throws IOException
 	{
-		return null;
+		ArrayList<VirtualFile> result = new ArrayList<VirtualFile>();
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta SEARCH...");
+			// invio la richiesta al server
+			output.writeUTF("SEARCH");
+			output.writeUTF(query);
+			output.send();
+			
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				int numFiles = input.readInt();
+				System.out.println("\tFile trovati:"+numFiles);
+				for(int i=0;i<numFiles;i++){
+					VirtualFile file = input.readVirtualFile();
+					result.add(file);
+				}
+				System.out.println("\tFile ricevuti correttamente!");
+			}
+			else
+			{
+				System.err.println("Impossibile Ricevere la lista di file!!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return result;
 	}
 
 	/**

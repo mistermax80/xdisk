@@ -24,13 +24,15 @@ public class FolderDAO {
 		try {
 			stm = con.prepareStatement(SELECT_SQL);
 			stm.setInt(1,object.getCodice());
+			System.out.println(stm);
 			rst=stm.executeQuery();
-			rst.next();
-			object.setCodice(rst.getInt("codice"));
-			object.setNome(rst.getString("nome"));
-			object.setDimensione(rst.getInt("dimensione"));
-			object.setParent(rst.getInt("parent"));
-			object.setProva(rst.getBoolean("prova"));
+			if(rst.next()){
+				object.setCodice(rst.getInt("codice"));
+				object.setNome(rst.getString("nome"));
+				object.setDimensione(rst.getInt("dimensione"));
+				object.setParent(rst.getInt("parent"));
+				object.setProva(rst.getBoolean("prova"));
+			}
 		} catch (SQLException e) { 
 			throw new PersistenceException(object.toString(),e);
 		}
