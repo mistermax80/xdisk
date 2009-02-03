@@ -1,5 +1,6 @@
 package xdisk.persistence.database;
 
+
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -9,13 +10,17 @@ import xdisk.persistence.Folder;
 
 public class FileController {
 
-	public static void load(File file) throws PersistenceException{FileDAO.load(file);}
+	private FileController() {
+		super();
+	}
 
-	public static void insert(File file) throws PersistenceException{FileDAO.insert(file);}
+	public static void load(File object) throws PersistenceException{FileDAO.load(object);}
 
-	public static void delete(File file) throws PersistenceException{FileDAO.delete(file);}
+	public static void insert(File object) throws PersistenceException{FileDAO.insert(object);}
 
-	public static void update(File file) throws PersistenceException{FileDAO.update(file);}
+	public static void delete(File object) throws PersistenceException{FileDAO.delete(object);}
+
+	public static void update(File object) throws PersistenceException{FileDAO.update(object);}
 
 	public static int removeAll() throws PersistenceException{
 		return FileDCS.removeAll();
@@ -24,7 +29,7 @@ public class FileController {
 	public static Collection<File> getAll() throws PersistenceException{
 		return FileDCS.getAll();
 	}
-
+	
 	public static Collection<File> getFile(Folder folder) throws PersistenceException{
 		return FileDCS.getFile(folder);
 	}
@@ -69,8 +74,5 @@ public class FileController {
 			return null;
 		}
 	}
+
 }
-
-
-
-

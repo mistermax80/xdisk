@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
+import xdisk.VirtualFile;
+
 public class XDiskClient {
 
 	/**
@@ -17,8 +19,24 @@ public class XDiskClient {
 					4444, "ciips", "c");
 			
 			disk.connect();
-			disk.getList("/prova/picchrerio/ciao/bubu");
-
+			System.out.println("===============================");
+			disk.getList("/");
+			System.out.println("===============================");
+			disk.getList("/prova/picchio/ciao/");
+			System.out.println("===============================");
+			
+			VirtualFile file = new VirtualFile();
+			file.setFilename("picchio");
+			file.setExtension("sys");
+			file.setDescription("description");
+			file.setOwner("ciips");
+			file.setTags("tag,tags,ta,t");
+			file.setSize(2324);
+			file.setMime("mime");
+			file.setPath("/prova/");
+			
+			disk.insertFile(file);
+			disk.getList("/prova/picchio/");
 		} 
 		catch (MalformedURLException e) 
 		{

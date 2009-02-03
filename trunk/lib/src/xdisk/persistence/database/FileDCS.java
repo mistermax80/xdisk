@@ -1,36 +1,34 @@
 package xdisk.persistence.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
+
+import java.sql.*;
 
 import xdisk.exception.PersistenceException;
 import xdisk.persistence.File;
 import xdisk.persistence.Folder;
 
-public class FileDCS
-{
-	private FileDCS(){}
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
-	/**
-	 * Rimuove tutte le tuple della tabella file
-	 * @return il numero di tuple eliminate
-	 * @throws PersistenceException
-	 */
+public class FileDCS {
+
+
+	private FileDCS() {
+		super();
+	}
+
 	private static final String REMOVE_ALL_SQL = "DELETE FROM file";
-	public static int removeAll() throws PersistenceException
-	{
-		Connection con = DatabaseConnectionFactory.getConnection();
+
+	static int removeAll() throws PersistenceException { 
+		Connection con=null;
 		PreparedStatement stm=null;
 		int rowsDeleted;
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
 			stm = con.prepareStatement(REMOVE_ALL_SQL);
 			rowsDeleted = stm.executeUpdate();
-		} catch (SQLException e) {
+		} catch (SQLException e) { 
 			throw new PersistenceException(e);
 		}
 		finally {
@@ -40,27 +38,18 @@ public class FileDCS
 		return rowsDeleted;
 	}
 
-	/**
-	 * 
-	 * @return un collection di oggetti File tutti quelli presenti nel DB
-	 * @throws PersistenceException 
-	 */
-	private static final String SELECT_ALL_SQL = 
-		"SELECT codice,nome,dimensione,cartella,autore,utenteins " +
-		"FROM file";
-	public static Collection<File> getAll() throws PersistenceException
-	{
+	private static final String SELECT_ALL_SQL = "SELECT code,name,extension,description,tags,size,owner,mime,parent FROM file";
+
+	static Collection<File> getAll() throws PersistenceException { 
+		Collection<File> all=null;
 		Connection con=null;
 		PreparedStatement stm=null;
-		Collection<File> all=null;
 		ResultSet rst=null;
-
-		con = DatabaseConnectionFactory.getConnection();
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
 			stm = con.prepareStatement(SELECT_ALL_SQL);
-			rst=stm.executeQuery();
-			all = processCollectionResultSet(rst);
-		} catch (SQLException e) {
+			rst=stm.executeQuery();all = processCollectionResultSet(rst);
+		} catch (SQLException e) { 
 			throw new PersistenceException(e);
 		}
 		finally {
@@ -71,12 +60,6 @@ public class FileDCS
 		return all;
 	}
 
-	/**
-	 * 
-	 * @param rst result set di una query
-	 * @return una collezione di oggetti File
-	 * @throws SQLException
-	 */
 	private static Collection<File> processCollectionResultSet(ResultSet rst) throws SQLException{
 		LinkedList<File> all = new LinkedList<File>();
 		while (rst.next()) {
@@ -85,27 +68,24 @@ public class FileDCS
 		return Collections.unmodifiableList(all);
 	}
 
-	/**
-	 * 
-	 * @param rst result set di una query
-	 * @return oggetto File
-	 * @throws SQLException
-	 */
 	private static File objectFromCursor(ResultSet rst) throws SQLException{
-		File file= new File();
-		file.setCode(rst.getInt("codice"));
-		file.setName(rst.getString("nome"));
-		file.setDimension(rst.getInt("dimensione"));
-		file.setFolder(rst.getInt("cartella"));
-		file.setAuthor(rst.getString("autore"));
-		file.setLoaderUserid(rst.getString("utenteins"));
-		return file;
+		File object= new File();
+		object.setCode(rst.getString("code"));
+		object.setName(rst.getString("name"));
+		object.setExtension(rst.getString("extension"));
+		object.setDescription(rst.getString("description"));
+		object.setTags(rst.getString("tags"));
+		object.setSize(rst.getInt("size"));
+		object.setOwner(rst.getString("owner"));
+		object.setMime(rst.getString("mime"));
+		object.setParent(rst.getInt("parent"));
+		return object;
 	}
 
 	private static final String SELECT_SQL_BY_USERNAME = 
-		"SELECT nome,userid,cartellaroot,dimensione " +
+		"SELECT * " +
 		"FROM file " +
-		"WHERE nome = ?";
+		"WHERE name = ?";
 	public static File getUserByUsername(String name) throws PersistenceException {
 		File file = null;
 		Connection con=null;
@@ -133,7 +113,7 @@ public class FileDCS
 	private static final String SELECT_SQL_BY_FOLDER = 
 		"SELECT * " +
 		"FROM file " +
-		"WHERE cartella = ?";
+		"WHERE parent = ?";
 	public static Collection<File> getFile(Folder folder) throws PersistenceException {
 		Collection<File> files = new LinkedList<File>();
 		Connection con=null;
@@ -158,12 +138,3 @@ public class FileDCS
 		return files;
 	}
 }
-
-
-
-
-
-
-
-
-

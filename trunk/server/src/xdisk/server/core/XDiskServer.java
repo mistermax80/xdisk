@@ -57,6 +57,7 @@ public class XDiskServer implements ServerProcess{
 
 			input.receive();
 			String response = input.readUTF();
+			System.out.println("\tResponse:"+response);
 			if(response.equals("HELO")){
 				//Fase Handshake
 				System.out.print("\nFase HandShake HELO");
@@ -129,9 +130,10 @@ public class XDiskServer implements ServerProcess{
 					System.err.print("Session Not Valide ERROR SESSION\n");
 				}
 				output.send();
-				input.receive();
 				//Richiesta Operazioni
-				if(input.readUTF().equals("GETLIST")){//GETLIST
+				input.receive();
+				response= input.readUTF();
+				if(response.equals("GETLIST")){//GETLIST
 					System.out.print("\nRequest GETLIST");
 					try{
 						String path = input.readUTF();
@@ -161,12 +163,12 @@ public class XDiskServer implements ServerProcess{
 							System.out.println(files.get(i));
 							VirtualFile file = new VirtualFile();
 							file.setFilename(files.get(i).getName());
-							file.setExtension("extension");
-							file.setDescription("description");
-							file.setOwner(files.get(i).getAuthor());
-							file.setTags("tag");
-							file.setSize(files.get(i).getDimension());
-							file.setMime("mime");
+							file.setExtension(files.get(i).getExtension());
+							file.setDescription(files.get(i).getDescription());
+							file.setOwner(files.get(i).getOwner());
+							file.setTags(files.get(i).getTags());
+							file.setSize(files.get(i).getSize());
+							file.setMime(files.get(i).getMime());
 							file.setPath(path);
 							//invio di file
 							output.writeVirtualFile(file);
@@ -177,30 +179,76 @@ public class XDiskServer implements ServerProcess{
 					catch (Exception e) {
 						//Da pulire l'output stream ????COME????
 						// TODO IMPORTANTE
+						System.err.print("Non è possibile soddisfare la richiesta");
 						output.writeUTF("ERROR");
 						output.send();
 						e.printStackTrace();
 					}
 				}
-				else if(input.readUTF().equals("INSERT")){//INSERT
-					System.out.print("\nRequest GETLIST");
+				else if(response.equals("INSERT")){//INSERT
+					System.out.print("\nRequest INSERT");
+					try{
+						//Ricevo il file
+						VirtualFile vFile = input.readVirtualFile();
+						//Controllo che il file non sia già presente nel path specificato
+						LinkedList<File> files = new LinkedList<File>();
+						files.addAll(FileController.getFile(vFile.getPath()));
+						int i=0;
+						boolean present=false;
+						while(!present && i<files.size()){
+							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename()))
+								present=true;
+						}
+						if(!present){
+							//Invio conferma del caricamento
+							output.writeUTF("OK");
+							//Inserisco il file nel db
+							File file = new File();
+							file.setCode(Md5.md5(vFile.getFilename()+System.currentTimeMillis()));
+							file.setName(vFile.getFilename());
+							file.setExtension(vFile.getExtension());
+							file.setDescription(vFile.getDescription());
+							file.setOwner(vFile.getOwner());
+							file.setTags(vFile.getTags());
+							file.setSize(vFile.getSize());
+							file.setMime(vFile.getMime());
+							file.setParent(38);
+							FileController.insert(file);
+							output.send();
+							System.out.print(":OK");
+						}
+						else{
+							//Invio conferma del caricamento
+							output.writeUTF("PRESENT");
+							output.send();
+							System.out.print(":OK - file già presente, non è possibile aggiungere il file!");
+						}
+					}
+					catch (Exception e) {
+						//Da pulire l'output stream ????COME????
+						// TODO IMPORTANTE
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
 				}
-				else if(input.readUTF().equals("SERACH")){//SEARCH
-					System.out.print("\nRequest SERACH");
+				else if(response.equals("SEARCH")){//SEARCH
+					System.out.print("\nRequest SEARCH");
 				}
-				else if(input.readUTF().equals("GET")){//GET
+				else if(response.equals("GET")){//GET
 					System.out.print("\nRequest GET");
 				}
-				else if(input.readUTF().equals("GETSOURCE")){//GETSOURCE
+				else if(response.equals("GETSOURCE")){//GETSOURCE
 					System.out.print("\nRequest GETSOURCE");
 				}
-				else if(input.readUTF().equals("NOTGOT")){//NOTGOT
+				else if(response.equals("NOTGOT")){//NOTGOT
 					System.out.print("\nRequest NOTGOT");
 				}
-				else if(input.readUTF().equals("GOT")){//GOT
+				else if(response.equals("GOT")){//GOT
 					System.out.print("\nRequest GOT");
 				}
-				else if(input.readUTF().equals("ISVALIDETIKET")){//ISVALIDETIKET
+				else if(response.equals("ISVALIDETIKET")){//ISVALIDETIKET
 					System.out.print("\nRequest ISVALIDETIKET");
 				}
 				else{

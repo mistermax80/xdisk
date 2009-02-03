@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.File;
 import xdisk.persistence.Folder;
 
 public class FolderController {
