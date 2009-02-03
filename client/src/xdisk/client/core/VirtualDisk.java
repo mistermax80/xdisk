@@ -248,12 +248,43 @@ public class VirtualDisk
 
 	/**
 	 * Ritorna il file virtuale sul disco con con nome del file pari a filename
-	 * @param filename il nome del file del disco virtuale da recuperare
+	 * @param canonicalName il nome del file del disco virtuale da recuperare con tutto il suo path
 	 * @return il file virtuale se presente sul disco, false altrimenti
+	 * @throws IOException 
 	 */
-	public VirtualFile getFile(String filename)
+	public VirtualFile getFile(String canonicalName) throws IOException
 	{
-		return null;
+		VirtualFile file = new VirtualFile();
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta GET...");
+			// invio la richiesta al server
+			output.writeUTF("GET");
+			output.writeUTF(canonicalName);
+			output.send();
+			
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				file = input.readVirtualFile();
+				System.out.println("\tFile trovato correttamente!");
+			}
+			else if(response.equals("NOTPRESENT")){
+				System.err.println("File non esistente!!!");
+			}
+			else
+			{
+				System.err.println("Impossibile Ricevere il file!!!");
+			}
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return file;
 	}
 	
 	/**
