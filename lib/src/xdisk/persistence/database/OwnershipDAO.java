@@ -45,10 +45,10 @@ class OwnershipDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(SELECT_SQL);
-			stm.setInt(1, ownership.getFile());
+			stm.setString(1, ownership.getFile());
 			rst=stm.executeQuery();
 			rst.next();
-			ownership.setFile(rst.getInt("file"));
+			ownership.setFile(rst.getString("file"));
 			ownership.setUser(rst.getString("user"));
 		} catch (SQLException e) {
 			throw new PersistenceException(ownership.toString(),e);
@@ -72,7 +72,7 @@ class OwnershipDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(INSERT_SQL);
-			stm.setInt(1,ownership.getFile());
+			stm.setString(1,ownership.getFile());
 			stm.setString(2,ownership.getUser());
 			stm.executeUpdate();
 		} catch (SQLException e) {
@@ -96,7 +96,7 @@ class OwnershipDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(DELETE_SQL);
-			stm.setInt(1,ownership.getFile());
+			stm.setString(1,ownership.getFile());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(ownership.toString(),e);

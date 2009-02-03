@@ -51,6 +51,18 @@ public class XDiskClient {
 			System.out.println(disk.getFile("/provarrr/picchio.sys"));
 			System.err.println("===============================");
 			System.out.println(disk.getFile("/prova/piccddhio.sys"));
+			System.err.println("===============================");
+			file = new VirtualFile();
+			file.setFilename("docoun");
+			file.setExtension("sys");
+			file.setDescription("description");
+			file.setOwner("ciips");
+			file.setTags("tag,tags,ta,t");
+			file.setSize(2324);
+			file.setMime("mime");
+			file.setPath("/prova/picchio/");
+			System.err.println("===============================");
+			System.out.println(disk.getSource(file));
 		} 
 		catch (MalformedURLException e) 
 		{

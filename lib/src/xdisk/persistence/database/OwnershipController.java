@@ -22,4 +22,12 @@ public class OwnershipController {
 	public static Collection<Ownership> getAll() throws PersistenceException{
 		return OwnershipDCS.getAll();
 	}
+	
+	public static Collection<Ownership> getUserByCode(String code) throws PersistenceException{
+		return OwnershipDCS.getUserByCode(code);
+	}
+
+	public static Collection<Ownership> getUserOnlineByCode(String code) throws PersistenceException{
+		return OwnershipDCS.getUserOnlineByCode(code);
+	}
 }

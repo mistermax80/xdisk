@@ -68,7 +68,9 @@ public class XDiskInputStream extends MessageInputStream
 	 */
 	public ClientResource readClientResource() throws IOException
 	{
-		ClientResource client = new ClientResource(readUTF(), readInt());
+		String ip = readUTF();
+		int port = readInt();
+		ClientResource client = new ClientResource(ip, port);
 		return client;
 	}
 

@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
+import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
 import xdisk.exception.PersistenceException;
@@ -15,10 +16,12 @@ import xdisk.net.XDiskOutputStream;
 import xdisk.persistence.Client;
 import xdisk.persistence.File;
 import xdisk.persistence.Folder;
+import xdisk.persistence.Ownership;
 import xdisk.persistence.User;
 import xdisk.persistence.database.ClientController;
 import xdisk.persistence.database.FileController;
 import xdisk.persistence.database.FolderController;
+import xdisk.persistence.database.OwnershipController;
 import xdisk.persistence.database.UserController;
 import xdisk.utils.Md5;
 
@@ -45,12 +48,13 @@ public class XDiskServer implements ServerProcess{
 
 	@Override
 	public void request(Socket client) {
+		System.out.println("\n\n\n\n=======================================================================");
 		String ipClient = client.getInetAddress().getHostAddress();
 		String hostname = client.getInetAddress().getCanonicalHostName();
 		int portClient = client.getPort();
 		Client userClient = new Client();
 
-		System.out.println("\n\nConnection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport:"+portClient);
+		System.out.println("Connection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport:"+portClient);
 		try {
 			output = new XDiskOutputStream(client.getOutputStream());
 			input = new XDiskInputStream(client.getInputStream());
@@ -313,9 +317,7 @@ public class XDiskServer implements ServerProcess{
 								output.reset();
 								System.err.print("Il file non è presente");
 								output.writeUTF("NOTPRESENT");
-								output.send();
 							}
-							
 							output.send();
 						}
 						else{
@@ -337,7 +339,30 @@ public class XDiskServer implements ServerProcess{
 				else if(response.equals("GETSOURCE")){//GETSOURCE
 					System.out.print("\nRequest GETSOURCE");
 					try{
-
+						//Leggo il file per trovare chi lo possiede
+						VirtualFile vFile = input.readVirtualFile();
+						System.out.println("\tRicevuto il file");
+						File file = new File();
+						String nameFile=vFile.getFilename();
+						int parent = FolderController.getFolder(vFile.getPath()).getCodice();
+						file.setCode(FileController.getCode(nameFile,parent));
+						FileController.load(file);
+						//Interrogo il db
+						LinkedList<Ownership> owners = new LinkedList<Ownership>();
+						owners.addAll(OwnershipController.getUserOnlineByCode(file.getCode()));
+						int numOwners = owners.size();
+						output.writeUTF("OK");
+						output.writeInt(numOwners);
+						System.out.println("\tNum owners online:"+numOwners);
+						for(int i=0;i<numOwners;i++){
+							Client cli = new Client();
+							cli.setUserid(owners.get(i).getUser());
+							ClientController.load(cli);
+							ClientResource clientRes = new ClientResource(cli.getIpAddress(),cli.getPortNumber());
+							output.writeClientResource(clientRes);
+						}
+						output.send();
+						System.out.println(":OK");
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore
 						output.reset();
@@ -403,6 +428,7 @@ public class XDiskServer implements ServerProcess{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("\n=======================================================================");
 	}
 
 	@Override
