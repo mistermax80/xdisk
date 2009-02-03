@@ -13,13 +13,14 @@ public class TestVirtualMethod {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
+		String path = "/prova/picchio/ciao/";
 		LinkedList<File> files = new LinkedList<File>();
-		files.addAll(FileController.getFile("/prova/pppp"));
+		files.addAll(FileController.getFile(path));
 		System.out.println("======================================================");
 		System.out.println(files);
 		System.out.println("======================================================");
 		LinkedList<Folder> folders = new LinkedList<Folder>();
-		folders.addAll(FolderController.getFolder("/prova/ppppppp"));
+		folders.addAll(FolderController.getFolder(path));
 		System.out.println("======================================================");
 		System.out.println(folders);
 		System.out.println("======================================================");
