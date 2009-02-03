@@ -120,10 +120,12 @@ public class VirtualDisk
 			
 			// ricevo e analizzo la risposta
 			input.receive();
-			response = input.readUTF(); 
+			response = input.readUTF();
+			System.out.println("Response:"+response);
 			if (response.equals("OK"))
 			{
 				System.out.println("\nRicevuta lista delle risorse:");
+				//Ricevo la lista dei Folder
 				int numFolder = input.readInt();
 				for (int i=0; i<numFolder; i++)
 				{
@@ -131,7 +133,7 @@ public class VirtualDisk
 					System.out.println("\tFOLDER: " + folder);
 					result.add(folder);
 				}
-				
+				//Ricevo la lista dei File
 				int numFile = input.readInt();
 				for (int i=0; i<numFile; i++)
 				{
@@ -328,6 +330,7 @@ public class VirtualDisk
 			System.out.println("Send HELO I");
 			output.writeUTF("HELO I");
 			output.writeUTF(sessionId);
+			output.writeUTF(userid);
 			output.send();
 	
 			

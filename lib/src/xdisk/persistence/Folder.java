@@ -63,12 +63,12 @@ public class Folder {
 	}
 
 	public String toString(){
-		String ret="*****" +this.getClass()+"*****"+
+		String ret="\n*****" +this.getClass()+"*****"+
 		"\ncodice: "+this.codice+
 		"\nnome: "+this.nome+
 		"\ndimensione: "+this.dimensione+
 		"\nparent: "+this.parent+
 		"\nprova: "+this.prova;
-		return ret+"******************";
+		return ret+"\n******************\n";
 	}
 }

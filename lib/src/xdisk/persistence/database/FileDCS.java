@@ -144,7 +144,7 @@ public class FileDCS
 		try {
 			stm = con.prepareStatement(SELECT_SQL_BY_FOLDER);
 			stm.setInt(1, folder.getCodice());
-			System.out.println(stm);
+			//System.out.println(stm);
 			rst=stm.executeQuery();
 			files = processCollectionResultSet(rst);
 		} catch (SQLException e) {
