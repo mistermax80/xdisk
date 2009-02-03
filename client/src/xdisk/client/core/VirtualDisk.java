@@ -159,10 +159,41 @@ public class VirtualDisk
 	/**
 	 * Aggiunge un nuovo file al disco
 	 * @return
+	 * @throws IOException
+	 * @throws UnknownHostException 
 	 */
-	public boolean insertFile(VirtualFile file)
+	public boolean insertFile(VirtualFile file) throws UnknownHostException, IOException
 	{
-		return false;
+		boolean ret=false;
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta INSERT...");
+			// invio la richiesta al server
+			output.writeUTF("INSERT");
+			output.writeVirtualFile(file);
+			output.send();
+			
+			
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				ret=true;
+				System.out.println("File inserito correttamente!");
+			}
+			else
+			{
+				System.err.println("Impossibile inserire il file!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return ret;
 	}
 	
 	

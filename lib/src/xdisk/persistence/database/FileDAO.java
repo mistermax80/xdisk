@@ -2,64 +2,41 @@ package xdisk.persistence.database;
 
 
 import java.sql.*;
-/*
- * Data Access Object per l’entita’ file.
- * Incapsula le funzioni ed i tipi dato necessari
- * per manipolare le informazioni
- * della base dati pertinenti a detta entita’.
- * Si tratta di una utility class
- * non istanziabile.
- * Unici possibili metodi presenti, insert(),load(),delete(),update()
- */
-
 import xdisk.exception.PersistenceException;
 import xdisk.persistence.File;
 
-class FileDAO {
+public class FileDAO {
 
-	private static final String INSERT_SQL = 
-		"INSERT INTO file" +
-		"(codice,nome,dimensione,cartella,autore,utenteins) " +
-		"VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_SQL = "INSERT INTO file(code,name,extension,description,tags,size,owner,mime,parent) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String SELECT_SQL = "SELECT code,name,extension,description,tags,size,owner,mime,parent FROM file WHERE code=?";
+	private static final String UPDATE_SQL = "UPDATE file code=?, name=?, extension=?, description=?, tags=?, size=?, owner=?, mime=?, parent=? WHERE code=?";
+	private static final String DELETE_SQL = "DELETE FROM file WHERE code=?";
 
-	private static final String UPDATE_BY_CODICE_SQL = 
-		"UPDATE file SET codice = ?, nome = ?, dimensione = ?, cartella = ?, autore = ?, utenteisn = ? " +
-		"WHERE codice = ?";
+	private FileDAO() {
+		super();
+	}
 
-	private static final String SELECT_BY_CODICE_SQL = 
-		"SELECT codice,nome,dimensione,cartella,autore,utenteins " +
-		"FROM file " +
-		"WHERE codice = ?";
-
-	private static final String DELETE_BY_CODICE_SQL = 
-		"DELETE FROM file WHERE codice = ?";
-
-	private FileDAO(){}
-
-	/**
-	 * Comando SQL per l’ottenimento di una nuova istanza
-	 * @param file
-	 * @throws PersistenceException
-	 */
-	static void load (File file) throws PersistenceException
-	{
+	static void load (File object) throws PersistenceException { 
 		Connection con=null;
 		PreparedStatement stm=null;
 		ResultSet rst=null;
-		con = DatabaseConnectionFactory.getConnection();
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
-			stm = con.prepareStatement(SELECT_BY_CODICE_SQL);
-			stm.setString(1, file.getName());
+			stm = con.prepareStatement(SELECT_SQL);
+			stm.setString(1,object.getCode());
 			rst=stm.executeQuery();
 			rst.next();
-			file.setCode(rst.getInt("code"));
-			file.setName(rst.getString("nome"));
-			file.setDimension(rst.getInt("dimensione"));
-			file.setFolder(rst.getInt("cartella"));
-			file.setAuthor(rst.getString("autore"));
-			file.setLoaderUserid(rst.getString("utenteinn"));
-		} catch (SQLException e) {
-			throw new PersistenceException(file.toString(),e);
+			object.setCode(rst.getString("code"));
+			object.setName(rst.getString("name"));
+			object.setExtension(rst.getString("extension"));
+			object.setDescription(rst.getString("description"));
+			object.setTags(rst.getString("tags"));
+			object.setSize(rst.getInt("size"));
+			object.setOwner(rst.getString("owner"));
+			object.setMime(rst.getString("mime"));
+			object.setParent(rst.getInt("parent"));
+		} catch (SQLException e) { 
+			throw new PersistenceException(object.toString(),e);
 		}
 		finally {
 			if (rst != null) try {rst.close();} catch (Exception e) {}
@@ -68,27 +45,24 @@ class FileDAO {
 		}
 	}
 
-	/**
-	 * Comando SQL per l’inserimento dell'istanza file nel database
-	 * @param file
-	 * @throws PersistenceException
-	 */
-	static void insert (File file) throws PersistenceException
-	{
+	static void insert (File object) throws PersistenceException { 
 		Connection con=null;
 		PreparedStatement stm=null;
-		con = DatabaseConnectionFactory.getConnection();
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
 			stm = con.prepareStatement(INSERT_SQL);
-			stm.setInt(1,file.getCode());
-			stm.setString(2,file.getName());
-			stm.setInt(3,file.getDimension());
-			stm.setInt(4,file.getFolder());
-			stm.setString(5,file.getAuthor());
-			stm.setString(6,file.getLoaderUserid());
+			stm.setString(1,object.getCode());
+			stm.setString(2,object.getName());
+			stm.setString(3,object.getExtension());
+			stm.setString(4,object.getDescription());
+			stm.setString(5,object.getTags());
+			stm.setInt(6,object.getSize());
+			stm.setString(7,object.getOwner());
+			stm.setString(8,object.getMime());
+			stm.setInt(9,object.getParent());
 			stm.executeUpdate();
-		} catch (SQLException e) {
-			throw new PersistenceException(file.toString(),e);
+		} catch (SQLException e) { 
+			throw new PersistenceException(object.toString(),e);
 		}
 		finally {
 			if (stm != null) try {stm.close();} catch (Exception e) {}
@@ -96,22 +70,16 @@ class FileDAO {
 		}
 	}
 
-	/**
-	 * Comando SQL per l’eliminazione dell'istanza dal database
-	 * @param file
-	 * @throws PersistenceException
-	 */
-	static void delete (File file) throws PersistenceException
-	{
+	static void delete (File object) throws PersistenceException { 
 		Connection con=null;
 		PreparedStatement stm=null;
-		con = DatabaseConnectionFactory.getConnection();
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
-			stm = con.prepareStatement(DELETE_BY_CODICE_SQL);
-			stm.setString(1,file.getName());
-			stm.executeUpdate();
-		} catch (SQLException e) {
-			throw new PersistenceException(file.toString(),e);
+			stm = con.prepareStatement(DELETE_SQL);
+			stm.setString(1,object.getName());
+			stm.execute();
+		} catch (SQLException e) { 
+			throw new PersistenceException(object.toString(),e);
 		}
 		finally {
 			if (stm != null) try {stm.close();} catch (Exception e) {}
@@ -119,27 +87,25 @@ class FileDAO {
 		}
 	}
 
-	/**
-	 * Comando SQL per l’aggiornamento nel database dell'istanza
-	 * @param file
-	 * @throws PersistenceException
-	 */
-	static void update (File file) throws PersistenceException
-	{
+	static void update (File object) throws PersistenceException { 
 		Connection con=null;
 		PreparedStatement stm=null;
-		con = DatabaseConnectionFactory.getConnection();
+		con = DatabaseConnectionFactory.getConnection(); 
 		try {
-			stm = con.prepareStatement(UPDATE_BY_CODICE_SQL);
-			stm.setInt(1,file.getCode());
-			stm.setString(2,file.getName());
-			stm.setInt(3,file.getDimension());
-			stm.setInt(4,file.getFolder());
-			stm.setString(5,file.getAuthor());
-			stm.setString(6,file.getLoaderUserid());
+			stm = con.prepareStatement(UPDATE_SQL);
+			stm.setString(1,object.getCode());
+			stm.setString(2,object.getName());
+			stm.setString(3,object.getExtension());
+			stm.setString(4,object.getDescription());
+			stm.setString(5,object.getTags());
+			stm.setInt(6,object.getSize());
+			stm.setString(7,object.getOwner());
+			stm.setString(8,object.getMime());
+			stm.setInt(9,object.getParent());
+			stm.setString(10,object.getCode());
 			stm.executeUpdate();
-		} catch (SQLException e) {
-			throw new PersistenceException(file.toString(),e);
+		} catch (SQLException e) { 
+			throw new PersistenceException(object.toString(),e);
 		}
 		finally {
 			if (stm != null) try {stm.close();} catch (Exception e) {}

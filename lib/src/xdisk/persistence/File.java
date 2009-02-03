@@ -1,35 +1,41 @@
 package xdisk.persistence;
 
 public class File {
-	
-	private int code;
+
+	private String code;
 	private String name;
-	private int dimension;
-	private int folder;
-	private String author;
-	private String loaderUserid;
-	
+	private String extension;
+	private String description;
+	private String tags;
+	private int size;
+	private String owner;
+	private String mime;
+	private int parent;
+
 	public File() {
 		super();
 	}
 
-	public File(int code, String name, int dimension, int folder,
-			String author, String loaderUserid) {
+	public File(String code, String name, String extension, String description, String tags, int size, String owner, String mime, int parent) {
 		super();
-		this.code = code;
-		this.name = name;
-		this.dimension = dimension;
-		this.folder = folder;
-		this.author = author;
-		this.loaderUserid = loaderUserid;
+		this.code=code;
+		this.name=name;
+		this.extension=extension;
+		this.description=description;
+		this.tags=tags;
+		this.size=size;
+		this.owner=owner;
+		this.mime=mime;
+		this.parent=parent;
 	}
 
-	public int getCode() {
+
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setCode(String code) {
+		this.code=code;
 	}
 
 	public String getName() {
@@ -37,50 +43,76 @@ public class File {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name=name;
 	}
 
-	public int getDimension() {
-		return dimension;
+	public String getExtension() {
+		return extension;
 	}
 
-	public void setDimension(int dimension) {
-		this.dimension = dimension;
+	public void setExtension(String extension) {
+		this.extension=extension;
 	}
 
-	public int getFolder() {
-		return folder;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setFolder(int folder) {
-		this.folder = folder;
+	public void setDescription(String description) {
+		this.description=description;
 	}
 
-	public String getAuthor() {
-		return author;
+	public String getTags() {
+		return tags;
 	}
 
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setTags(String tags) {
+		this.tags=tags;
 	}
 
-	public String getLoaderUserid() {
-		return loaderUserid;
+	public int getSize() {
+		return size;
 	}
 
-	public void setLoaderUserid(String loaderUserid) {
-		this.loaderUserid = loaderUserid;
+	public void setSize(int size) {
+		this.size=size;
 	}
-	
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner=owner;
+	}
+
+	public String getMime() {
+		return mime;
+	}
+
+	public void setMime(String mime) {
+		this.mime=mime;
+	}
+
+	public int getParent() {
+		return parent;
+	}
+
+	public void setParent(int parent) {
+		this.parent=parent;
+	}
+
 	public String toString(){
-    	String res = "\n*****" +this.getClass()+"*****"+
-    				"\ncode:"+code+
-    				"\nname:"+name+
-    				"\nfolder:"+folder+
-    				"\ndimension:"+dimension+
-    				"\nauthor:"+author+
-    				"\nloaderUserid:"+loaderUserid+
-    				"\n*******************";
-    	return res;
-    }	
+		String ret="\n*****" +this.getClass()+"*****"+
+		"\ncode: "+this.code+
+		"\nname: "+this.name+
+		"\nextension: "+this.extension+
+		"\ndescription: "+this.description+
+		"\ntags: "+this.tags+
+		"\nsize: "+this.size+
+		"\nowner: "+this.owner+
+		"\nmime: "+this.mime+
+		"\nparent: "+this.parent;
+		return ret+"\n******************";
+	}
 }
