@@ -77,7 +77,7 @@ public class FolderDCS {
 
 	private static final String SELECT_CHILDS_SQL = "SELECT * FROM folder WHERE parent=?";
 	
-	public static Collection<Folder> getChilds(Folder folder) throws PersistenceException {
+	public static Collection<Folder> getFolders(Folder folder) throws PersistenceException {
 		Collection<Folder> all=null;
 		Connection con=null;
 		PreparedStatement stm=null;
@@ -86,7 +86,7 @@ public class FolderDCS {
 		try {
 			stm = con.prepareStatement(SELECT_CHILDS_SQL);
 			stm.setInt(1, folder.getCodice());
-			System.out.println(stm);
+			//System.out.println(stm);
 			rst=stm.executeQuery();
 			all = processCollectionResultSet(rst);
 		} catch (SQLException e) { 

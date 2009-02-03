@@ -172,11 +172,21 @@ public class VirtualFile implements VirtualResource
 	{
 		this.path = path;
 	}
-	
-	public String toString()
-	{
-		return this.getFilename();
+
+	public String toString() {
+		String ret="\n*******"+this.getClass()+
+			"\nfilename: "+filename+
+			"\nextension: "+extension+
+			"\ndescription: "+description+
+			"\nowner: "+owner+
+			"\ntags: "+tags+
+			"\nsize: "+size+
+			"\nmime: "+mime+
+			"\npath: "+path;
+		return ret+"\n***********************";
 	}
+	
+	
 	
 
 }

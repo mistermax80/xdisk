@@ -160,9 +160,10 @@ public class ClientDCS
 		"SELECT count(userid) as num " +
 		"FROM client " +
 		"WHERE " +
-		"session_id = ?";
+		"session_id = ? AND " +
+		"userid = ?";
 
-	public static boolean checkSession(String id) throws PersistenceException {
+	public static boolean checkSession(String id, String userid) throws PersistenceException {
 		boolean validate=false;		
 		Connection con=null;
 		PreparedStatement stm=null;
@@ -172,6 +173,7 @@ public class ClientDCS
 		try {
 			stm = con.prepareStatement(SELECT_SQL_CHECK_SESSION);
 			stm.setString(1, id);
+			stm.setString(2, userid);
 			rst=stm.executeQuery();
 			rst.next();
 			if(rst.getInt("num")>0)

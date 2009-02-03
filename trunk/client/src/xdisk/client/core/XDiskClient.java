@@ -17,8 +17,7 @@ public class XDiskClient {
 					4444, "ciips", "c");
 			
 			disk.connect();
-			
-			disk.getList("/");
+			disk.getList("/prova/picchrerio/ciao/bubu");
 
 		} 
 		catch (MalformedURLException e) 
