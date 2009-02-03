@@ -273,7 +273,58 @@ public class XDiskServer implements ServerProcess{
 				else if(response.equals("GET")){//GET
 					System.out.print("\nRequest GET");
 					try{
-
+						output.writeUTF("OK");
+						//Leggo il cononical name del file
+						String canonicalName = input.readUTF();
+						System.out.println("\n"+canonicalName);
+						//Cerco se presente il file
+						String[] dirs = canonicalName.substring(1).split("/");						
+						String path = "/";
+						if(dirs.length>0){
+							for(int i=0;i<dirs.length-1;i++){
+								path+=dirs[i]+"/";
+							}
+							String nameFile = dirs[dirs.length-1].split("\\p{Punct}")[0];
+							LinkedList<File> files = new LinkedList<File>();
+							files.addAll(FileController.getFile(FolderController.getFolder(path)));
+							VirtualFile vFile = new VirtualFile();
+							boolean present = false;
+							int i=0;
+							while(!present&&i<files.size()){
+								File file = files.get(i);
+								if(file.getName().equalsIgnoreCase(nameFile)){
+									vFile.setFilename(file.getName());
+									vFile.setExtension(file.getExtension());
+									vFile.setDescription(file.getDescription());
+									vFile.setOwner(file.getOwner());
+									vFile.setTags(file.getTags());
+									vFile.setSize(file.getSize());
+									vFile.setMime(file.getMime());
+									vFile.setPath(path);
+									present=true;
+								}
+								i++;
+							}
+							if(present){
+								output.writeVirtualFile(vFile);
+							}
+							else{
+								//Svuoto l'output stream per inviare il messaggio cyhe il file non è presente
+								output.reset();
+								System.err.print("Il file non è presente");
+								output.writeUTF("NOTPRESENT");
+								output.send();
+							}
+							
+							output.send();
+						}
+						else{
+							//Svuoto l'output stream per inviare il messaggio cyhe il file non è presente
+							output.reset();
+							System.err.print("Il file non è presente");
+							output.writeUTF("NOTPRESENT");
+							output.send();
+						}
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore
 						output.reset();

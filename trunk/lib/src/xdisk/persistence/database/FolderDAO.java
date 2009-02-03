@@ -24,7 +24,6 @@ public class FolderDAO {
 		try {
 			stm = con.prepareStatement(SELECT_SQL);
 			stm.setInt(1,object.getCodice());
-			System.out.println(stm);
 			rst=stm.executeQuery();
 			if(rst.next()){
 				object.setCodice(rst.getInt("codice"));

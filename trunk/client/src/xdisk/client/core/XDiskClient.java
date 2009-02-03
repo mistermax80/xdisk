@@ -44,6 +44,13 @@ public class XDiskClient {
 			disk.getList("/prova/");
 			Thread.sleep(1000);
 			System.out.println(disk.search(""));
+			Thread.sleep(1000);
+			System.out.println("===============================");
+			System.out.println(disk.getFile("/prova/picchio.sys"));
+			System.err.println("===============================");
+			System.out.println(disk.getFile("/provarrr/picchio.sys"));
+			System.err.println("===============================");
+			System.out.println(disk.getFile("/prova/piccddhio.sys"));
 		} 
 		catch (MalformedURLException e) 
 		{
