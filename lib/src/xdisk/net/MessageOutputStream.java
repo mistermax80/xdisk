@@ -60,6 +60,11 @@ public class MessageOutputStream extends MessageOutput
 		outputStream.flush();		
 	}
 	
+	public void reset() throws IOException 
+	{
+		buffer.reset();		
+		outputStream.flush();		
+	}
 	
 
 }

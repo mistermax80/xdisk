@@ -41,7 +41,7 @@ public class FolderController {
 		return FolderDCS.getLastCode();
 	}
 	
-	public static Collection<Folder> getFolder(String path) throws PersistenceException{
+	public static Collection<Folder> getFolders(String path) throws PersistenceException{
 		LinkedList<Folder> folders = new LinkedList<Folder>();
 		Folder parent = new Folder();
 		Folder root = new Folder();
@@ -80,6 +80,51 @@ public class FolderController {
 			}
 			return null;
 		}
+	}
+	
+	public static Folder getFolder(String path) throws PersistenceException{
+		LinkedList<Folder> folders = new LinkedList<Folder>();
+		Folder parent = new Folder();
+		Folder root = new Folder();
+		String[] dirs = null;
+		root = FolderController.getRoot();
+
+		if(path.equalsIgnoreCase("/")){
+			return root;
+		}
+		else{
+			path=path.substring(1,path.length());
+			dirs = path.split("/");
+			parent = root;
+			for(int i=0;i<dirs.length;i++){
+				String nameDir = dirs[i];
+				folders.clear();
+				folders.addAll(FolderController.getFolder(parent));
+				int j=0;
+				boolean present=false;
+				while(!present && j<folders.size()){
+					Folder folder = folders.get(j);
+					if(folder.getNome().equalsIgnoreCase(nameDir)){
+						parent=folder;
+						present=true;
+					}
+					j++;
+				}
+				if(i==dirs.length-1 && present){
+					return parent;
+				}
+			}
+			return null;
+		}
+	}
+
+	public static String getPath(Folder folder) throws PersistenceException {
+		if(folder==null || folder.getParent()==0) return "/";
+		String path = folder.getNome();
+		Folder parent = new Folder();
+		parent.setCodice(folder.getParent());
+		FolderController.load(parent);
+		return getPath(parent)+path+"/";
 	}
 
 }
