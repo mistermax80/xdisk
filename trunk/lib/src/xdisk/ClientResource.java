@@ -33,5 +33,12 @@ public class ClientResource
 	{
 		return port;
 	}
+	
+	public String toString(){
+		String ret ="*************"+this.getClass()+
+				"\nIP:"+ip+
+				"\nPort:"+port;
+		return ret+"\n********************";
+	}
 
 }

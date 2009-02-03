@@ -169,4 +169,36 @@ public class FileDCS {
 		}
 		return files;
 	}
+	
+	private static final String SELECT_CODE_SQL = 
+		"SELECT * " +
+		"FROM file " +
+		"WHERE " +
+		"name = ? AND " +
+		"parent = ?";
+	public static String getCode(String nameFile, int parent) throws PersistenceException {
+		String code="";
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_CODE_SQL);
+			stm.setString(1, nameFile);
+			stm.setInt(2, parent);
+			rst=stm.executeQuery();
+			if(rst.next()){
+				code=rst.getString("code");
+			}
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			if (rst != null) try {rst.close();} catch (Exception e) {}
+			if (stm != null) try {stm.close();} catch (Exception e) {}
+			if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return code;
+	}
 }

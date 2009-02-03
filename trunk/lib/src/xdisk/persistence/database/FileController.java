@@ -79,4 +79,8 @@ public class FileController {
 		return FileDCS.search(query);
 	}
 
+	public static String getCode(String nameFile, int parent) throws PersistenceException {
+		return FileDCS.getCode(nameFile,parent);
+	}
+
 }

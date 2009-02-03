@@ -27,7 +27,7 @@ class ClientDAO {
 		"WHERE userid = ?";
 
 	private static final String SELECT_BY_USERID_SQL = 
-		"SELECT userid,indip,porta,tipoconn,session_id" +
+		"SELECT userid,indip,porta,tipoconn,session_id " +
 		"FROM client " +
 		"WHERE userid = ?";
 
@@ -49,14 +49,15 @@ class ClientDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(SELECT_BY_USERID_SQL);
-			stm.setString(1, client.getName());
+			stm.setString(1, client.getUserid());
 			rst=stm.executeQuery();
-			rst.next();
-			client.setUserid(rst.getString("userid"));
-			client.setIpAddress(rst.getString("indip"));
-			client.setConnType(rst.getString("porta"));
-			client.setPortNumber(rst.getInt("tipoconn"));
-			client.setIdSession(rst.getString("session_id"));
+			if(rst.next()){
+				client.setUserid(rst.getString("userid"));
+				client.setIpAddress(rst.getString("indip"));
+				client.setConnType(rst.getString("tipoconn"));
+				client.setPortNumber(rst.getInt("porta"));
+				client.setIdSession(rst.getString("session_id"));
+			}
 		} catch (SQLException e) {
 			throw new PersistenceException(client.toString(),e);
 		}

@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import sun.security.provider.MD5;
 
@@ -32,14 +33,14 @@ public class VirtualDisk
 	private int serverPort;
 	private String userid;
 	private String password;
-	
+
 	private String sessionId;
-	
+
 	private Socket socket;
 	private XDiskOutputStream output;
 	private XDiskInputStream input;
-	
-	
+
+
 	/**
 	 * Crea un nuovo disco virtuale.
 	 * 
@@ -58,7 +59,7 @@ public class VirtualDisk
 		this.userid = userid;
 		this.password = password;
 	}
-	
+
 	/**
 	 * Effettua la connessione al disco
 	 * @return true se la connessione riesce, false altrimenti
@@ -68,24 +69,24 @@ public class VirtualDisk
 	public boolean connect() throws UnknownHostException, IOException
 	{
 		String response;
-		
+
 		// inizializzazione della connessione
 		initConnection();		
-		
-		
-		
+
+
+
 		// deinizializzazione della connessione
 		deinitConnection();
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Effettua la disconnessione dal server del disco virtuale
 	 */
 	public void disconnect()
 	{
-		
+
 	}
 
 	/**
@@ -94,9 +95,9 @@ public class VirtualDisk
 	 */	
 	public void keepAlive()
 	{
-		
+
 	}
-	
+
 	/**
 	 * Ritorna la lista dei file e delle directory di uno specifico path 
 	 * @param path il path di cui ottenere la lista dei file e delle directory
@@ -116,8 +117,8 @@ public class VirtualDisk
 			output.writeUTF("GETLIST");
 			output.writeUTF(path);
 			output.send();
-			
-			
+
+
 			// ricevo e analizzo la risposta
 			input.receive();
 			response = input.readUTF();
@@ -141,7 +142,7 @@ public class VirtualDisk
 					System.out.println("\tFILE: " + file.getPath()+file.getFilename()+"."+file.getExtension());
 					result.add(file);
 				}			
-				
+
 				System.out.println("\n\n");
 			}
 			else
@@ -152,10 +153,10 @@ public class VirtualDisk
 			// deinizializzazione della connessione
 			deinitConnection();
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Aggiunge un nuovo file al disco
 	 * @return
@@ -174,8 +175,8 @@ public class VirtualDisk
 			output.writeUTF("INSERT");
 			output.writeVirtualFile(file);
 			output.send();
-			
-			
+
+
 			// ricevo e analizzo la risposta
 			input.receive();
 			response = input.readUTF();
@@ -198,8 +199,8 @@ public class VirtualDisk
 		}
 		return ret;
 	}
-	
-	
+
+
 	/**
 	 * Cerca un file nel disco, utilizzando query per cercare nella descrizione,
 	 * nei tags, e nel nome del file.
@@ -220,7 +221,7 @@ public class VirtualDisk
 			output.writeUTF("SEARCH");
 			output.writeUTF(query);
 			output.send();
-			
+
 			// ricevo e analizzo la risposta
 			input.receive();
 			response = input.readUTF();
@@ -264,7 +265,7 @@ public class VirtualDisk
 			output.writeUTF("GET");
 			output.writeUTF(canonicalName);
 			output.send();
-			
+
 			// ricevo e analizzo la risposta
 			input.receive();
 			response = input.readUTF();
@@ -286,18 +287,53 @@ public class VirtualDisk
 		}
 		return file;
 	}
-	
+
 	/**
 	 * Restituisce la lista dei client che possiedono la risorsa file  
 	 * @param file il file di cui conoscere le sorgenti client 
 	 * @return la lista dei client che possiedono la risorsa, o null se non 
 	 * esistono.
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public ArrayList<ClientResource> getSource(VirtualFile file)
+	public ArrayList<ClientResource> getSource(VirtualFile file) throws UnknownHostException, IOException
 	{
-		return null;
+		ArrayList<ClientResource> clients = new ArrayList<ClientResource>();
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta GETSOURCE...");
+			// invio la richiesta al server
+			output.writeUTF("GETSOURCE");
+			output.writeVirtualFile(file);
+			output.send();
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				int numClient = input.readInt();
+				System.out.println("\nNum Client online:"+numClient);
+				for(int i=0;i<numClient;i++){
+					clients.add(input.readClientResource());
+				}
+				System.out.println("\tRicevuta lista dei possessori dei file");
+			}
+			else if(response.equals("NONE")){
+				System.err.println("Nessuno possiede il file!!!");
+			}
+			else
+			{
+				System.err.println("Impossibile Ricevere il file!!!");
+			}
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return clients;
 	}
-	
+
 	/**
 	 * Segnala al disco che il file è presente in locale, ossia il client 
 	 * segnala la possibilità di fornire il file alla rete 
@@ -308,7 +344,7 @@ public class VirtualDisk
 	{
 		return false;
 	}
-	
+
 	/**
 	 * Indica al server che il file non è presente, o non è più presente in 
 	 * locale, e che quindi non può più fornire alla rete la risorsa.
@@ -319,7 +355,7 @@ public class VirtualDisk
 	{
 		return false;
 	}
-	
+
 	/**
 	 * Chiede al server, se il ticket di scricamento richiesto da altri client
 	 * è valido. Se è valido, ritorna il fil viruale da scaricare.
@@ -340,7 +376,7 @@ public class VirtualDisk
 	{
 		return name;
 	}
-	
+
 	/**
 	 * Ritorna l'url del disco
 	 * @return l'url del disco
@@ -376,40 +412,40 @@ public class VirtualDisk
 	{
 		return password;
 	}
-	
+
 	private boolean initConnection() throws UnknownHostException, IOException
 	{
 		String response;
-		
+
 		// creazione dell classi di connessione
 		socket = new Socket(url.toString(), serverPort);
-		
+
 		output = new XDiskOutputStream(socket.getOutputStream());
 		input = new XDiskInputStream(socket.getInputStream());
-		
+
 		if (sessionId == null)
 		{
 			// messaggio di saluto
 			output.writeUTF("HELO");
 			output.send();
-	
-			
+
+
 			input.receive();
 			response = input.readUTF();
-			
+
 			if (response.equals("HELO"))
 			{
 				response = input.readUTF();
 				System.out.println("Server: " + response);
-				
+
 				output.writeUTF("LOGIN");
 				output.writeUTF(userid);
 				output.writeUTF(password);
 				output.send();
-				
+
 				input.receive();
 				response = input.readUTF();
-				
+
 				if (response.equals("OK"))
 				{
 					sessionId = input.readUTF();
@@ -431,26 +467,26 @@ public class VirtualDisk
 			output.writeUTF(sessionId);
 			output.writeUTF(userid);
 			output.send();
-	
-			
+
+
 			input.receive();
 			response = input.readUTF();
-			
+
 			if (!response.equals("OK"))
 			{
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	private void deinitConnection() throws IOException
 	{
 		input.close();
 		output.close();
 		socket.close();
 	}
-	
+
 
 }

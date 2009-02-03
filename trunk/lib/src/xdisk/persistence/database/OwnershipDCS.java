@@ -92,7 +92,7 @@ public class OwnershipDCS
 	 */
 	private static Ownership objectFromCursor(ResultSet rst) throws SQLException{
 		Ownership ownership= new Ownership();
-		ownership.setFile(rst.getInt("file"));
+		ownership.setFile(rst.getString("file"));
 		ownership.setUser(rst.getString("utente"));
 		return ownership;
 	}
@@ -123,5 +123,62 @@ public class OwnershipDCS
 			  if (con != null) try {con.close();} catch (Exception e) {}
 		}
 		return ownership;
+	}
+	
+	private static final String SELECT_SQL_BY_CODE = 
+		"SELECT * " +
+		"FROM ownership " +
+		"WHERE FILE = ?";
+	public static Collection<Ownership> getUserByCode(String code) throws PersistenceException {
+		Collection<Ownership> all=null;
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_SQL_BY_CODE);
+			stm.setString(1, code);
+			System.out.println(stm);
+			rst=stm.executeQuery();
+			all = processCollectionResultSet(rst);
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return all;
+	}
+
+	private static final String SELECT_ONLINE_SQL_BY_CODE = 
+		"SELECT * " +
+		"FROM ownership own,client cli " +
+		"WHERE " +
+		"cli.userid=own.utente AND " +
+		"own.file = ?";
+	public static Collection<Ownership> getUserOnlineByCode(String code) throws PersistenceException {
+		Collection<Ownership> all=null;
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(SELECT_ONLINE_SQL_BY_CODE);
+			stm.setString(1, code);
+			rst=stm.executeQuery();
+			all = processCollectionResultSet(rst);
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return all;
 	}
 }

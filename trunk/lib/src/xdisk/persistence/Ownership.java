@@ -2,10 +2,10 @@ package xdisk.persistence;
 
 public class Ownership {
 
-	private int file;
+	private String file;
 	private String user;
 	
-	public Ownership(int file, String user) {
+	public Ownership(String file, String user) {
 		super();
 		this.file = file;
 		this.user = user;
@@ -15,11 +15,11 @@ public class Ownership {
 		super();
 	}
 
-	public int getFile() {
+	public String getFile() {
 		return file;
 	}
 
-	public void setFile(int file) {
+	public void setFile(String file) {
 		this.file = file;
 	}
 
