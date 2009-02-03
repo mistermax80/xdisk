@@ -64,7 +64,7 @@ public class FolderBean {
 		folder.setCodice(Integer.parseInt(parent.getName()));
 		FolderController.load(folder);
 		LinkedList<Folder> childs = new LinkedList<Folder>();
-		childs.addAll(FolderController.getChilds(folder));
+		childs.addAll(FolderController.getFolder(folder));
 		LinkedList<File> files = new LinkedList<File>();
 		files.addAll(FileController.getFile(folder));
 		System.out.println("files:"+files);
@@ -93,7 +93,7 @@ public class FolderBean {
 		Folder folder = new Folder();
 		folder.setCodice(Integer.parseInt(parent.getName()));
 		LinkedList<Folder> childs = new LinkedList<Folder>();
-		childs.addAll(FolderController.getChilds(folder));
+		childs.addAll(FolderController.getFolder(folder));
 		
 		for(int i=0;i<childs.size();i++){
 			String name = String.valueOf(childs.get(i).getCodice());
