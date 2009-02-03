@@ -52,6 +52,8 @@ public class XDiskServer implements ServerProcess{
 		String ipClient = client.getInetAddress().getHostAddress();
 		String hostname = client.getInetAddress().getCanonicalHostName();
 		int portClient = client.getPort();
+		String _idSession;
+		String _userId;
 		Client userClient = new Client();
 
 		System.out.println("Connection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport:"+portClient);
@@ -122,10 +124,10 @@ public class XDiskServer implements ServerProcess{
 				//Fase di HELO I richiesta di operazioni
 				System.out.print("\nFase HELO I");
 				//Controllo idSessione
-				String id = input.readUTF();
-				String userid = input.readUTF();
-				System.out.println("\n  ID: "+id+"\n  UserId: "+userid);
-				if(ClientController.checkSession(id,userid)){
+				_idSession = input.readUTF();
+				_userId = input.readUTF();
+				System.out.println("\n  ID: "+_idSession+"\n  UserId: "+_userId);
+				if(ClientController.checkSession(_idSession,_userId)){
 					output.writeUTF("OK");
 					System.out.print("Session Valide OK\n");
 				}
@@ -388,6 +390,39 @@ public class XDiskServer implements ServerProcess{
 				else if(response.equals("GOT")){//GOT
 					System.out.print("\nRequest GOT");
 					try{
+						//Ricevo il file
+						VirtualFile vFile = input.readVirtualFile();
+						//Controllo che il file sia già presente nel path specificato
+						LinkedList<File> files = new LinkedList<File>();
+						files.addAll(FileController.getFile(vFile.getPath()));
+						int i=0;
+						boolean present=false;
+						System.out.println("\n\t\tControllo esistenza file: " + vFile.getPath()+vFile.getFilename()+"."+vFile.getExtension());
+						while(!present && i<files.size()){
+							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename()))
+								present=true;
+							i++;
+						}
+						if(present){
+							//Invio conferma del caricamento
+							output.writeUTF("OK");
+							//Inserisco il file nel db
+							String codeFile = FileController.getCode(vFile.getFilename(), FolderController.getFolder(vFile.getPath()).getCodice());
+							if(!OwnershipController.isPresent(codeFile,_userId)){
+								Ownership own = new Ownership();
+								own.setFile(codeFile);
+								own.setUser(_userId);
+								OwnershipController.insert(own);
+							}
+							output.send();
+							System.out.print(":OK");								
+						}
+						else{
+							//Invio Errore perchè file già presente
+							output.writeUTF("NOTPRESENT");
+							output.send();
+							System.err.print(":OK - file non presente, è possibile aggiungere il file!");
+						}
 
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore

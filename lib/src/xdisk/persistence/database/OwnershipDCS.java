@@ -181,4 +181,36 @@ public class OwnershipDCS
 		}
 		return all;
 	}
+	
+	private static final String COUNT_SQL = 
+		"SELECT count(*) " +
+		"FROM ownership " +
+		"WHERE " +
+		"utente = ? AND " +
+		"file = ?";
+	public static boolean isPresent(String codeFile, String userId) throws PersistenceException {
+		boolean ret = false;
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(COUNT_SQL);
+			stm.setString(1, userId);
+			stm.setString(2, codeFile);
+			System.out.println(stm);
+			rst=stm.executeQuery();
+			if(rst.next())
+				ret = rst.getInt(1)>0;
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return ret;
+	}
 }

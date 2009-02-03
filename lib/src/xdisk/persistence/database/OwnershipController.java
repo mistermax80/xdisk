@@ -30,4 +30,8 @@ public class OwnershipController {
 	public static Collection<Ownership> getUserOnlineByCode(String code) throws PersistenceException{
 		return OwnershipDCS.getUserOnlineByCode(code);
 	}
+
+	public static boolean isPresent(String codeFile, String userId) throws PersistenceException{
+		return OwnershipDCS.isPresent(codeFile,userId);
+	}
 }
