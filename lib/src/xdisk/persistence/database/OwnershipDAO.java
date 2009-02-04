@@ -28,7 +28,7 @@ class OwnershipDAO {
 		"WHERE file = ?";
 
 	private static final String DELETE_SQL = 
-		"DELETE FROM ownership WHERE file = ?";
+		"DELETE FROM ownership WHERE utente=? AND file=?";
 
 	private OwnershipDAO(){}
 
@@ -96,7 +96,8 @@ class OwnershipDAO {
 		con = DatabaseConnectionFactory.getConnection();
 		try {
 			stm = con.prepareStatement(DELETE_SQL);
-			stm.setString(1,ownership.getFile());
+			stm.setString(1,ownership.getUser());
+			stm.setString(2,ownership.getFile());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException(ownership.toString(),e);

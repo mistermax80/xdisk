@@ -199,7 +199,6 @@ public class OwnershipDCS
 			stm = con.prepareStatement(COUNT_SQL);
 			stm.setString(1, userId);
 			stm.setString(2, codeFile);
-			System.out.println(stm);
 			rst=stm.executeQuery();
 			if(rst.next())
 				ret = rst.getInt(1)>0;

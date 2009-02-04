@@ -398,10 +398,44 @@ public class VirtualDisk
 	 * locale, e che quindi non può più fornire alla rete la risorsa.
 	 * @param file il file che non si può fornire
 	 * @return true se la segnalazione riesce, false altrimenti.
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public boolean notGotFile(VirtualFile file)
+	public boolean notGotFile(VirtualFile file) throws UnknownHostException, IOException
 	{
-		return false;
+		boolean ret=false;
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta NOTGOT...");
+			// invio la richiesta al server
+			output.writeUTF("NOTGOT");
+			output.writeVirtualFile(file);
+			output.send();
+
+
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				ret=true;
+				System.out.println("Rimozione presenza file inviata correttamente!");
+			}
+			else if(response.equals("NOTPRESENT")){
+				System.err.println("Il file non è presente nel sistema!");
+			}
+			else
+			{
+				System.err.println("Impossibile inserire il file!!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return ret;
 	}
 
 	/**
