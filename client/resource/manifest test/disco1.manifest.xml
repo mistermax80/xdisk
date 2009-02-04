@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdisk>
+	<name>Locale</name>
+	<description>Server locale di test</description>
+	<serveraddress>localhost</serveraddress>
+	<serverport>4444</serverport>
+	<webpaneladdress>localhost</webpaneladdress>
+	<webpanelport>8080</webpanelport>	
+</xdisk>
