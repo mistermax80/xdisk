@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 import xdisk.exception.PersistenceException;
-import xdisk.persistence.File2;
-import xdisk.persistence.database.FileController2;
+import xdisk.persistence.File;
+import xdisk.persistence.database.FileController;
 
 public class Search extends JPanel{
 
@@ -34,9 +34,9 @@ public class Search extends JPanel{
 		button = new JButton("Cerca");
 		
 		String[] colunmName = {"Codice","Nome","Dimensione","Cartella","Autore","Uploader"};
-		LinkedList<File2> files = new LinkedList<File2>();
+		LinkedList<File> files = new LinkedList<File>();
 		try {
-			files.addAll(FileController2.getAll());
+			files.addAll(FileController.getAll());
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this,e.toString(),"Errore accesso Dati",JOptionPane.ERROR_MESSAGE);
@@ -47,10 +47,6 @@ public class Search extends JPanel{
 		for(int r=0;r<rows;r++){
 				data[r][0]=String.valueOf(files.get(r).getCode());
 				data[r][1]=files.get(r).getName();
-				data[r][2]=String.valueOf(files.get(r).getDimension());
-				data[r][3]=String.valueOf(files.get(r).getFolder());
-				data[r][4]=files.get(r).getAuthor();
-				data[r][5]=files.get(r).getLoaderUserid();
 		}
 		
 		table = new JTable(data,colunmName);
