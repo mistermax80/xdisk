@@ -29,9 +29,42 @@ public class VirtualDiskManager
 		return instance;
 	}
 	
-	public ArrayList<VirtualDisk> getVirtualDisk()
+	public void add(VirtualDisk virtualDisk)
 	{
-		return virtualDisks;
+		
+	}
+	
+	public void removeByAddress(String address)
+	{
+		
+	}
+	
+	public int getNum()
+	{
+		return 0;
+	}
+	
+	public VirtualDisk get(int index)
+	{
+		return null;
+	}
+	
+	/**
+	 * Salva la configurazione corrente dei dischi in locale in un file XML
+	 * di configurazione.
+	 */
+	protected void saveConfig()
+	{
+		
+	}
+	
+	/**
+	 * Legge la configurazione dei dishci virtuali presenti sul client dal 
+	 * file XML di configurazione.
+	 */
+	protected void readConfig()
+	{
+		
 	}
 	
 }

@@ -16,8 +16,8 @@ public class XDiskClient {
 	{
 		try 
 		{
-			VirtualDisk disk = new VirtualDisk("massimo", "localhost", 
-					4444, "ciips", "c");
+			VirtualDisk disk = new VirtualDisk("massimo", "disco prova", "localhost", 
+					4444, "http://xx", 8080, "ciips", "c");
 			
 			disk.connect();
 			Thread.sleep(1000);
