@@ -377,6 +377,39 @@ public class XDiskServer implements ServerProcess{
 				else if(response.equals("NOTGOT")){//NOTGOT
 					System.out.print("\nRequest NOTGOT");
 					try{
+						//Ricevo il file
+						VirtualFile vFile = input.readVirtualFile();
+						//Controllo che il file sia già presente nel path specificato
+						LinkedList<File> files = new LinkedList<File>();
+						files.addAll(FileController.getFile(vFile.getPath()));
+						int i=0;
+						boolean present=false;
+						System.out.println("\n\t\tControllo esistenza file: " + vFile.getPath()+vFile.getFilename()+"."+vFile.getExtension());
+						while(!present && i<files.size()){
+							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename()))
+								present=true;
+							i++;
+						}
+						if(present){
+							//Invio conferma del caricamento
+							output.writeUTF("OK");
+							//Inserisco il file nel db
+							String codeFile = FileController.getCode(vFile.getFilename(), FolderController.getFolder(vFile.getPath()).getCodice());
+							if(OwnershipController.isPresent(codeFile,_userId)){
+								Ownership own = new Ownership();
+								own.setFile(codeFile);
+								own.setUser(_userId);
+								OwnershipController.delete(own);
+							}
+							output.send();
+							System.out.print(":OK");								
+						}
+						else{
+							//Invio Errore perchè il file non è presente nel sistema
+							output.writeUTF("NOTPRESENT");
+							output.send();
+							System.err.print(":OK - file non presente nel sistema!");
+						}
 
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore
@@ -423,7 +456,6 @@ public class XDiskServer implements ServerProcess{
 							output.send();
 							System.err.print(":OK - file non presente, è possibile aggiungere il file!");
 						}
-
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore
 						output.reset();

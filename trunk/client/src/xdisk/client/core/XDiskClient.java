@@ -64,7 +64,11 @@ public class XDiskClient {
 			System.err.println("===============================");
 			System.out.println(disk.getSource(file));*/
 			System.out.println("===============================");
+			disk.insertFile(file);
+			System.out.println("===============================");
 			disk.gotFile(file);
+			System.out.println("===============================");
+			disk.notGotFile(file);
 		} 
 		catch (MalformedURLException e) 
 		{
