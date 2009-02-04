@@ -29,8 +29,12 @@ import xdisk.net.XDiskOutputStream;
 public class VirtualDisk 
 {
 	private String name;
-	private String url;
+	private String serverAddress;
 	private int serverPort;
+	private String webPanelAddress;
+	private int webPanelPort;
+	private String description; 
+	
 	private String userid;
 	private String password;
 
@@ -39,23 +43,37 @@ public class VirtualDisk
 	private Socket socket;
 	private XDiskOutputStream output;
 	private XDiskInputStream input;
-
+	
+	public VirtualDisk() 
+	{
+	}	
+	
 
 	/**
 	 * Crea un nuovo disco virtuale.
 	 * 
 	 * @param name il nome del disco virtuale
-	 * @param url l'indirizzo di connessione al disco virtuale
+	 * @param description la descrizione del disco 
+	 * @param serverAddress l'indirizzo di connessione al disco virtuale
 	 * @param serverPort la porta di connessione al disco virtuale
+	 * @param webPanelAddress l'indirizzo di connessione al pannello web del 
+	 * 			disco virtuale
+	 * @param webPanelPort la porta di connessione al pannello web del 
+	 * 			disco virtuale
 	 * @param username lo userid di connessione al disco
 	 * @param password la password per la connessione al disco
 	 */
-	public VirtualDisk(String name, String url, int serverPort, String userid, 
-			String password) 
+	public VirtualDisk(String name, String description, 
+			String serverAddress, int serverPort,
+			String webPanelAddress, int webPanelPort, 
+			String userid, String password) 
 	{
 		this.name = name;
-		this.url = url;
+		this.description = description;
+		this.serverAddress = serverAddress;
 		this.serverPort = serverPort;
+		this.webPanelAddress = webPanelAddress;
+		this.webPanelPort = webPanelPort;
 		this.userid = userid;
 		this.password = password;
 	}
@@ -417,7 +435,7 @@ public class VirtualDisk
 	 */
 	public String getUrl() 
 	{
-		return url;
+		return serverAddress;
 	}
 
 	/**
@@ -427,6 +445,25 @@ public class VirtualDisk
 	public int getServerPort() 
 	{
 		return serverPort;
+	}
+	
+	
+	/**
+	 * Ritorna l'indirizzo del pannello web del server virtuale
+	 * @return l'indirizzo del pannello web del server virtuale
+	 */
+	public String getWebPanelAddress() 
+	{
+		return webPanelAddress;
+	}
+
+	/**
+	 * Ritorna la porta del pannello web
+	 * @return la porta del pannello web 
+	 */
+	public int getWebPanelPort() 
+	{
+		return webPanelPort;
 	}
 
 	/**
@@ -447,12 +484,67 @@ public class VirtualDisk
 		return password;
 	}
 
+	
+	
+	public String getServerAddress() 
+	{
+		return serverAddress;
+	}
+	
+
+	public void setServerAddress(String serverAddress) 
+	{
+		this.serverAddress = serverAddress;
+	}
+
+	public String getDescription() 
+	{
+		return description;
+	}
+
+	public void setDescription(String description) 
+	{
+		this.description = description;
+	}
+	
+	
+
+	public void setServerPort(int serverPort) 
+	{
+		this.serverPort = serverPort;
+	}
+
+	public void setName(String name) 
+	{
+		this.name = name;
+	}
+
+	public void setWebPanelAddress(String webPanelAddress) 
+	{
+		this.webPanelAddress = webPanelAddress;
+	}
+
+	public void setWebPanelPort(int webPanelPort) 
+	{
+		this.webPanelPort = webPanelPort;
+	}
+
+	public void setUserid(String userid) 
+	{
+		this.userid = userid;
+	}
+
+	public void setPassword(String password) 
+	{
+		this.password = password;
+	}
+
 	private boolean initConnection() throws UnknownHostException, IOException
 	{
 		String response;
 
 		// creazione dell classi di connessione
-		socket = new Socket(url.toString(), serverPort);
+		socket = new Socket(serverAddress.toString(), serverPort);
 
 		output = new XDiskOutputStream(socket.getOutputStream());
 		input = new XDiskInputStream(socket.getInputStream());
