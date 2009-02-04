@@ -2,18 +2,14 @@ package xdisk.client.core;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
-import sun.security.provider.MD5;
 
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
 import xdisk.VirtualResource;
-import xdisk.net.MessageInputStream;
 import xdisk.net.XDiskInputStream;
 import xdisk.net.XDiskOutputStream;
 
