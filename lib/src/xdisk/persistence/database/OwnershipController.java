@@ -34,4 +34,8 @@ public class OwnershipController {
 	public static boolean isPresent(String codeFile, String userId) throws PersistenceException{
 		return OwnershipDCS.isPresent(codeFile,userId);
 	}
+	
+	public static int remove(String userid) throws PersistenceException{
+		return OwnershipDCS.remove(userid);
+	}
 }

@@ -1,14 +1,31 @@
 package xdisk.client.gui;
 
 import java.awt.*;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Xdisk {
+import xdisk.client.core.VirtualDisk;
 
-	public static void main(String[] args){
+public class Xdisk {
+	
+	VirtualDisk disk;
+	private boolean connect;
+
+	public Xdisk() {
+		super();
+		connect = false;
+	}
+
+	public boolean isConnect() {
+		return connect;
+	}
+
+	public void setConnect(boolean connect) {
+		this.connect = connect;
+	}
+	
+	public void execute(){
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
 			UIManager.setLookAndFeel(
@@ -61,5 +78,10 @@ public class Xdisk {
 		frame.pack();
 		frame.setSize(640, 500);
 		frame.setVisible(true);
+	}
+	
+	public static void main(String[] args){
+		Xdisk xdisk = new Xdisk();
+		xdisk.execute();
 	}
 }

@@ -30,4 +30,8 @@ public class ClientController {
 	public static boolean checkSession(String id, String userid) throws PersistenceException {
 		return ClientDCS.checkSession(id, userid);
 	}
+
+	public static int remove(String userid) throws PersistenceException {
+		return ClientDCS.remove(userid);		
+	}
 }
