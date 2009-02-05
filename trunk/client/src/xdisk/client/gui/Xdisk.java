@@ -5,26 +5,14 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import xdisk.client.core.VirtualDisk;
-
 public class Xdisk {
+	private int index;
 	
-	VirtualDisk disk;
-	private boolean connect;
-
-	public Xdisk() {
+	public Xdisk(int index) {
 		super();
-		connect = false;
+		this.index=index;
 	}
 
-	public boolean isConnect() {
-		return connect;
-	}
-
-	public void setConnect(boolean connect) {
-		this.connect = connect;
-	}
-	
 	public void execute(){
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
@@ -48,11 +36,11 @@ public class Xdisk {
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel home = new Home();
-		JPanel upload = new Upload();
-		JPanel download = new Download();
-		JPanel search = new Search();
-		JPanel share = new Share();
+		JPanel home = new Home(index);
+		JPanel upload = new Upload(index);
+		JPanel download = new Download(index);
+		JPanel search = new Search(index);
+		JPanel share = new Share(index);
 		JPanel transfert = new Transfert();
 
 		JTabbedPane tab = new JTabbedPane(SwingConstants.TOP);
@@ -85,7 +73,7 @@ public class Xdisk {
 	}
 	
 	public static void main(String[] args){
-		Xdisk xdisk = new Xdisk();
+		Xdisk xdisk = new Xdisk(0);
 		xdisk.execute();
 	}
 }

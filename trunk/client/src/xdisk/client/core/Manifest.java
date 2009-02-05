@@ -53,7 +53,9 @@ public class Manifest
 		virtualDisk.setServerPort(new Integer(getValue("serverport")));
 		virtualDisk.setWebPanelAddress(getValue("webpaneladdress"));
 		virtualDisk.setWebPanelPort(new Integer(getValue("webpanelport")));
-		
+		virtualDisk.setUserid(getValue("userid"));
+		virtualDisk.setPassword(getValue("password"));
+		//virtualDisk.setUserid(getValue("localport"));
 		// creazine dell'oggetto del disco virtuale
 		return virtualDisk;
 	}

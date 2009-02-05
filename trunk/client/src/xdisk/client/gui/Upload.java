@@ -13,17 +13,13 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import xdisk.VirtualFile;
-import xdisk.VirtualFolder;
-import xdisk.VirtualResource;
 import xdisk.client.core.VirtualDisk;
-import xdisk.client.data.FileModel;
+import xdisk.client.core.VirtualDiskManager;
 import xdisk.client.data.TreeModel;
-import xdisk.client.gui.Download.ActionSelectFolder;
 
 public class Upload extends JPanel{
 
@@ -54,12 +50,13 @@ public class Upload extends JPanel{
 	private JDialog dialog;
 
 	private File file;
-	private String userid;
+	private int index;
 
-	public Upload() {
+	public Upload(int index) {
 		super(new BorderLayout());
+		this.index=index;
+		disk = VirtualDiskManager.getInstance().get(index);
 
-		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, "ciips", "c");
 		panel = new JPanel(new GridLayout(4,2));
 		panelOk = new JPanel(new BorderLayout());
 		panelButt = new JPanel(new BorderLayout());
@@ -101,14 +98,11 @@ public class Upload extends JPanel{
 		this.add(panel,BorderLayout.NORTH);
 		this.add(panelOk,BorderLayout.SOUTH);
 		file = fileCh.getSelectedFile();
-
-		userid = "ciips";
-
-		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, userid, "c");
 	}
 
 	public class ActionPath implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			disk = VirtualDiskManager.getInstance().get(index);
 			dialog = new JDialog();
 			dialog.setLayout(new BorderLayout());
 			JButton button = new JButton("OK");
@@ -196,13 +190,12 @@ public class Upload extends JPanel{
 				vFile.setExtension(extension);
 				vFile.setFilename(fileName);
 				vFile.setMime("<mime>");
-				vFile.setOwner(userid);
+				vFile.setOwner(disk.getUserid());
 				vFile.setPath(path.getText());
 				vFile.setSize(2000);
 				vFile.setTags(tags.getText());
 				System.out.println("file virt che carico"+vFile);
 				try {
-					disk.connect();
 					disk.insertFile(vFile);
 					//Salvare lista dei file messi a condividere
 				} catch (UnknownHostException e1) {
