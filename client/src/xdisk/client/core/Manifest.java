@@ -57,8 +57,8 @@ public class Manifest
 		// creazine dell'oggetto del disco virtuale
 		return virtualDisk;
 	}
-	
-	protected String getValue(String value)
+		
+	public String getValue(String value)
 	{
 		Element elem = (Element)doc.getElementsByTagName(value).item(0);
 	    NodeList fstNm = elem.getChildNodes();
