@@ -238,7 +238,7 @@ public class VirtualDisk
 		// inizializzazione della connessione
 		if (initConnection())
 		{
-			System.out.println("Invio richiesta SEARCH...");
+			System.out.println("Invio richiesta SEARCH...query:"+query);
 			// invio la richiesta al server
 			output.writeUTF("SEARCH");
 			output.writeUTF(query);
