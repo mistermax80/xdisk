@@ -12,10 +12,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import xdisk.VirtualFile;
-import xdisk.VirtualResource;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
-import xdisk.client.gui.Download.ActionSelectFile;
 
 public class Search extends JPanel{
 
@@ -34,7 +32,6 @@ public class Search extends JPanel{
 	private JList list;
 
 	private VirtualDisk disk;
-	private String current_path;
 	private VirtualFile current_file;
 
 	private DefaultListModel listModel;
@@ -73,8 +70,9 @@ public class Search extends JPanel{
 	public class ActionDownload implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if(current_file!=null)
-					disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+				if(current_file!=null){
+					VirtualFile file = 	disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());	
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, 
