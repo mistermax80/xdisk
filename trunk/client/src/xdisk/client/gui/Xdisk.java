@@ -53,6 +53,7 @@ public class Xdisk {
 		JPanel download = new Download();
 		JPanel search = new Search();
 		JPanel share = new Share();
+		JPanel transfert = new Transfert();
 
 		JTabbedPane tab = new JTabbedPane(SwingConstants.TOP);
 		
@@ -62,12 +63,14 @@ public class Xdisk {
 			Image imageDownload = ImageIO.read(Xdisk.class.getResource("images/download1.png"));
 			Image imageSearch = ImageIO.read(Xdisk.class.getResource("images/search.png"));
 			Image imageShare = ImageIO.read(Xdisk.class.getResource("images/share.png"));
+			Image imageTransfert = ImageIO.read(Xdisk.class.getResource("images/transfert.png"));
 			
 			tab.addTab("Home",new ImageIcon(imageHome),home);
 			tab.addTab("Upload",new ImageIcon(imageUpload),upload);
 			tab.addTab("Download",new ImageIcon(imageDownload),download);
 			tab.addTab("Search",new ImageIcon(imageSearch),search);
 			tab.addTab("Share",new ImageIcon(imageShare),share);
+			tab.addTab("Transfert",new ImageIcon(imageTransfert),transfert);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,7 +79,8 @@ public class Xdisk {
 		frame.getContentPane().add(tab, BorderLayout.CENTER);
 		//Display the window.
 		frame.pack();
-		frame.setSize(640, 500);
+		frame.setSize(670, 500);
+		frame.setLocation(300, 200);
 		frame.setVisible(true);
 	}
 	
