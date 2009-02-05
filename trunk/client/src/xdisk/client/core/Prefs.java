@@ -12,7 +12,7 @@ public class Prefs {
 	private static final String PASSWORD = "password";
 	
 	private static final String url = "<192.168.0.1|www.server.com>";
-	private static final String port = "<port>";
+	private static final int port = 4444;
 	private static final String username = "<username>";
 	private static final String password = "<password>";
 	
@@ -25,8 +25,8 @@ public class Prefs {
 	public String getUrl(){
 		return prefs.get(URL,url);
 	}
-	public String getPort(){
-		return prefs.get(PORT,port);
+	public int getPort(){
+		return prefs.getInt(PORT,port);
 	}
 	public String getUsername(){
 		return prefs.get(USERNAME,username);

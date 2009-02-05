@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
+import com.sun.org.apache.bcel.internal.generic.InstructionConstants.Clinit;
+
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
@@ -478,12 +480,27 @@ public class XDiskServer implements ServerProcess{
 						e.printStackTrace();
 					}
 				}
+				else if(response.equals("DISCONNECT")){//DISCONNECT
+					System.out.print("\nRequest DISCONNECT");
+					try{
+						//Cancello i riferimenti dell'utente che non è più online
+						ClientController.remove(_userId);
+						OwnershipController.remove(_userId);
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
+				}
 				else{
-					System.err.print("PROTOCOL COMMAND UNKNOWN!!!");
+					System.err.print("PROTOCOL COMMAND UNKNOWN!!! Response received:"+response);
 				}				
 			}
 			else{
-				System.err.print("Protocol Command unknow!!!");
+				System.err.print("Protocol Command unknow!!! Response received:"+response);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

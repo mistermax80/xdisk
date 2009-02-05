@@ -212,4 +212,26 @@ public class OwnershipDCS
 		}
 		return ret;
 	}
+
+	private static final String REMOVE_BY_USER_SQL = "DELETE FROM ownership WHERE utente=?";
+	public static int remove(String userid) throws PersistenceException {
+		Connection con=null;
+		PreparedStatement stm=null;
+		ResultSet rst=null;
+		int rowsDeleted;
+		con = DatabaseConnectionFactory.getConnection();
+		try {
+			stm = con.prepareStatement(REMOVE_BY_USER_SQL);
+			stm.setString(1, userid);
+			rowsDeleted = stm.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (rst != null) try {rst.close();} catch (Exception e) {}
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return rowsDeleted;
+	}
 }

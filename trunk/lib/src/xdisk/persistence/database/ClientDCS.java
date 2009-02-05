@@ -188,6 +188,25 @@ public class ClientDCS
 		}
 		return validate;
 	}
+
+	private static final String REMOVE_BY_USERID_SQL = "DELETE FROM client WHERE userid=?";
+	public static int remove(String userid) throws PersistenceException {
+		Connection con = DatabaseConnectionFactory.getConnection();
+		PreparedStatement stm=null;
+		int rowsDeleted;
+		try {
+			stm = con.prepareStatement(REMOVE_BY_USERID_SQL);
+			stm.setString(1, userid);
+			rowsDeleted = stm.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return rowsDeleted;
+	}
 }
 
 

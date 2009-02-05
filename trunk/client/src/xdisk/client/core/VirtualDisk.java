@@ -82,12 +82,8 @@ public class VirtualDisk
 	 */
 	public boolean connect() throws UnknownHostException, IOException
 	{
-		String response;
-
 		// inizializzazione della connessione
 		initConnection();		
-
-
 
 		// deinizializzazione della connessione
 		deinitConnection();
@@ -97,10 +93,22 @@ public class VirtualDisk
 
 	/**
 	 * Effettua la disconnessione dal server del disco virtuale
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public void disconnect()
+	public void disconnect() throws UnknownHostException, IOException
 	{
-
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta DISCONNECT...");
+			// invio la richiesta al server
+			output.writeUTF("DISCONNECT");
+			output.send();
+			// deinizializzazione della connessione
+			deinitConnection();
+			sessionId=null;
+		}
 	}
 
 	/**
@@ -126,7 +134,7 @@ public class VirtualDisk
 		// inizializzazione della connessione
 		if (initConnection())
 		{
-			System.out.println("Invio richiesta path...");
+			System.out.println("Invio richiesta path:"+path);
 			// invio la richiesta al server
 			output.writeUTF("GETLIST");
 			output.writeUTF(path);
@@ -265,7 +273,7 @@ public class VirtualDisk
 	 * Ritorna il file virtuale sul disco con con nome del file pari a filename
 	 * @param canonicalName il nome del file del disco virtuale da recuperare con tutto il suo path
 	 * @return il file virtuale se presente sul disco, false altrimenti
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public VirtualFile getFile(String canonicalName) throws IOException
 	{
@@ -274,7 +282,7 @@ public class VirtualDisk
 		// inizializzazione della connessione
 		if (initConnection())
 		{
-			System.out.println("Invio richiesta GET...");
+			System.out.println("Invio richiesta GET...file:"+canonicalName);
 			// invio la richiesta al server
 			output.writeUTF("GET");
 			output.writeUTF(canonicalName);
