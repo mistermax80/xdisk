@@ -42,8 +42,8 @@ public class XDiskClient {
 			disk.insertFile(file);
 			Thread.sleep(1000);
 			disk.getList("/prova/");
-			Thread.sleep(1000);
-			System.out.println(disk.search(""));
+			Thread.sleep(1000);*/
+			System.out.println(disk.search("doc"));/*
 			Thread.sleep(1000);
 			System.out.println("===============================");
 			System.out.println(disk.getFile("/prova/picchio.sys"));
@@ -63,12 +63,12 @@ public class XDiskClient {
 			file.setPath("/prova/picchio/");
 			System.err.println("===============================");
 			System.out.println(disk.getSource(file));*/
-			System.out.println("===============================");
+		/*	System.out.println("===============================");
 			disk.insertFile(file);
 			System.out.println("===============================");
 			disk.gotFile(file);
 			System.out.println("===============================");
-			disk.notGotFile(file);
+			disk.notGotFile(file);*/
 		} 
 		catch (MalformedURLException e) 
 		{

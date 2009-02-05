@@ -62,6 +62,7 @@ public class Download extends JPanel{
 
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(new ActionSelectFile());
 		tree = new JTree(root);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);

@@ -2,62 +2,114 @@ package xdisk.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import xdisk.exception.PersistenceException;
-import xdisk.persistence.File;
-import xdisk.persistence.database.FileController;
+import xdisk.VirtualFile;
+import xdisk.VirtualResource;
+import xdisk.client.core.VirtualDisk;
+import xdisk.client.data.FileModel;
+import xdisk.client.gui.Download.ActionSelectFile;
 
 public class Search extends JPanel{
 
 	private static final long serialVersionUID = -4944887504788487152L;
-	
+
 	private JPanel panel1 = null;
 	private JScrollPane panel2 = null;
-	
+	private JPanel panel3;
+
 	private JLabel searchLabel = null;
 	private JTextField search = null;
-	
-	private JTable table =  null;
 
 	private JButton button;
-	
+	private JButton button2;
+
+	private JList list;
+
+	private VirtualDisk disk;
+	private String current_path;
+	private VirtualFile current_file;
+
+	private DefaultListModel listModel;
+
 	public Search() {
 		super(new BorderLayout());
-		
+
+		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, "ciips", "c");
+
 		panel1 = new JPanel(new GridLayout(1,3));
-		
-		searchLabel = new JLabel("Nome File:");
+		panel3 = new JPanel();
+
+		searchLabel = new JLabel("Ricerca:");
 		search = new JTextField();
 		button = new JButton("Cerca");
+		button.addActionListener(new ActionSearch());
+		button2 = new JButton("Download");
+		button2.addActionListener(new ActionSearch());
 		
-		String[] colunmName = {"Codice","Nome","Dimensione","Cartella","Autore","Uploader"};
-		LinkedList<File> files = new LinkedList<File>();
-		try {
-			files.addAll(FileController.getAll());
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this,e.toString(),"Errore accesso Dati",JOptionPane.ERROR_MESSAGE);
-		}
-		int rows = files.size();
-		int cols = colunmName.length;
-		String[][] data = new String[rows][cols];
-		for(int r=0;r<rows;r++){
-				data[r][0]=String.valueOf(files.get(r).getCode());
-				data[r][1]=files.get(r).getName();
-		}
-		
-		table = new JTable(data,colunmName);
-		table.setToolTipText("Elenco File");
-		
+		listModel = new DefaultListModel();
+		list = new JList(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addListSelectionListener(new ActionSelectFile());
+
 		panel1.add(searchLabel);
 		panel1.add(search);
 		panel1.add(button);
-		panel2 = new JScrollPane(table);		
-		
+		panel2 = new JScrollPane(list);
+		panel3.add(button2);
+
 		this.add(panel1,BorderLayout.NORTH);
 		this.add(panel2,BorderLayout.CENTER);
+		this.add(panel3,BorderLayout.SOUTH);
+	}
+
+	public class ActionDownload implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(current_file!=null)
+					disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, 
+						"Errore nel recupero del file dal server!!!", "Errore", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	public class ActionSearch implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				disk.connect();
+				LinkedList<VirtualFile> files = new LinkedList<VirtualFile>();
+				files.addAll(disk.search(search.getText()));
+				System.out.println(files);
+				listModel.clear();
+				for(int i=0;i<files.size();i++){
+					VirtualFile file = (VirtualFile) files.get(i);
+					listModel.addElement(new FileModel(file));					
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, 
+						"Errore nella ricerca del file dal server!!!", "Errore", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	public class ActionSelectFile implements ListSelectionListener {
+
+		public void valueChanged(ListSelectionEvent arg0) {
+			if(list.getSelectedIndex()>-1){
+				FileModel file = (FileModel)list.getSelectedValue();
+				current_file = file.getFile();
+			}
+		}
+
 	}
 }
