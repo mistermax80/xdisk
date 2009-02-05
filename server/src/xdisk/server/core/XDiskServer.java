@@ -5,8 +5,6 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants.Clinit;
-
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
@@ -247,6 +245,7 @@ public class XDiskServer implements ServerProcess{
 					try{
 						//Letto il file da cercare
 						String query = input.readUTF();
+						System.out.println("query:"+query);
 						LinkedList<File> files = new LinkedList<File>();
 						files.addAll(FileController.search(query));
 						int numFiles=files.size();
