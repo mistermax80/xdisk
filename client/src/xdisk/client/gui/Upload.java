@@ -32,72 +32,84 @@ public class Upload extends JPanel{
 	private JFileChooser fileCh;
 	private JPanel panel;
 	private JPanel panelButt;
+	private JPanel panelAddFile;
+	private JPanel panelOk;
 
 	private JLabel tagsLabel;
 	private JLabel descrLabel;
 
 	private JButton pathButton;
+	private JButton fileButton;
+	private JButton okButton;
 
 	private JTextField tags;
 	private JTextField descr;
 	private JTextField path;
+	private JTextField fileText;
 
 	private VirtualDisk disk;
 	private String current_path;
 
-	JTree tree;
+	private JTree tree;
+	private JDialog dialog;
+
+	private File file;
+	private String userid;
 
 	public Upload() {
 		super(new BorderLayout());
 
 		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, "ciips", "c");
-		panel = new JPanel(new GridLayout(3,2));
+		panel = new JPanel(new GridLayout(4,2));
+		panelOk = new JPanel(new BorderLayout());
 		panelButt = new JPanel(new BorderLayout());
+		panelAddFile = new JPanel(new BorderLayout());
 
 		tagsLabel = new JLabel("Tag:");
-		pathButton = new JButton("Path:");
 		descrLabel = new JLabel("Descrizione:");
+		pathButton = new JButton("Path:");
+		fileButton = new JButton("File:");
+		okButton= new JButton("Carica");
 
 		tags = new JTextField();
 		path = new JTextField();
 		descr = new JTextField();
+		fileText = new JTextField();
 
 		fileCh = new JFileChooser();
 
 		path.setEditable(false);
 		pathButton.addActionListener(new ActionPath());
+		panelButt.add(pathButton,BorderLayout.WEST);
+
+		fileText.setEditable(false);
+		fileButton.addActionListener(new ActionFile());
+		panelAddFile.add(fileButton,BorderLayout.WEST);
+
+		panelOk.add(okButton);
+		okButton.addActionListener(new ActionUpload());
+
 		panel.add(tagsLabel);
 		panel.add(tags);
 		panel.add(descrLabel);
 		panel.add(descr);
-		panelButt.add(pathButton,BorderLayout.WEST);
 		panel.add(panelButt);
 		panel.add(path);
+		panel.add(panelAddFile);
+		panel.add(fileText);
 
 		this.add(panel,BorderLayout.NORTH);
-		this.add(fileCh);
+		this.add(panelOk,BorderLayout.SOUTH);
+		file = fileCh.getSelectedFile();
 
-		File file = fileCh.getSelectedFile();
+		userid = "ciips";
 
-		String userid = "ciips";
-		VirtualDisk disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, userid, "c");
-
-		if(file!=null){
-			VirtualFile vFile = new VirtualFile();
-			vFile.setDescription(descr.getText());
-			vFile.setExtension("extension");
-			vFile.setFilename(file.getName());
-			vFile.setMime("<mime>");
-			vFile.setOwner(userid);
-			vFile.setPath("/");
-			vFile.setSize((int) file.getUsableSpace());
-			vFile.setTags(tags.getText());
-		}
+		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, userid, "c");
 	}
 
 	public class ActionPath implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JDialog dialog = new JDialog();
+			dialog = new JDialog();
 			dialog.setLayout(new BorderLayout());
 			JButton button = new JButton("OK");
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode("/");
@@ -106,7 +118,7 @@ public class Upload extends JPanel{
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			tree.addTreeSelectionListener(new ActionSelectFolder());
 
-			button.addActionListener(new AddPath());
+			button.addActionListener(new ActionAddPath());
 			JScrollPane pane = new JScrollPane(tree);
 			JPanel panelButton = new JPanel();
 			panelButton.add(button);
@@ -117,10 +129,28 @@ public class Upload extends JPanel{
 			dialog.setVisible(true);
 		}
 	}
-	
-	public class AddPath implements ActionListener {
+
+	public class ActionAddPath implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			path.setText(current_path);
+			dialog.setVisible(false);
+		}
+	}
+
+	public class ActionFile implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == fileButton) {
+				int returnVal = fileCh.showOpenDialog(Upload.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					file = fileCh.getSelectedFile();
+					try {
+						fileText.setText(file.getCanonicalPath());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 
@@ -141,6 +171,47 @@ public class Upload extends JPanel{
 				System.out.println(current_path);
 			}
 			else{
+			}
+		}
+	}
+	public class ActionUpload implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			file = fileCh.getSelectedFile();
+			System.out.println("file selezionato"+file);
+
+			String[] name = file.getName().split("\\.");
+			String fileName = "";
+			String extension = "";
+			for(int i=0;i<name.length;i++){
+				if(i<name.length-1)
+					fileName+= name[i]+".";
+				if(i==name.length-1)
+					extension = name[name.length-1];					
+			}
+			
+			fileName=fileName.substring(0,fileName.length()-1);
+			if(file!=null){
+				VirtualFile vFile = new VirtualFile();
+				vFile.setDescription(descr.getText());
+				vFile.setExtension(extension);
+				vFile.setFilename(fileName);
+				vFile.setMime("<mime>");
+				vFile.setOwner(userid);
+				vFile.setPath(path.getText());
+				vFile.setSize(2000);
+				vFile.setTags(tags.getText());
+				System.out.println("file virt che carico"+vFile);
+				try {
+					disk.connect();
+					disk.insertFile(vFile);
+					//Salvare lista dei file messi a condividere
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
