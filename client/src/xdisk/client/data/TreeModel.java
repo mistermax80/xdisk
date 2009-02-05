@@ -14,7 +14,6 @@ import xdisk.client.core.VirtualDisk;
 public class TreeModel {
 	public static void tree(DefaultMutableTreeNode parent, VirtualDisk disk){
 		try {
-			disk.connect();
 			//System.out.println(parent.toString());
 			LinkedList<VirtualResource> resources = new LinkedList<VirtualResource>();
 			TreeNode[] paths = parent.getPath();

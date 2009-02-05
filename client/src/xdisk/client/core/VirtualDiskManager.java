@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class VirtualDiskManager 
 {
-	private VirtualDiskManager instance = null;
+	private static VirtualDiskManager instance = null;
 	private ArrayList<VirtualDisk> virtualDisks;
 	
 	
@@ -21,32 +21,32 @@ public class VirtualDiskManager
 		
 	}
 	
-	public VirtualDiskManager getInstance()
+	public static synchronized VirtualDiskManager getInstance()
 	{
 		if (instance == null)
 			instance = new VirtualDiskManager();
-		
+
 		return instance;
 	}
 	
 	public void add(VirtualDisk virtualDisk)
 	{
-		
+		virtualDisks.add(virtualDisk);
 	}
 	
 	public void removeByAddress(String address)
 	{
-		
+
 	}
 	
 	public int getNum()
 	{
-		return 0;
+		return virtualDisks.size();
 	}
 	
 	public VirtualDisk get(int index)
 	{
-		return null;
+		return virtualDisks.get(index);
 	}
 	
 	/**
@@ -59,12 +59,15 @@ public class VirtualDiskManager
 	}
 	
 	/**
-	 * Legge la configurazione dei dishci virtuali presenti sul client dal 
+	 * Legge la configurazione dei dischi virtuali presenti sul client dal 
 	 * file XML di configurazione.
 	 */
 	protected void readConfig()
 	{
-		
+		//Scandisce tutti i file di configurazione presenti e crea vari dischi...
+		Manifest manifest = new Manifest();
+		VirtualDisk disk = manifest.getVirtualDisk("/home/massimo/workspace/client/resource/manifest test/disco1.manifest.xml");
+		virtualDisks.add(disk);
 	}
 	
 }

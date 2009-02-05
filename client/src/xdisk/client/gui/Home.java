@@ -11,9 +11,8 @@ import java.net.UnknownHostException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import xdisk.client.core.Prefs;
 import xdisk.client.core.VirtualDisk;
-import xdisk.exception.PersistenceException;
+import xdisk.client.core.VirtualDiskManager;
 
 public class Home extends JPanel{
 
@@ -48,34 +47,31 @@ public class Home extends JPanel{
 	private static final String CONNECT="Connesso-Autenticato";
 	private static final String DISCONNECT="Disconnesso";
 
-	private Prefs prefs;
+	private Image imageBackground;
+	private Image imageConnect;
+	private Image imageDisconnect;
+	private Image imageSave;
+	private Image imageDefault;
+	private Image imageStateConn;
+	private Image imageStateDisconn;
 
-	Image imageBackground;
-	Image imageConnect;
-	Image imageDisconnect;
-	Image imageSave;
-	Image imageDefault;
-	Image imageStateConn;
-	Image imageStateDisconn;
+	private VirtualDisk disk;
+	
 
-	VirtualDisk disk;
-	private boolean connect;
-
-	public Home() {
+	public Home(int index) {
 		super(new BorderLayout());
-
-		connect=false;
-
+		
+		disk = VirtualDiskManager.getInstance().get(index);
+		
 		JPanel panel = new JPanel(new GridLayout(6,2));
 		JPanel panel3 = new JPanel(new GridLayout(1,4));
 		panelState = new JPanel(new BorderLayout());
 
-		prefs=new Prefs();
 
-		url = prefs.getUrl();
-		port = prefs.getPort();
-		username = prefs.getUsername();
-		password = prefs.getPassword();
+		url = disk.getUrl();
+		port = disk.getServerPort();
+		username = disk.getUserid();
+		password = disk.getPassword();
 
 		urlLabel = new JLabel("Url server:");
 		portLabel = new JLabel("Porta server:");
@@ -117,7 +113,7 @@ public class Home extends JPanel{
 		button4.addActionListener(new ActionDefault());
 
 		stateText.setEditable(false);
-		updateState(connect);
+		updateState(disk.isConnect());
 
 		panel.add(urlLabel);
 		panel.add(urlText);
@@ -149,9 +145,8 @@ public class Home extends JPanel{
 
 		public void actionPerformed(ActionEvent e) {
 			try {
-				disk = new VirtualDisk("xdisk","disco virtuale",url,port,"http://xx", 8080, username, password);
-				connect = disk.connect();
-				updateState(connect);
+				disk.connect();
+				updateState(disk.isConnect());
 			} catch (UnknownHostException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Host "+url+" non raggiungibile", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -167,8 +162,7 @@ public class Home extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				disk.disconnect();
-				connect=false;
-				updateState(connect);
+				updateState(disk.isConnect());
 
 			} catch (UnknownHostException e1) {
 				e1.printStackTrace();
@@ -184,34 +178,19 @@ public class Home extends JPanel{
 
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
-			try {
-				prefs.put(urlText.getText(), portText.getText(), usernameText.getText(), passwordText.getText());
-				prefs.storeData();
-				url = urlText.getText();
-				port = Integer.parseInt(portText.getText());
-				username = usernameText.getText();
-				password = passwordText.getText();
-				JOptionPane.showMessageDialog(null, "Salvataggio preferenze!");
-			} catch (PersistenceException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Errore nel salvataggio preferenze!", "Errore", JOptionPane.ERROR_MESSAGE);
-			}
+			//prefs.put(urlText.getText(), portText.getText(), usernameText.getText(), passwordText.getText());
+			//prefs.storeData();
+			url = urlText.getText();
+			port = Integer.parseInt(portText.getText());
+			username = usernameText.getText();
+			password = passwordText.getText();
+			JOptionPane.showMessageDialog(null, "Salvataggio preferenze!");
 		}
 	}
 
 	public class ActionDefault implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			try {
-				prefs.clearData();
-				urlText.setText(prefs.getUrl());
-				portText.setText(String.valueOf(prefs.getPort()));
-				usernameText.setText(prefs.getUsername());
-				passwordText.setText(prefs.getPassword());
-			} catch (PersistenceException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Errore nel caricamento preferenze default!", "Errore", JOptionPane.ERROR_MESSAGE);
-			}
 		}
 	}
 
@@ -227,16 +206,6 @@ public class Home extends JPanel{
 		button1.setEnabled(!stateConnected);
 		button2.setEnabled(stateConnected);
 	}
-
-	public boolean isConnect() {
-		return connect;
-	}
-
-	public void setConnect(boolean connect) {
-		this.connect = connect;
-	}
-	
-	
 }
 
 

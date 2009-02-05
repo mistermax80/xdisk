@@ -16,7 +16,7 @@ public class Share extends JPanel{
 
 	private JButton button;
 	
-	public Share() {
+	public Share(int index) {
 	
 	}
 }

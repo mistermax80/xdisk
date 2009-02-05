@@ -13,6 +13,7 @@ import javax.swing.event.ListSelectionListener;
 
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
+import xdisk.client.core.VirtualDiskManager;
 import xdisk.client.data.FileModel;
 
 public class Search extends JPanel{
@@ -36,10 +37,10 @@ public class Search extends JPanel{
 
 	private DefaultListModel listModel;
 
-	public Search() {
+	public Search(int index) {
 		super(new BorderLayout());
 
-		disk = new VirtualDisk("xdisk","disco virtuale","localhost",4444,"http://xx", 8080, "ciips", "c");
+		disk = VirtualDiskManager.getInstance().get(index);
 
 		panel1 = new JPanel(new GridLayout(1,3));
 		panel3 = new JPanel();
@@ -71,7 +72,8 @@ public class Search extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null){
-					VirtualFile file = 	disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());	
+					VirtualFile file = 	disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+					System.out.println("Download file:"+file);
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -83,7 +85,6 @@ public class Search extends JPanel{
 	public class ActionSearch implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
-				disk.connect();
 				LinkedList<VirtualFile> files = new LinkedList<VirtualFile>();
 				files.addAll(disk.search(search.getText()));
 				System.out.println(files);

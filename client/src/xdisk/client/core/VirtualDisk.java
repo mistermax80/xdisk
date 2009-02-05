@@ -30,7 +30,7 @@ public class VirtualDisk
 	private String webPanelAddress;
 	private int webPanelPort;
 	private String description; 
-	
+
 	private String userid;
 	private String password;
 
@@ -39,11 +39,14 @@ public class VirtualDisk
 	private Socket socket;
 	private XDiskOutputStream output;
 	private XDiskInputStream input;
-	
+
+	private boolean connect;
+
 	public VirtualDisk() 
 	{
+		super();
 	}	
-	
+
 
 	/**
 	 * Crea un nuovo disco virtuale.
@@ -87,7 +90,6 @@ public class VirtualDisk
 
 		// deinizializzazione della connessione
 		deinitConnection();
-
 		return true;
 	}
 
@@ -107,8 +109,9 @@ public class VirtualDisk
 			output.send();
 			// deinizializzazione della connessione
 			deinitConnection();
-			sessionId=null;
 		}
+		sessionId=null;
+		connect=false;
 	}
 
 	/**
@@ -484,8 +487,8 @@ public class VirtualDisk
 	{
 		return serverPort;
 	}
-	
-	
+
+
 	/**
 	 * Ritorna l'indirizzo del pannello web del server virtuale
 	 * @return l'indirizzo del pannello web del server virtuale
@@ -522,13 +525,13 @@ public class VirtualDisk
 		return password;
 	}
 
-	
-	
+
+
 	public String getServerAddress() 
 	{
 		return serverAddress;
 	}
-	
+
 
 	public void setServerAddress(String serverAddress) 
 	{
@@ -544,8 +547,8 @@ public class VirtualDisk
 	{
 		this.description = description;
 	}
-	
-	
+
+
 
 	public void setServerPort(int serverPort) 
 	{
@@ -615,17 +618,21 @@ public class VirtualDisk
 					sessionId = input.readUTF();
 					System.out.println("Login eseguito con successo, sessionId = " + 
 							sessionId);
+					connect=true;
+					return true;
 				}
 				else
 				{
 					System.out.println("Login fallito...");
+					sessionId=null;
+					connect=false;
 					return false;
 				}
 			}
 		}
 		else // già loggati
 		{
-			// messaggio di saluto
+			// messaggio di salutoconnect=false;
 			System.out.println("Send HELO I");
 			output.writeUTF("HELO I");
 			output.writeUTF(sessionId);
@@ -650,6 +657,11 @@ public class VirtualDisk
 		input.close();
 		output.close();
 		socket.close();
+	}
+
+
+	public boolean isConnect() {
+		return connect;
 	}
 
 
