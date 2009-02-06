@@ -13,7 +13,6 @@ import javax.swing.event.ListSelectionListener;
 
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
-import xdisk.client.core.VirtualDiskManager;
 import xdisk.client.data.FileModel;
 
 public class Search extends JPanel{
@@ -37,10 +36,10 @@ public class Search extends JPanel{
 
 	private DefaultListModel listModel;
 
-	public Search(int index) {
+	public Search(VirtualDisk disk) {
 		super(new BorderLayout());
 
-		disk = VirtualDiskManager.getInstance().get(index);
+		this.disk=disk;
 
 		panel1 = new JPanel(new GridLayout(1,3));
 		panel3 = new JPanel();

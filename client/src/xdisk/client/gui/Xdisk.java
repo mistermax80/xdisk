@@ -5,12 +5,15 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import xdisk.client.core.VirtualDisk;
+
 public class Xdisk {
-	private int index;
 	
-	public Xdisk(int index) {
+	private VirtualDisk disk;
+	
+	public Xdisk(VirtualDisk disk) {
 		super();
-		this.index=index;
+		this.disk=disk;
 	}
 
 	public void execute(){
@@ -36,12 +39,12 @@ public class Xdisk {
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel home = new Home(index);
-		JPanel upload = new Upload(index);
-		JPanel download = new Download(index);
-		JPanel search = new Search(index);
-		JPanel share = new Share(index);
-		JPanel transfert = new Transfert();
+		JPanel home = new Home(disk);
+		JPanel upload = new Upload(disk);
+		JPanel download = new Download(disk);
+		JPanel search = new Search(disk);
+		JPanel share = new Share(disk);
+		JPanel transfert = new Transfert(disk);
 
 		JTabbedPane tab = new JTabbedPane(SwingConstants.TOP);
 		
@@ -70,10 +73,5 @@ public class Xdisk {
 		frame.setSize(670, 500);
 		frame.setLocation(300, 200);
 		frame.setVisible(true);
-	}
-	
-	public static void main(String[] args){
-		Xdisk xdisk = new Xdisk(0);
-		xdisk.execute();
 	}
 }

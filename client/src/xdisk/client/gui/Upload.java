@@ -17,7 +17,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
-import xdisk.client.core.VirtualDiskManager;
 import xdisk.client.data.TreeModel;
 
 public class Upload extends JPanel{
@@ -49,13 +48,11 @@ public class Upload extends JPanel{
 	private JDialog dialog;
 
 	private File file;
-	private int index;
 
-	public Upload(int index) {
+	public Upload(VirtualDisk disk) {
 		super(new BorderLayout());
-		this.index=index;
-		disk = VirtualDiskManager.getInstance().get(index);
-
+		this.disk=disk;
+		
 		panel = new JPanel(new GridLayout(4,2));
 		panelOk = new JPanel(new BorderLayout());
 		panelButt = new JPanel(new BorderLayout());
@@ -101,7 +98,6 @@ public class Upload extends JPanel{
 
 	public class ActionPath implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			disk = VirtualDiskManager.getInstance().get(index);
 			dialog = new JDialog();
 			dialog.setLayout(new BorderLayout());
 			JButton button = new JButton("OK");
