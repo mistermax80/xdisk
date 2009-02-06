@@ -33,6 +33,7 @@ public class VirtualDisk implements Runnable
 
 	private String userid;
 	private String password;
+	private int localPort;
 
 	private String sessionId;
 
@@ -69,7 +70,7 @@ public class VirtualDisk implements Runnable
 	public VirtualDisk(String name, String description, 
 			String serverAddress, int serverPort,
 			String webPanelAddress, int webPanelPort, 
-			String userid, String password) 
+			String userid, String password, int localPort) 
 	{
 		this.name = name;
 		this.description = description;
@@ -79,6 +80,7 @@ public class VirtualDisk implements Runnable
 		this.webPanelPort = webPanelPort;
 		this.userid = userid;
 		this.password = password;
+		this.localPort = localPort;
 	}
 
 	/**
@@ -768,5 +770,13 @@ public class VirtualDisk implements Runnable
 		}
 	}
 
+	public int getLocalPort() {
+		System.out.println("prendo la port locale"+localPort);
+		return localPort;
+	}
 
+	public void setLocalPort(int localPort) {
+		System.out.println("setto la port locale"+localPort);
+		this.localPort = localPort;
+	}
 }

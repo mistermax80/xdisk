@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TagName;
 
-import xdisk.VirtualFile;
 import xdisk.utils.XMLFile;
 
 
@@ -133,6 +132,7 @@ public class VirtualDiskManager
 				fileOut.writeUTF("\t\t<description>" + virtualDisk.getDescription() + "</description>\n");
 				fileOut.writeUTF("\t\t<userid>" + virtualDisk.getUserid() + "</userid>\n");
 				fileOut.writeUTF("\t\t<password>" + virtualDisk.getPassword() + "</password>\n");
+				fileOut.writeUTF("\t\t<localPort>" + virtualDisk.getPassword() + "</localPort>\n");
 				
 				fileOut.writeUTF("\t</VirtualDisk>\n");				
 			}
@@ -217,6 +217,8 @@ public class VirtualDiskManager
 				virtualDisk.setUserid(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "password"))
 				virtualDisk.setPassword(child.item(i).getTextContent());
+			else if (isTag(child.item(i), "localPort"))
+				virtualDisk.setLocalPort(new Integer(child.item(i).getTextContent()));
 		}
 		
 		virtualDisks.add(virtualDisk);

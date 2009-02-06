@@ -17,20 +17,26 @@ import xdisk.client.core.VirtualDiskManager;
 public class Home extends JPanel{
 
 	private static final long serialVersionUID = 383673236662670462L;
+	private JLabel nameServerLabel;
+	private JLabel descriptionServerLabel;
 	private JLabel urlLabel;
 	private JLabel portLabel;
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
+	private JLabel localPortLabel;
 	private JLabel stateLabel;
 	private JLabel imageLabel;
 
 	private JPanel panelState;
 	private JLabel imageStateLabel;
 
+	private JTextField nameServerText;
+	private JTextField descriptionServerText;
 	private JTextField urlText;
 	private JTextField portText;
 	private JTextField usernameText;
 	private JPasswordField passwordText;
+	private JTextField localPortText;
 	private JTextField stateText;
 
 	private JButton button1;
@@ -38,10 +44,13 @@ public class Home extends JPanel{
 	private JButton button3;
 	private JButton button4;
 
+	private String nameServer;
+	private String descriptionServer;
 	private String url;
 	private int port;
 	private String username;
 	private String password;
+	private int localPort;
 	private String state;
 
 	private static final String CONNECT="Connesso-Autenticato";
@@ -62,28 +71,36 @@ public class Home extends JPanel{
 		super(new BorderLayout());
 		this.disk=disk;
 		
-		JPanel panel = new JPanel(new GridLayout(6,2));
+		JPanel panel = new JPanel(new GridLayout(9,2));
 		JPanel panel3 = new JPanel(new GridLayout(1,4));
 		panelState = new JPanel(new BorderLayout());
 
-
+		nameServer = disk.getName();
+		descriptionServer = disk.getDescription();
 		url = disk.getUrl();
 		port = disk.getServerPort();
 		username = disk.getUserid();
 		password = disk.getPassword();
+		localPort = disk.getLocalPort();
 
+		nameServerLabel = new JLabel("Name server:");
+		descriptionServerLabel = new JLabel("Descrizione server:");
 		urlLabel = new JLabel("Url server:");
 		portLabel = new JLabel("Porta server:");
 		usernameLabel = new JLabel("Username:");
 		passwordLabel = new JLabel("Password:");
+		localPortLabel = new JLabel("Porta locale:");
 		stateLabel = new JLabel("Stato:");
 
+		nameServerText = new JTextField(nameServer);
+		descriptionServerText = new JTextField(descriptionServer);
 		urlText = new JTextField(url);
 		portText = new JTextField(String.valueOf(port));
 		usernameText = new JTextField(username);
 		passwordText = new JPasswordField(password);
+		localPortText = new JTextField(String.valueOf(localPort));
 		stateText = new JTextField(state);
-
+		
 		try {
 			imageBackground = ImageIO.read(Xdisk.class.getResource("images/disk.png"));
 			imageConnect = ImageIO.read(Xdisk.class.getResource("images/connect.png"));
@@ -114,6 +131,10 @@ public class Home extends JPanel{
 		stateText.setEditable(false);
 		updateState(disk.isConnect());
 
+		panel.add(nameServerLabel);
+		panel.add(nameServerText);
+		panel.add(descriptionServerLabel);
+		panel.add(descriptionServerText);
 		panel.add(urlLabel);
 		panel.add(urlText);
 		panel.add(portLabel);
@@ -122,6 +143,8 @@ public class Home extends JPanel{
 		panel.add(usernameText);
 		panel.add(passwordLabel);
 		panel.add(passwordText);
+		panel.add(localPortLabel);
+		panel.add(localPortText);
 		panel.add(stateLabel);
 
 		panelState.add(imageStateLabel,BorderLayout.WEST);
@@ -177,12 +200,13 @@ public class Home extends JPanel{
 
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
-			//prefs.put(urlText.getText(), portText.getText(), usernameText.getText(), passwordText.getText());
-			//prefs.storeData();
 			url = urlText.getText();
 			port = Integer.parseInt(portText.getText());
 			username = usernameText.getText();
 			password = passwordText.getText();
+			disk.setDescription(descriptionServer);
+			disk.setServerPort(port);
+			VirtualDiskManager.getInstance().saveConfig();
 			JOptionPane.showMessageDialog(null, "Salvataggio preferenze!");
 		}
 	}
