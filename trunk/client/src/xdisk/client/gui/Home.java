@@ -58,10 +58,9 @@ public class Home extends JPanel{
 	private VirtualDisk disk;
 	
 
-	public Home(int index) {
+	public Home(VirtualDisk disk) {
 		super(new BorderLayout());
-		
-		disk = VirtualDiskManager.getInstance().get(index);
+		this.disk=disk;
 		
 		JPanel panel = new JPanel(new GridLayout(6,2));
 		JPanel panel3 = new JPanel(new GridLayout(1,4));

@@ -13,9 +13,11 @@ public class XDiskClient {
 		VirtualDiskManager diskManager = VirtualDiskManager.getInstance();
 		diskManager.readConfig();
 		System.out.println(diskManager.getNum());
+		
+		VirtualDisk vDisk = new VirtualDisk();
 		for(int i=0;i<diskManager.getNum();i++){
-			diskManager.get(i);
-			Xdisk xdisk = new Xdisk(i);
+			vDisk = diskManager.get(i);
+			Xdisk xdisk = new Xdisk(vDisk);
 			xdisk.execute();
 		}
 	}

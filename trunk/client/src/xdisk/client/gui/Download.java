@@ -19,7 +19,6 @@ import javax.swing.tree.TreeSelectionModel;
 import xdisk.VirtualFile;
 import xdisk.VirtualResource;
 import xdisk.client.core.VirtualDisk;
-import xdisk.client.core.VirtualDiskManager;
 import xdisk.client.data.FileModel;
 import xdisk.client.data.TreeModel;
 
@@ -45,10 +44,10 @@ public class Download extends JPanel{
 
 	private JList list;
 
-	public Download(int index) {
+	public Download(VirtualDisk disk) {
 		super(new BorderLayout());
 		
-		disk = VirtualDiskManager.getInstance().get(index);
+		this.disk = disk;
 		
 		panel1 = new JPanel(new GridLayout(1,2));
 		panel2 = new JPanel();
