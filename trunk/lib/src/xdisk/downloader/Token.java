@@ -9,6 +9,7 @@ public class Token
 {
 	private int offset;
 	private int size;
+	private boolean completed;
 	private byte[] data;
 	
 	/**
@@ -21,7 +22,9 @@ public class Token
 		this.size = size;
 		this.offset = offset;
 		
-		data = new byte[size];
+		this.completed = false;
+		
+//		data = new byte[size];
 	}
 	
 	/**
@@ -50,6 +53,35 @@ public class Token
 	{
 		return data;
 	}
+	
+	/**
+	 * Imposta il buffer dei dati. 
+	 * @param buffer il buffer dei dati.
+	 */
+	public void setData(byte[] buffer)
+	{
+		this.data = buffer;
+	}
+
+	/**
+	 * Ritorna true se è il token è stato completamente scaricato.
+	 * @return true se è il token è stato completamente scaricato.
+	 */
+	public boolean isCompleted() 
+	{
+		return completed;
+	}
+
+	/**
+	 * Imposta se il token è stato completamente scaricato.
+	 * @param completed true se il token è stato completamente scaricato.
+	 */
+	public void setCompleted(boolean completed) 
+	{
+		this.completed = completed;
+	}
+	
+	
 	
 	
 }
