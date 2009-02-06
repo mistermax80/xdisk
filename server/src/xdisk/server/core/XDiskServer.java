@@ -49,6 +49,7 @@ public class XDiskServer implements ServerProcess{
 
 	@Override
 	public void request(Socket client) {
+		String response="";
 		System.out.println("\n\n\n\n=======================================================================");
 		//Eliminazione sessioni scadute
 		try {
@@ -71,7 +72,7 @@ public class XDiskServer implements ServerProcess{
 			input = new XDiskInputStream(client.getInputStream());
 
 			input.receive();
-			String response = input.readUTF();
+			response = input.readUTF();
 			System.out.println("\tResponse:"+response);
 			if(response.equals("HELO")){
 				//Fase Handshake
@@ -146,7 +147,10 @@ public class XDiskServer implements ServerProcess{
 				}
 				output.send();
 				//Richiesta Operazioni
+				//System.out.println("Messaggio inviato");
 				input.receive();
+				//response="svuoto";
+				//System.out.println("Ricevuto il messaggio");
 				response= input.readUTF();
 				if(response.equals("GETLIST")){//GETLIST
 					System.out.print("\nRequest GETLIST");
@@ -524,7 +528,7 @@ public class XDiskServer implements ServerProcess{
 					}
 				}
 				else if(response.equals("KEEPALIVE")){//KEEPALIVE
-					System.out.print("\nRequest KEEPALIVE");
+					System.out.print("\nRequest KEEPALIVE da "+_userId+" "+_idSession);
 					try{
 						output.writeUTF("OK");
 						output.send();
@@ -560,13 +564,13 @@ public class XDiskServer implements ServerProcess{
 				System.err.print("Protocol Command unknow!!! Response received:"+response);
 			}
 		} catch (IOException e) {
-			System.err.println("Errore di comunicazione con il client!!!");
+			System.err.println("Errore di comunicazione con il client!!! Response:"+response);
 			e.printStackTrace();
 		} catch (PersistenceException e) {
-			System.err.println("Errore di comunicazione con il database!!!");
+			System.err.println("Errore di comunicazione con il database!!! Response:"+response);
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			System.err.println("Errore nella generazione dei codici univoci!!!");
+			System.err.println("Errore nella generazione dei codici univoci!!! Response:"+response);
 			e.printStackTrace();
 		}
 		System.out.println("\n=======================================================================");
@@ -580,7 +584,7 @@ public class XDiskServer implements ServerProcess{
 		try {
 			new XDiskServer();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Errore di comunicazione socket!!!");
 			e.printStackTrace();
 		}
 	}
