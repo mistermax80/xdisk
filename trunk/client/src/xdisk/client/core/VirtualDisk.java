@@ -22,7 +22,7 @@ import xdisk.net.XDiskOutputStream;
  * @version 31/1/2009
  *
  */
-public class VirtualDisk 
+public class VirtualDisk implements Runnable
 {
 	private String name;
 	private String serverAddress;
@@ -41,6 +41,10 @@ public class VirtualDisk
 	private XDiskInputStream input;
 
 	private boolean connect;
+	
+	private Thread keepAliveThread;
+	
+	private static final int KEEP_ALIVE_SLEEP = 1000;//1000 * 60;
 
 	public VirtualDisk() 
 	{
@@ -83,13 +87,17 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public boolean connect() throws UnknownHostException, IOException
+	public synchronized boolean connect() throws UnknownHostException, IOException
 	{
 		// inizializzazione della connessione
 		initConnection();		
 
 		// deinizializzazione della connessione
 		deinitConnection();
+		
+		keepAliveThread = new Thread(this);
+		keepAliveThread.start();
+		
 		return true;
 	}
 
@@ -98,8 +106,10 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public void disconnect() throws UnknownHostException, IOException
+	public synchronized void disconnect() throws UnknownHostException, IOException
 	{
+		keepAliveThread = null;
+		
 		// inizializzazione della connessione
 		if (initConnection())
 		{
@@ -110,8 +120,10 @@ public class VirtualDisk
 			// deinizializzazione della connessione
 			deinitConnection();
 		}
+		
 		sessionId=null;
 		connect=false;
+		System.out.println("USCITO DSCONNECT");
 	}
 
 	/**
@@ -120,8 +132,12 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */	
-	public void keepAlive() throws UnknownHostException, IOException
+	public synchronized void keepAlive() throws UnknownHostException, IOException
 	{
+		System.out.println("ENTRO NEL KEEP ALIVE");
+		if (sessionId == null)
+			return;
+		
 		String response="";
 		// inizializzazione della connessione
 		if (initConnection())
@@ -144,6 +160,7 @@ public class VirtualDisk
 			// deinizializzazione della connessione
 			deinitConnection();
 		}
+		System.out.println("ESCO NEL KEEP ALIVE");
 	}
 
 	/**
@@ -152,7 +169,7 @@ public class VirtualDisk
 	 * @return La lista dei file e delle directory
 	 * @throws IOException 
 	 */
-	public ArrayList<VirtualResource> getList(String path) throws IOException
+	public synchronized ArrayList<VirtualResource> getList(String path) throws IOException
 	{
 		String response;
 		ArrayList<VirtualResource> result = new ArrayList<VirtualResource>();
@@ -211,7 +228,7 @@ public class VirtualDisk
 	 * @throws IOException
 	 * @throws UnknownHostException 
 	 */
-	public boolean insertFile(VirtualFile file) throws UnknownHostException, IOException
+	public synchronized boolean insertFile(VirtualFile file) throws UnknownHostException, IOException
 	{
 		boolean ret=false;
 		String response;
@@ -257,7 +274,7 @@ public class VirtualDisk
 	 * in caso non venga trovata alcun file corrispondente alla ricerca.
 	 * @throws IOException 
 	 */
-	public ArrayList<VirtualFile> search(String query) throws IOException
+	public synchronized ArrayList<VirtualFile> search(String query) throws IOException
 	{
 		ArrayList<VirtualFile> result = new ArrayList<VirtualFile>();
 		String response;
@@ -301,7 +318,7 @@ public class VirtualDisk
 	 * @return il file virtuale se presente sul disco, false altrimenti
 	 * @throws IOException
 	 */
-	public VirtualFile getFile(String canonicalName) throws IOException
+	public synchronized VirtualFile getFile(String canonicalName) throws IOException
 	{
 		VirtualFile file = new VirtualFile();
 		String response;
@@ -344,7 +361,7 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public ArrayList<ClientResource> getSource(VirtualFile file) throws UnknownHostException, IOException
+	public synchronized ArrayList<ClientResource> getSource(VirtualFile file) throws UnknownHostException, IOException
 	{
 		ArrayList<ClientResource> clients = new ArrayList<ClientResource>();
 		String response;
@@ -390,7 +407,7 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public boolean gotFile(VirtualFile file) throws UnknownHostException, IOException
+	public synchronized boolean gotFile(VirtualFile file) throws UnknownHostException, IOException
 	{
 		boolean ret=false;
 		String response;
@@ -435,7 +452,7 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public boolean notGotFile(VirtualFile file) throws UnknownHostException, IOException
+	public synchronized boolean notGotFile(VirtualFile file) throws UnknownHostException, IOException
 	{
 		boolean ret=false;
 		String response;
@@ -481,7 +498,7 @@ public class VirtualDisk
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public VirtualFile isValidTicket(String ticket) throws UnknownHostException, IOException
+	public synchronized VirtualFile isValidTicket(String ticket) throws UnknownHostException, IOException
 	{
 		String response;
 		VirtualFile file = null;
@@ -719,6 +736,36 @@ public class VirtualDisk
 
 	public boolean isConnect() {
 		return connect;
+	}
+
+
+	@Override
+	public void run() 
+	{
+		// invia il comando keep alive al server per indicare la presenza nella
+		// rete virtuale
+		Thread thisThread = Thread.currentThread();
+            
+		while (keepAliveThread == thisThread)
+		{
+			try 
+			{
+				Thread.sleep(KEEP_ALIVE_SLEEP);
+				keepAlive();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (UnknownHostException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 
