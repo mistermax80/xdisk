@@ -44,8 +44,9 @@ public class SourceDownloader implements Runnable
 
 		input.receive();
 		response = input.readUTF();
-		if (response.indexOf("HELO") != -1)
+		if (response.indexOf("HELO") != -1) // il client ha risposto..
 		{
+			// .. facciamo partire il thread che controlla il sistema
 			clientThread = new Thread();
 			clientThread.start();
 		}		
