@@ -37,7 +37,7 @@ public class Xdisk {
 
 		JFrame frame = new JFrame("XDISK the new file sharing");
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel home = new Home(disk);
 		JPanel upload = new Upload(disk);

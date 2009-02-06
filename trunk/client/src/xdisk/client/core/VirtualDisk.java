@@ -777,4 +777,8 @@ public class VirtualDisk implements Runnable
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
 	}
+	
+	public String toString(){
+		return name+" - "+description;
+	}
 }

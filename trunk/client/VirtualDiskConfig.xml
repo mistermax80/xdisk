@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VirtualDisks>
-
 	<VirtualDisk>
 		<name>Locale</name>
-		<description>Server Massimo</description>
-		<serveraddress>192.168.1.11</serveraddress>
-		<serverport>4444</serverport>
-		<webpaneladdress>localhost</webpaneladdress>
-		<webpanelport>8080</webpanelport>
-		
+		<serverAddress>192.168.1.11</serverAddress>
+		<serverPort>4444</serverPort>
+		<webPanelAddress>localhost</webPanelAddress>
+		<webPanelPort>8080</webPanelPort>
+		<description>Server BIIO</description>
 		<userid>ciips</userid>
 		<password>c</password>
 		<localPort>5555</localPort>
+
 	</VirtualDisk>
+	<VirtualDisk>
+		<name>Locale</name>
+		<serverAddress>localhost</serverAddress>
+		<serverPort>4444</serverPort>
+		<webPanelAddress>localhost</webPanelAddress>
+		<webPanelPort>8080</webPanelPort>
+		<description>Server locale di test</description>
+		<userid>ciips</userid>
+		<password>c</password>
+		<localPort>0</localPort>
 
+	</VirtualDisk>
 </VirtualDisks>
-
