@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualDisks>
+
+	<VirtualDisk>
+		<name>Locale</name>
+		<description>Server Massimo</description>
+		<serveraddress>192.168.1.11</serveraddress>
+		<serverport>4444</serverport>
+		<webpaneladdress>localhost</webpaneladdress>
+		<webpanelport>8080</webpanelport>
+		
+		<userid>ciips</userid>
+		<password>c</password>
+		<localPort>5555</localPort>
+	</VirtualDisk>
+
+</VirtualDisks>
+
