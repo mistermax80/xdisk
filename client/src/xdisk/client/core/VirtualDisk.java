@@ -771,12 +771,10 @@ public class VirtualDisk implements Runnable
 	}
 
 	public int getLocalPort() {
-		System.out.println("prendo la port locale"+localPort);
 		return localPort;
 	}
 
 	public void setLocalPort(int localPort) {
-		System.out.println("setto la port locale"+localPort);
 		this.localPort = localPort;
 	}
 }
