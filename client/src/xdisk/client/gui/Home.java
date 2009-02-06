@@ -200,12 +200,15 @@ public class Home extends JPanel{
 
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
-			url = urlText.getText();
-			port = Integer.parseInt(portText.getText());
-			username = usernameText.getText();
-			password = passwordText.getText();
-			disk.setDescription(descriptionServer);
-			disk.setServerPort(port);
+			
+			disk.setName(nameServerText.getText());
+			disk.setDescription(descriptionServerText.getText());
+			disk.setServerAddress(urlText.getText());
+			disk.setServerPort(new Integer(portText.getText()));
+			disk.setUserid(usernameText.getText());
+			disk.setPassword(passwordText.getText());
+			disk.setLocalPort(new Integer(localPortText.getText()));
+			
 			VirtualDiskManager.getInstance().saveConfig();
 			JOptionPane.showMessageDialog(null, "Salvataggio preferenze!");
 		}
@@ -214,6 +217,22 @@ public class Home extends JPanel{
 	public class ActionDefault implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			//Valori di default
+			nameServer = "<Name Server>";
+			descriptionServer = "<description>";
+			url = "<www.name_server.org|ipAddress>";
+			port = 33333;
+			username = "username";
+			password = "password";
+			localPort = 22222;
+			
+			nameServerText.setText(nameServer);
+			descriptionServerText.setText(descriptionServer);
+			urlText.setText(url);
+			portText.setText(String.valueOf(port));
+			usernameText.setText(username);
+			passwordText.setText(password);
+			localPortText.setText(String.valueOf(localPort));			
 		}
 	}
 
