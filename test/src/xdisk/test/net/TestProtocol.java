@@ -14,7 +14,7 @@ public class TestProtocol {
 	 */
 	public static void main(String[] args) throws UnknownHostException, Exception {
 
-		VirtualDisk xdisk = new VirtualDisk("DISCO1","DESCR","localhost",4444,	"",8080,"ciips","c");
+		VirtualDisk xdisk = new VirtualDisk("DISCO1","DESCR","localhost",4444,	"",8080,"ciips","c", 0);
 		xdisk.connect();
 		if(true){
 			for(int i=0;i<12;i++){
