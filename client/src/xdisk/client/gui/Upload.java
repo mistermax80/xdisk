@@ -188,7 +188,7 @@ public class Upload extends JPanel{
 				vFile.setMime("<mime>");
 				vFile.setOwner(disk.getUserid());
 				vFile.setPath(path.getText());
-				vFile.setSize(2000);
+				vFile.setSize(file.length());
 				vFile.setTags(tags.getText());
 				System.out.println("file virt che carico"+vFile);
 				try {
