@@ -140,23 +140,23 @@ public class Library
 		for (int i=0; i<child.getLength(); i++)
 		{
 			if (isTag(child.item(i), "local_filename"))
-				local_filename = child.item(i).getNodeValue();
+				local_filename = child.item(i).getTextContent();
 			else if (isTag(child.item(i), "filename"))
-				virtualFile.setFilename(child.item(i).getNodeValue());
+				virtualFile.setFilename(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "extension"))
-				virtualFile.setExtension(child.item(i).getNodeValue());
+				virtualFile.setExtension(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "description"))
-				virtualFile.setDescription(child.item(i).getNodeValue());
+				virtualFile.setDescription(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "owner"))
-				virtualFile.setOwner(child.item(i).getNodeValue());
+				virtualFile.setOwner(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "tags"))
-				virtualFile.setTags(child.item(i).getNodeValue());
+				virtualFile.setTags(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "size"))
-				virtualFile.setSize(new Integer(child.item(i).getNodeValue()));
+				virtualFile.setSize(new Integer(child.item(i).getTextContent()));
 			else if (isTag(child.item(i), "mime"))
-				virtualFile.setMime(child.item(i).getNodeValue());
+				virtualFile.setMime(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "path"))
-				virtualFile.setPath(child.item(i).getNodeValue());
+				virtualFile.setPath(child.item(i).getTextContent());
 		}
 		
 		localFile.put(virtualFile, local_filename);
