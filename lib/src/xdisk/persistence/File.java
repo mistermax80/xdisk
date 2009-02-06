@@ -7,7 +7,7 @@ public class File {
 	private String extension;
 	private String description;
 	private String tags;
-	private int size;
+	private long size;
 	private String owner;
 	private String mime;
 	private int parent;
@@ -70,11 +70,11 @@ public class File {
 		this.tags=tags;
 	}
 
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size=size;
 	}
 

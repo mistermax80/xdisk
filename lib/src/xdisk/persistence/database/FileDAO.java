@@ -56,7 +56,7 @@ public class FileDAO {
 			stm.setString(3,object.getExtension());
 			stm.setString(4,object.getDescription());
 			stm.setString(5,object.getTags());
-			stm.setInt(6,object.getSize());
+			stm.setLong(6,object.getSize());
 			stm.setString(7,object.getOwner());
 			stm.setString(8,object.getMime());
 			stm.setInt(9,object.getParent());
@@ -98,7 +98,7 @@ public class FileDAO {
 			stm.setString(3,object.getExtension());
 			stm.setString(4,object.getDescription());
 			stm.setString(5,object.getTags());
-			stm.setInt(6,object.getSize());
+			stm.setLong(6,object.getSize());
 			stm.setString(7,object.getOwner());
 			stm.setString(8,object.getMime());
 			stm.setInt(9,object.getParent());
