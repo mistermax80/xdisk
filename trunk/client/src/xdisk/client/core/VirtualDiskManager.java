@@ -40,7 +40,7 @@ public class VirtualDiskManager
 	{
 		virtualDisks = new ArrayList<VirtualDisk>();
 		
-		filename = System.getProperty("user.dir") + "VirtualDiskConfig.xml";
+		filename = System.getProperty("user.dir") + "/VirtualDiskConfig.xml";
 		
 		readConfig();
 	}
@@ -195,24 +195,26 @@ public class VirtualDiskManager
 		NodeList child = node.getChildNodes();
 		VirtualDisk virtualDisk = new VirtualDisk();
 			
+		System.out.println("Add node: " + node.getNodeName() + " - figli:" + child.getLength());
 		for (int i=0; i<child.getLength(); i++)
 		{
+			System.out.println(child.item(i).getNodeName() + " = " + child.item(i).getTextContent());
 			if (isTag(child.item(i), "name"))
-				virtualDisk.setName(child.item(i).getNodeValue());
+				virtualDisk.setName(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "serverAddress"))
-				virtualDisk.setServerAddress(child.item(i).getNodeValue());
+				virtualDisk.setServerAddress(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "serverPort"))
-				virtualDisk.setServerPort(new Integer(child.item(i).getNodeValue()));
+				virtualDisk.setServerPort(new Integer(child.item(i).getTextContent()));
 			else if (isTag(child.item(i), "webPanelAddress"))
-				virtualDisk.setWebPanelAddress(child.item(i).getNodeValue());
+				virtualDisk.setWebPanelAddress(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "webPanelPort"))
-				virtualDisk.setWebPanelPort(new Integer(child.item(i).getNodeValue()));
+				virtualDisk.setWebPanelPort(new Integer(child.item(i).getTextContent()));
 			else if (isTag(child.item(i), "description"))
-				virtualDisk.setDescription(child.item(i).getNodeValue());
+				virtualDisk.setDescription(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "userid"))
-				virtualDisk.setUserid(child.item(i).getNodeValue());
+				virtualDisk.setUserid(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "password"))
-				virtualDisk.setPassword(child.item(i).getNodeValue());
+				virtualDisk.setPassword(child.item(i).getTextContent());
 		}
 		
 		virtualDisks.add(virtualDisk);
