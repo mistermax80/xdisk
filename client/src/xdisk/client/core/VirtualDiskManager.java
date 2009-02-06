@@ -109,8 +109,9 @@ public class VirtualDiskManager
 	{
 		try 
 		{
-			DataOutputStream fileOut = new DataOutputStream(
-					new FileOutputStream(new File(filename)));
+			FileOutputStream fileOutputStream = new FileOutputStream(new File(filename));
+			
+			DataOutputStream fileOut = new DataOutputStream(fileOutputStream);
 			
 			fileOut.writeUTF("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 			
