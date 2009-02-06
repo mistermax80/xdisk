@@ -34,4 +34,8 @@ public class ClientController {
 	public static int remove(String userid) throws PersistenceException {
 		return ClientDCS.remove(userid);		
 	}
+
+	public static int cleanSessions() throws PersistenceException {
+		return ClientDCS.cleanSession();		
+	}
 }

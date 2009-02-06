@@ -22,6 +22,7 @@ import xdisk.persistence.database.ClientController;
 import xdisk.persistence.database.FileController;
 import xdisk.persistence.database.FolderController;
 import xdisk.persistence.database.OwnershipController;
+import xdisk.persistence.database.RequestController;
 import xdisk.persistence.database.UserController;
 import xdisk.utils.Md5;
 
@@ -48,6 +49,14 @@ public class XDiskServer implements ServerProcess{
 
 	@Override
 	public void request(Socket client) {
+		System.out.println("\n\n\n\n=======================================================================");
+		//Eliminazione sessioni scadute
+		try {
+			int sessionExpired = ClientController.cleanSessions();
+			System.out.println("\t\t\tSessioni scadute e quindi rimosse: "+sessionExpired);
+		} catch (PersistenceException e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("\n\n\n\n=======================================================================");
 		String ipClient = client.getInetAddress().getHostAddress();
 		String hostname = client.getInetAddress().getCanonicalHostName();
@@ -469,7 +478,56 @@ public class XDiskServer implements ServerProcess{
 				else if(response.equals("ISVALIDETIKET")){//ISVALIDETIKET
 					System.out.print("\nRequest ISVALIDETIKET");
 					try{
+						//Ricevo il ticket
+						String ticket = input.readUTF();
+						String codeFile = "";
+						//Controllo la validità del ticket
+						codeFile = RequestController.check(ticket);
+						output.writeUTF("OK");
+						if(codeFile!=null){
+							//Ottengo il file dal db
+							File file = new File();
+							file.setCode(codeFile);
+							FileController.load(file);
+							//Ok fornisco il virtual file
+							VirtualFile vFile = new VirtualFile();
+							vFile.setFilename(file.getName());
+							vFile.setExtension(file.getExtension());
+							vFile.setDescription(file.getDescription());
+							vFile.setMime(file.getMime());
+							vFile.setOwner(file.getOwner());
+							Folder folder = new Folder();
+							folder.setCodice(file.getParent());
+							FolderController.load(folder);
+							vFile.setPath(FolderController.getPath(folder));
+							vFile.setSize(file.getSize());
+							vFile.setTags(file.getTags());
+							
+							output.writeVirtualFile(vFile);
+							output.send();
+						}
+						else{
+							//Svuoto l'output stream per inviare il messaggio di errore
+							output.reset();
+							System.err.print("Il ticket non è valido!!!");
+							output.writeUTF("TIKETNOVALIDE");
+							output.send();
+						}
 
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
+				}
+				else if(response.equals("KEEPALIVE")){//KEEPALIVE
+					System.out.print("\nRequest KEEPALIVE");
+					try{
+						output.writeUTF("OK");
+						output.send();
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore
 						output.reset();
@@ -502,13 +560,13 @@ public class XDiskServer implements ServerProcess{
 				System.err.print("Protocol Command unknow!!! Response received:"+response);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Errore di comunicazione con il client!!!");
 			e.printStackTrace();
 		} catch (PersistenceException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Errore di comunicazione con il database!!!");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Errore nella generazione dei codici univoci!!!");
 			e.printStackTrace();
 		}
 		System.out.println("\n=======================================================================");

@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -120,6 +119,7 @@ public class Upload extends JPanel{
 			dialog.add(panelButton,BorderLayout.SOUTH);
 			dialog.setTitle("Dove vuoi caricare il file?");
 			dialog.setSize(200, 300);
+			dialog.setLocation(500, 300);
 			dialog.setVisible(true);
 		}
 	}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -198,6 +199,28 @@ public class ClientDCS
 			stm = con.prepareStatement(REMOVE_BY_USERID_SQL);
 			stm.setString(1, userid);
 			rowsDeleted = stm.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException(e);
+		}
+		finally {
+			  if (stm != null) try {stm.close();} catch (Exception e) {}
+			  if (con != null) try {con.close();} catch (Exception e) {}
+		}
+		return rowsDeleted;
+	}
+
+	private static final String CLEAN_SQL = "DELETE FROM client WHERE SESSION_STARTED < ?";
+	public static int cleanSession() throws PersistenceException {
+		int rowsDeleted=0;
+		Connection con = DatabaseConnectionFactory.getConnection();
+		PreparedStatement stm=null;
+		long TIME_EXPIRED = 1000*60*5;// default 5 Minuti
+		Timestamp time = new Timestamp(System.currentTimeMillis()-TIME_EXPIRED);
+		try {
+			stm = con.prepareStatement(CLEAN_SQL);
+			stm.setTimestamp(1, time);
+			rowsDeleted = stm.executeUpdate();
+			System.out.println("Sessioni da eliminate num:"+rowsDeleted+" sono prima del: "+time);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}

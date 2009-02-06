@@ -117,10 +117,33 @@ public class VirtualDisk
 	/**
 	 * Invia il segnale di keep alive al server, per segnalare la presenza 
 	 * del client nella rete virtuale del disco.
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */	
-	public void keepAlive()
+	public void keepAlive() throws UnknownHostException, IOException
 	{
-
+		String response="";
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.print("Invio richiesta KEEPALIVE...");
+			// invio la richiesta al server
+			output.writeUTF("KEEPALIVE");
+			output.send();
+			input.receive();
+			response=input.readUTF();
+			if(response.equals("OK")){
+				connect=true;
+				System.out.println(":OK");
+			}
+			else{
+				connect=false;
+				sessionId=null;
+				System.err.println(":ERROR");
+			}
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
 	}
 
 	/**
@@ -455,10 +478,44 @@ public class VirtualDisk
 	 * @param ticket il ticket di scaricamento
 	 * @return il file virtuale da fornire se il ticket è valido, null in caso 
 	 * contrario. 
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public VirtualFile isValidTicket(String ticket)
+	public VirtualFile isValidTicket(String ticket) throws UnknownHostException, IOException
 	{
-		return null;
+		String response;
+		VirtualFile file = null;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta ISVALIDETIKET: "+ticket);
+			// invio la richiesta al server
+			output.writeUTF("ISVALIDETIKET");
+			output.writeUTF(ticket);
+			output.send();
+
+
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				file = input.readVirtualFile();
+				System.out.println("Virtual File ricevuto correttamente.");
+			}
+			else if(response.equals("TIKETNOVALIDE")){
+				System.err.println("Il ticket non è Valido!!!");
+			}
+			else
+			{
+				System.err.println("Impossibile Ottenere il file!!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return file;
 	}
 
 	/**
