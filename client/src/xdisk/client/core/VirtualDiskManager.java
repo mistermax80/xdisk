@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -108,39 +109,36 @@ public class VirtualDiskManager
 	{
 		try 
 		{
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(filename));
+			PrintStream fileOut = new PrintStream(new FileOutputStream(new File(filename)));
 			
-			DataOutputStream fileOut = new DataOutputStream(fileOutputStream);
-			
-			fileOut.writeUTF("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			fileOut.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			
 			Iterator<VirtualDisk> vd = virtualDisks.iterator();
 			
-			fileOut.writeUTF("<VirtualDisks>\n");
+			fileOut.println("<VirtualDisks>");
 			
 			while (vd.hasNext())
 			{
-				fileOut.writeUTF("\t<VirtualDisk>\n");
+				fileOut.println("\t<VirtualDisk>");
 				
 				VirtualDisk virtualDisk = vd.next();
 				
-				fileOut.writeUTF("\t\t<name>" + virtualDisk.getName() + "</name>\n");
-				fileOut.writeUTF("\t\t<serverAddress>" + virtualDisk.getServerAddress() + "</serverAddress>\n");
-				fileOut.writeUTF("\t\t<serverPort>" + virtualDisk.getServerPort() + "</serverPort>\n");
-				fileOut.writeUTF("\t\t<webPanelAddress>" + virtualDisk.getWebPanelAddress() + "</webPanelAddress>\n");
-				fileOut.writeUTF("\t\t<webPanelPort>" + virtualDisk.getWebPanelPort() + "</webPanelPort>\n");
-				fileOut.writeUTF("\t\t<description>" + virtualDisk.getDescription() + "</description>\n");
-				fileOut.writeUTF("\t\t<userid>" + virtualDisk.getUserid() + "</userid>\n");
-				fileOut.writeUTF("\t\t<password>" + virtualDisk.getPassword() + "</password>\n");
-				fileOut.writeUTF("\t\t<localPort>" + virtualDisk.getPassword() + "</localPort>\n");
+				fileOut.println("\t\t<name>" + virtualDisk.getName() + "</name>");
+				fileOut.println("\t\t<serverAddress>" + virtualDisk.getServerAddress() + "</serverAddress>");
+				fileOut.println("\t\t<serverPort>" + virtualDisk.getServerPort() + "</serverPort>");
+				fileOut.println("\t\t<webPanelAddress>" + virtualDisk.getWebPanelAddress() + "</webPanelAddress>");
+				fileOut.println("\t\t<webPanelPort>" + virtualDisk.getWebPanelPort() + "</webPanelPort>");
+				fileOut.println("\t\t<description>" + virtualDisk.getDescription() + "</description>");
+				fileOut.println("\t\t<userid>" + virtualDisk.getUserid() + "</userid>");
+				fileOut.println("\t\t<password>" + virtualDisk.getPassword() + "</password>");
+				fileOut.println("\t\t<localPort>" + virtualDisk.getLocalPort() + "</localPort>\n");
 				
-				fileOut.writeUTF("\t</VirtualDisk>\n");				
+				fileOut.println("\t</VirtualDisk>");				
 			}
 			
-			fileOut.writeUTF("</VirtualDisks>\n");
+			fileOut.println("</VirtualDisks>");
 			
 			fileOut.close();
-			fileOutputStream.close();
 			
 		} 
 		catch (FileNotFoundException e) 
