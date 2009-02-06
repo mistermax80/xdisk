@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -183,37 +184,37 @@ public class Library
 	{
 		try 
 		{
-			DataOutputStream fileOut = new DataOutputStream(
+			PrintStream fileOut = new PrintStream(
 					new FileOutputStream(new File(filename)));
 			
-			fileOut.writeUTF("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			fileOut.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			
 			Iterator<VirtualFile> keys = getVirtualFile().iterator();
 			
-			fileOut.writeUTF("<library>\n");
+			fileOut.println("<library>");
 			
 			while (keys.hasNext())
 			{
-				fileOut.writeUTF("\t<file>\n");
+				fileOut.println("\t<file>");
 				
 				VirtualFile virtualFile = keys.next();
 				String localFileName = localFile.get(virtualFile);
 				
-				fileOut.writeUTF("\t\t<local_filename>" + localFileName + "</local_filename>\n");
+				fileOut.println("\t\t<local_filename>" + localFileName + "</local_filename>");
 				
-				fileOut.writeUTF("\t\t<filename>" + virtualFile.getFilename() + "</filename>\n");
-				fileOut.writeUTF("\t\t<extension>" + virtualFile.getExtension() + "</extension>\n");
-				fileOut.writeUTF("\t\t<description>" + virtualFile.getDescription() + "</description>\n");
-				fileOut.writeUTF("\t\t<owner>" + virtualFile.getOwner() + "</owner>\n");
-				fileOut.writeUTF("\t\t<tags>" + virtualFile.getTags() + "</tags>\n");
-				fileOut.writeUTF("\t\t<size>" + virtualFile.getSize() + "</size>\n");
-				fileOut.writeUTF("\t\t<mime>" + virtualFile.getMime() + "</mime>\n");
-				fileOut.writeUTF("\t\t<path>" + virtualFile.getPath() + "</path>\n");
+				fileOut.println("\t\t<filename>" + virtualFile.getFilename() + "</filename>");
+				fileOut.println("\t\t<extension>" + virtualFile.getExtension() + "</extension>");
+				fileOut.println("\t\t<description>" + virtualFile.getDescription() + "</description>");
+				fileOut.println("\t\t<owner>" + virtualFile.getOwner() + "</owner>");
+				fileOut.println("\t\t<tags>" + virtualFile.getTags() + "</tags>");
+				fileOut.println("\t\t<size>" + virtualFile.getSize() + "</size>");
+				fileOut.println("\t\t<mime>" + virtualFile.getMime() + "</mime>");
+				fileOut.println("\t\t<path>" + virtualFile.getPath() + "</path>");
 				
-				fileOut.writeUTF("\t</file>\n");				
+				fileOut.println("\t</file>");				
 			}
 			
-			fileOut.writeUTF("</library>\n");
+			fileOut.println("</library>");
 			
 			fileOut.close();
 			
