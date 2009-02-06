@@ -36,7 +36,7 @@ public class XDiskOutputStream extends MessageOutputStream
 		writeUTF(file.getExtension());
 		writeUTF(file.getDescription());
 		writeUTF(file.getOwner());
-		writeInt(file.getSize());
+		writeLong(file.getSize());
 		writeUTF(file.getTags());
 		writeUTF(file.getMime());
 		writeUTF(file.getPath());

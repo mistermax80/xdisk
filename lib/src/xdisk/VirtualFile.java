@@ -12,7 +12,7 @@ public class VirtualFile implements VirtualResource
 	private String description;
 	private String owner;
 	private String tags;
-	private int size;
+	private long size;
 	private String mime;
 	private String path;
 	
@@ -123,7 +123,7 @@ public class VirtualFile implements VirtualResource
 	 * Ritorna la dimensione del file in byte
 	 * @return la dimensione del file in byte 
 	 */
-	public int getSize() 
+	public long getSize() 
 	{
 		return size;
 	}
@@ -132,7 +132,7 @@ public class VirtualFile implements VirtualResource
 	 * Imposta la dimensione del file in byte
 	 * @param size la dimensione del file in byte
 	 */
-	public void setSize(int size) 
+	public void setSize(long size) 
 	{
 		this.size = size;
 	}

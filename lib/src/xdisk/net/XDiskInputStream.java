@@ -39,7 +39,7 @@ public class XDiskInputStream extends MessageInputStream
 		file.setExtension(readUTF());
 		file.setDescription(readUTF());
 		file.setOwner(readUTF());
-		file.setSize(readInt());
+		file.setSize(readLong());
 		file.setTags(readUTF());
 		file.setMime(readUTF());
 		file.setPath(readUTF());
