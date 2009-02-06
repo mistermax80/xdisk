@@ -140,6 +140,7 @@ public class VirtualDiskManager
 			fileOut.writeUTF("</VirtualDisks>\n");
 			
 			fileOut.close();
+			fileOutputStream.close();
 			
 		} 
 		catch (FileNotFoundException e) 
