@@ -148,7 +148,9 @@ public class VirtualDisk implements Runnable
 			// invio la richiesta al server
 			output.writeUTF("KEEPALIVE");
 			output.send();
+//			System.out.println("Messaggio inviato!!!");
 			input.receive();
+//			System.out.println("Messaggio ricevuto!!");
 			response=input.readUTF();
 			if(response.equals("OK")){
 				connect=true;
