@@ -21,6 +21,8 @@ public class Home extends JPanel{
 	private JLabel descriptionServerLabel;
 	private JLabel urlLabel;
 	private JLabel portLabel;
+	private JLabel urlWebpanelLabel;
+	private JLabel portWebpanelLabel;
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
 	private JLabel localPortLabel;
@@ -34,6 +36,8 @@ public class Home extends JPanel{
 	private JTextField descriptionServerText;
 	private JTextField urlText;
 	private JTextField portText;
+	private JTextField urlWebpanelText;
+	private JTextField portWebpanelText;
 	private JTextField usernameText;
 	private JPasswordField passwordText;
 	private JTextField localPortText;
@@ -48,6 +52,8 @@ public class Home extends JPanel{
 	private String descriptionServer;
 	private String url;
 	private int port;
+	private String urlWebpanel;
+	private int portWebpanel;
 	private String username;
 	private String password;
 	private int localPort;
@@ -71,7 +77,7 @@ public class Home extends JPanel{
 		super(new BorderLayout());
 		this.disk=disk;
 		
-		JPanel panel = new JPanel(new GridLayout(9,2));
+		JPanel panel = new JPanel(new GridLayout(11,2));
 		JPanel panel3 = new JPanel(new GridLayout(1,4));
 		panelState = new JPanel(new BorderLayout());
 
@@ -79,6 +85,8 @@ public class Home extends JPanel{
 		descriptionServer = disk.getDescription();
 		url = disk.getUrl();
 		port = disk.getServerPort();
+		urlWebpanel = disk.getWebPanelAddress();
+		portWebpanel = disk.getWebPanelPort();
 		username = disk.getUserid();
 		password = disk.getPassword();
 		localPort = disk.getLocalPort();
@@ -87,6 +95,8 @@ public class Home extends JPanel{
 		descriptionServerLabel = new JLabel("Descrizione server:");
 		urlLabel = new JLabel("Url server:");
 		portLabel = new JLabel("Porta server:");
+		urlWebpanelLabel = new JLabel("Url Webpanel:");
+		portWebpanelLabel = new JLabel("Porta Webpanel:");
 		usernameLabel = new JLabel("Username:");
 		passwordLabel = new JLabel("Password:");
 		localPortLabel = new JLabel("Porta locale:");
@@ -96,6 +106,8 @@ public class Home extends JPanel{
 		descriptionServerText = new JTextField(descriptionServer);
 		urlText = new JTextField(url);
 		portText = new JTextField(String.valueOf(port));
+		urlWebpanelText = new JTextField(urlWebpanel);
+		portWebpanelText = new JTextField(String.valueOf(portWebpanel));
 		usernameText = new JTextField(username);
 		passwordText = new JPasswordField(password);
 		localPortText = new JTextField(String.valueOf(localPort));
@@ -139,6 +151,10 @@ public class Home extends JPanel{
 		panel.add(urlText);
 		panel.add(portLabel);
 		panel.add(portText);
+		panel.add(urlWebpanelLabel);
+		panel.add(urlWebpanelText);
+		panel.add(portWebpanelLabel);
+		panel.add(portWebpanelText);
 		panel.add(usernameLabel);
 		panel.add(usernameText);
 		panel.add(passwordLabel);
@@ -205,6 +221,8 @@ public class Home extends JPanel{
 			disk.setDescription(descriptionServerText.getText());
 			disk.setServerAddress(urlText.getText());
 			disk.setServerPort(new Integer(portText.getText()));
+			disk.setWebPanelAddress(urlWebpanelText.getText());
+			disk.setWebPanelPort(new Integer(portWebpanelText.getText()));
 			disk.setUserid(usernameText.getText());
 			disk.setPassword(passwordText.getText());
 			disk.setLocalPort(new Integer(localPortText.getText()));
@@ -218,10 +236,12 @@ public class Home extends JPanel{
 
 		public void actionPerformed(ActionEvent e) {
 			//Valori di default
-			nameServer = "<Name Server>";
-			descriptionServer = "<description>";
-			url = "<www.name_server.org|ipAddress>";
+			nameServer = "Name Server";
+			descriptionServer = "description";
+			url = "www.name_server.org|ipAddress";
 			port = 33333;
+			urlWebpanel = "www.webPanel.org|ipWebpanel";
+			portWebpanel = 55555;
 			username = "username";
 			password = "password";
 			localPort = 22222;
@@ -230,6 +250,8 @@ public class Home extends JPanel{
 			descriptionServerText.setText(descriptionServer);
 			urlText.setText(url);
 			portText.setText(String.valueOf(port));
+			urlWebpanelText.setText(urlWebpanel);
+			portWebpanelText.setText(String.valueOf(portWebpanel));
 			usernameText.setText(username);
 			passwordText.setText(password);
 			localPortText.setText(String.valueOf(localPort));			

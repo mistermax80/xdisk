@@ -10,6 +10,7 @@ public class FileModel{
 		private String owner;
 		private String tags;
 		private String mime;
+		private String descr;
 		private VirtualFile file;
 
 		public FileModel(VirtualFile file){
@@ -21,6 +22,7 @@ public class FileModel{
 			owner=file.getOwner();
 			tags=file.getTags();
 			mime=file.getMime();
+			descr=file.getDescription();
 		}
 
 		public VirtualFile getFile() {
@@ -32,6 +34,6 @@ public class FileModel{
 		}
 
 		public String toString(){
-			return path+name+"."+ext+"  [(s:"+size+")(t:"+tags+")(own:"+owner+")(m:"+mime+")]";
+			return path+name+"."+ext+"  [(d:"+descr+")(s:"+size+")(t:"+tags+")(own:"+owner+")(m:"+mime+")]";
 		}
 	}
