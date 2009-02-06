@@ -5,7 +5,7 @@ public class FileModel{
 
 		private String name;
 		private String ext;
-		private int size;
+		private long size;
 		private String path;
 		private String owner;
 		private String tags;
