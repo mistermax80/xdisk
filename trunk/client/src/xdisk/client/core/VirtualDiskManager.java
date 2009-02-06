@@ -105,7 +105,7 @@ public class VirtualDiskManager
 	 * Salva la configurazione corrente dei dischi in locale in un file XML
 	 * di configurazione.
 	 */
-	protected void saveConfig()
+	public void saveConfig()
 	{
 		try 
 		{
