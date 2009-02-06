@@ -147,11 +147,12 @@ public class XDiskServer implements ServerProcess{
 				}
 				output.send();
 				//Richiesta Operazioni
-				//System.out.println("Messaggio inviato");
+				//System.out.println("Messaggio inviato a"+_userId+" "+_idSession);
 				input.receive();
 				//response="svuoto";
-				//System.out.println("Ricevuto il messaggio");
-				response= input.readUTF();
+				//System.out.println("Ricevuto il messaggio a"+_userId+" "+_idSession);
+
+				response= input.readUTF();					
 				if(response.equals("GETLIST")){//GETLIST
 					System.out.print("\nRequest GETLIST");
 					try{
@@ -506,7 +507,7 @@ public class XDiskServer implements ServerProcess{
 							vFile.setPath(FolderController.getPath(folder));
 							vFile.setSize(file.getSize());
 							vFile.setTags(file.getTags());
-							
+
 							output.writeVirtualFile(vFile);
 							output.send();
 						}
@@ -558,6 +559,14 @@ public class XDiskServer implements ServerProcess{
 				}
 				else{
 					System.err.print("PROTOCOL COMMAND UNKNOWN!!! Response received:"+response);
+					try {
+						output.reset();
+						output.writeUTF("ERROR");
+						output.send();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}				
 			}
 			else{
@@ -566,6 +575,14 @@ public class XDiskServer implements ServerProcess{
 		} catch (IOException e) {
 			System.err.println("Errore di comunicazione con il client!!! Response:"+response);
 			e.printStackTrace();
+			try {
+				output.reset();
+				output.writeUTF("ERROR");
+				output.send();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} catch (PersistenceException e) {
 			System.err.println("Errore di comunicazione con il database!!! Response:"+response);
 			e.printStackTrace();
