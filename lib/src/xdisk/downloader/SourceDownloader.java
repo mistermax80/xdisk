@@ -8,6 +8,14 @@ import xdisk.ClientResource;
 import xdisk.net.XDiskInputStream;
 import xdisk.net.XDiskOutputStream;
 
+/**
+ * Il download di una sorgente. Effettua la connessione ad una sorgente, invia
+ * il tiket, e se la sorgente è disponibile, comincia il trasferimento dei 
+ * token del file.
+ * 
+ * @author biio
+ * @version 6/2/2009
+ */
 public class SourceDownloader implements Runnable 
 {
 	private Downloader downloader;
@@ -18,16 +26,40 @@ public class SourceDownloader implements Runnable
 	private XDiskOutputStream output;
 	private XDiskInputStream input;
 	
+	private boolean isConnect;
+	
+	/**
+	 * Crea un nuovo oggetto per lo scaricamento da una fonte.
+	 * @param downloader il downloader del file.
+	 * @param source la sorgente da cui scaricare il file.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public SourceDownloader(Downloader downloader, ClientResource source) 
 			throws UnknownHostException, IOException 
 	{
 		this.source = source;
 		
+		isConnect = false;
 		
-		connect();
+		start();
 	}
 	
-	public void connect() throws UnknownHostException, IOException
+	/**
+	 * Ferma il download dalla fonte
+	 */
+	public void stop()
+	{
+		clientThread = null;
+	}
+	
+	/**
+	 * Effettua la connessione al fornitore, e se il client decide di fornire
+	 * la risorsa, fa partire il thread per lo scaricamento dei token.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	public void start() throws UnknownHostException, IOException
 	{
 		String response = "";
 		
@@ -46,10 +78,41 @@ public class SourceDownloader implements Runnable
 		response = input.readUTF();
 		if (response.indexOf("HELO") != -1) // il client ha risposto..
 		{
-			// .. facciamo partire il thread che controlla il sistema
-			clientThread = new Thread();
-			clientThread.start();
+			// invio la richiesta..
+			output.writeUTF("GETFILE");
+			output.writeUTF(downloader.getTicketId());
+			output.send();
+			
+			// aspettiamo la risposta
+			input.receive();
+			response = input.readUTF();
+			
+			if (response.indexOf("OK") != -1)
+			{
+				isConnect = true;
+				// .. facciamo partire il thread che controlla il download
+				clientThread = new Thread();
+				clientThread.start();
+			}
+			else
+			{
+				output.close();
+				input.close();
+				socket.close();
+				isConnect = false;
+			}
+			
 		}		
+	}
+	
+	/**
+	 * Ritorna true se il {@link SourceDownloader} è connesso al fornitore, false
+	 * altrimenti
+	 * @return true se si è connessi al fornitore, false altrimenti.
+	 */
+	public boolean isConnect()
+	{
+		return isConnect;
 	}
 
 	@Override
@@ -58,14 +121,47 @@ public class SourceDownloader implements Runnable
 		// invia il comando keep alive al server per indicare la presenza nella
 		// rete virtuale
 		Thread thisThread = Thread.currentThread();
+		String response = "";
             
 		while (clientThread == thisThread)
 		{
 			// ottiene un token			
 			Token token = downloader.getToken();
 			
-			// scarica il token, se ok, lo segnala, se errore, o restituisce
-			
+			if (token != null)
+			{
+				try
+				{
+					// scarica il token, se ok, lo segnala, se errore, o restituisce
+					output.writeUTF("GETTOKEN");
+					output.writeUTF(downloader.getTicketId());
+					output.writeInt(token.getOffset());
+					output.writeInt(token.getSize());
+					output.send();
+		
+					input.receive();
+					response = input.readUTF();
+					
+					if (response.indexOf("OK") != -1)
+					{
+						byte[] buffer = new byte[token.getSize()];
+						input.read(buffer, token.getOffset(), token.getSize());
+						token.setData(buffer);
+						token.setCompleted(true);
+					}
+					else
+					{
+						downloader.tokenFree(token);
+					}
+					
+				}
+				catch (Exception e) 
+				{
+					downloader.tokenFree(token);
+					isConnect = false;
+					clientThread = null;
+				}
+			}
 		}
 	}
 
