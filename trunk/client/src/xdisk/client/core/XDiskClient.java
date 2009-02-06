@@ -1,7 +1,5 @@
 package xdisk.client.core;
 
-import java.util.ArrayList;
-
 import xdisk.client.gui.Xdisk;
 
 public class XDiskClient {

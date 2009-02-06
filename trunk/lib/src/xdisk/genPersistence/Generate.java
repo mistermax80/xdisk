@@ -23,7 +23,7 @@ public class Generate {
 		PreparedStatement stm=null;
 		ResultSet rstTable=null;
 		ResultSet rstFields=null;
-		String[] exclusionTable = {"client","disk","download","user","file2","ownership","folder"};
+		String[] exclusionTable = {"client","disk","download","user","file2","ownership","folder","file","extension","request"};
 		int numTables=0;
 		int numTablesExclusion=0;
 
