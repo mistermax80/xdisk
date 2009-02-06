@@ -64,9 +64,13 @@ public class VirtualDiskManager
 	 */
 	protected void readConfig()
 	{
+		///home/massimo/workspace/client/resource/manifest test/disco1.manifest.xml
 		//Scandisce tutti i file di configurazione presenti e crea vari dischi...
 		Manifest manifest = new Manifest();
-		VirtualDisk disk = manifest.getVirtualDisk("/home/massimo/workspace/client/resource/manifest test/disco1.manifest.xml");
+		//File file = FileI 
+		String currPath=System.getProperty("user.dir");
+		System.out.println(currPath);
+		VirtualDisk disk = manifest.getVirtualDisk(currPath+"/disco1.manifest.xml");
 		virtualDisks.add(disk);
 	}
 	
