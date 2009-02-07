@@ -193,7 +193,7 @@ public class VirtualDiskManager
 //		System.out.println("Add node: " + node.getNodeName() + " - figli:" + child.getLength());
 		for (int i=0; i<child.getLength(); i++)
 		{
-			System.out.println(child.item(i).getNodeName() + " = " + child.item(i).getTextContent());
+//			System.out.println(child.item(i).getNodeName() + " = " + child.item(i).getTextContent());
 			if (isTag(child.item(i), "name"))
 				virtualDisk.setName(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "serverAddress"))
