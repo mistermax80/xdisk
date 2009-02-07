@@ -16,7 +16,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import xdisk.VirtualFile;
-import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.TreeModel;
 

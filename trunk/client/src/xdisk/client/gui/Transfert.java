@@ -10,7 +10,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import xdisk.VirtualFile;
-import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
 
