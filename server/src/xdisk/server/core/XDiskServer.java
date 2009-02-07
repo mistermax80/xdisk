@@ -291,8 +291,8 @@ public class XDiskServer implements ServerProcess{
 						e.printStackTrace();
 					}
 				}
-				else if(response.equals("GET")){//GET
-					System.out.print("\nRequest GET");
+				else if(response.equals("GETVIRTUALFILE")){//GETVIRTUALFILE
+					System.out.print("\nRequest GETVIRTUALFILE");
 					try{
 						output.writeUTF("OK");
 						//Leggo il cononical name del file
