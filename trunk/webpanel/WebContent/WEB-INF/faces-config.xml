@@ -192,4 +192,12 @@
 			<to-view-id>/addDelFile.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>index</display-name>
+		<from-view-id>/index.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>loginClient</from-outcome>
+			<to-view-id>/client.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>
