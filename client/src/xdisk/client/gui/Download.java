@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,9 +25,11 @@ import xdisk.VirtualResource;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
 import xdisk.client.data.TreeModel;
+import xdisk.downloader.DownloadListener;
 import xdisk.downloader.Downloader;
 
-public class Download extends JPanel{
+public class Download extends JPanel implements DownloadListener
+{
 
 	private static final long serialVersionUID = -4944887504788487152L;
 
@@ -56,7 +59,7 @@ public class Download extends JPanel{
 		panel1 = new JPanel(new GridLayout(1,2));
 		panel2 = new JPanel();
 		button = new JButton("Download");
-		button.addActionListener(new ActionDownload());
+		button.addActionListener(new ActionDownload(this));
 		button2 = new JButton("Aggiorna");
 		button2.addActionListener(new ActionUpdate());
 
@@ -81,6 +84,12 @@ public class Download extends JPanel{
 	}
 
 	public class ActionDownload implements ActionListener {
+		Download download;
+		
+		public ActionDownload(Download download) 
+		{
+			this.download = download;
+		}
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null)
@@ -89,7 +98,7 @@ public class Download extends JPanel{
 					String tiketId = disk.getFile(current_file);
 					Collection<ClientResource> resources = disk.getSource(current_file);
 					
-					Downloader downloader = new Downloader(current_file, tiketId);
+					Downloader downloader = new Downloader(current_file, tiketId, download);
 					
 					Iterator<ClientResource> i = resources.iterator();
 					while (i.hasNext())
@@ -164,6 +173,18 @@ public class Download extends JPanel{
 			}
 		}
 
+	}
+
+	@Override
+	public void completed(VirtualFile virtualFile) 
+	{
+		try {
+			disk.gotFile(virtualFile);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 

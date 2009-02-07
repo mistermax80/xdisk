@@ -80,7 +80,7 @@ public class Search extends JPanel{
 					String tiketId = disk.getFile(current_file);
 					Collection<ClientResource> resources = disk.getSource(current_file);
 					
-					Downloader downloader = new Downloader(current_file, tiketId);
+					Downloader downloader = new Downloader(current_file, tiketId, null);
 					
 					Iterator<ClientResource> i = resources.iterator();
 					while (i.hasNext())

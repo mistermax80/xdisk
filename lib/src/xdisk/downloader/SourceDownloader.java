@@ -20,6 +20,7 @@ public class SourceDownloader implements Runnable
 {
 	private Downloader downloader;
 	private ClientResource source;
+	
 	private Thread clientThread;
 	
 	private Socket socket;

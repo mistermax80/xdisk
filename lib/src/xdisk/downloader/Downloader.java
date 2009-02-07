@@ -27,6 +27,7 @@ public class Downloader
 {
 	private VirtualFile virtualFile;
 	private String tiketId;
+	private DownloadListener listener;
 	
 	private static final int TOKEN_SIZE = 1024;
 	
@@ -46,10 +47,12 @@ public class Downloader
 	 * @param virtualFile
 	 * @throws IOException 
 	 */
-	public Downloader(VirtualFile virtualFile, String ticketId) throws IOException 
+	public Downloader(VirtualFile virtualFile, String ticketId,
+			DownloadListener listener) throws IOException 
 	{
 		this.virtualFile = virtualFile;
 		this.tiketId = ticketId;
+		this.listener = listener;
 		
 		tokens = new ArrayList<Token>();
 		tokensCompleted = new ArrayList<Token>();
@@ -142,12 +145,11 @@ public class Downloader
 					out.write(t.getData(), t.getOffset(), t.getSize());
 				}
 				out.close();
+				listener.completed(virtualFile);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}			
