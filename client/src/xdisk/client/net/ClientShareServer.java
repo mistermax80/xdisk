@@ -166,8 +166,14 @@ public class ClientShareServer implements ServerProcess
 	private DataInputStream getLocalFile(VirtualFile virtualFile) throws FileNotFoundException
 	{
 		// apriamo il file locale e vediamo se esiste...
-		String localFilename = virtualDisk.getLibrary().
-										getLocalFileName(virtualFile); 
+		String localFilename=null;
+		try {
+			localFilename = virtualDisk.getLibrary().
+											getLocalFileName(virtualFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		if (localFilename != null)
 		{
 			DataInputStream source = new DataInputStream(

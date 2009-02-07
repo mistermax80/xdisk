@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import xdisk.VirtualFile;
-import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.core.VirtualDiskManager;
 
@@ -189,10 +188,7 @@ public class Home extends JPanel{
 				disk.connect();
 				updateState(disk.isConnect());
 				LinkedList<VirtualFile> files = new LinkedList<VirtualFile>();
-				String libraryName = System.getProperty("user.dir")+"/"+disk.getName()+"_"+disk.getServerAddress()+".xml";
-				System.out.println("File della libreria:"+libraryName);
-				Library library = new Library(libraryName);
-				files.addAll(library.getVirtualFile());
+				files.addAll(disk.getLibrary().getVirtualFile());
 				for(int i=0;i<files.size();i++){
 					VirtualFile file = files.get(i);
 					try {

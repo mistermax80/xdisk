@@ -3,7 +3,6 @@ package xdisk.client.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -13,7 +12,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import xdisk.VirtualFile;
-import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
 
@@ -29,7 +27,6 @@ public class Share extends JPanel{
 
 	private VirtualDisk disk;
 	private VirtualFile current_file;
-	private Library library;
 
 	private JButton button;
 	private JButton button2;
@@ -37,25 +34,6 @@ public class Share extends JPanel{
 	public Share(VirtualDisk disk) {
 		super(new BorderLayout());
 		this.disk = disk;
-
-		String libraryName = System.getProperty("user.dir")+"/"+disk.getName()+"_"+disk.getServerAddress()+".xml";
-		System.out.println("File della libreria:"+libraryName);
-		File libraryFile = new File(libraryName);
-		if(libraryFile.isFile()){
-			System.out.println("Il file libreria esiste, carico la lista dei file");
-			//Se il file esiste, non va soltanto caricato...
-			library = new Library(libraryName);
-		}
-		else{
-			//Se il file non esiste, deve essere creato...
-			try {
-				System.out.println("Il file libreria non esiste, creo il file di liberia");
-				libraryFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Errore nella creazione del nuovo file per la libreria dei file condivisi", "Errore", JOptionPane.ERROR_MESSAGE);
-			}
-		}
 
 		panel1 = new JPanel();
 
@@ -96,7 +74,7 @@ public class Share extends JPanel{
 				listModel.removeElement(current_file);
 				try {
 					disk.notGotFile(current_file);
-					library.remove(current_file);
+					disk.getLibrary().remove(current_file);
 					updateList();
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
@@ -121,7 +99,12 @@ public class Share extends JPanel{
 	private void updateList(){
 		listModel.removeAllElements();
 		LinkedList<VirtualFile> files = new LinkedList<VirtualFile>();
-		files.addAll(library.getVirtualFile());
+		try {
+			files.addAll(disk.getLibrary().getVirtualFile());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(int i=0;i<files.size();i++){
 			VirtualFile vFile = files.get(i);
 			FileModel file = new FileModel(vFile);

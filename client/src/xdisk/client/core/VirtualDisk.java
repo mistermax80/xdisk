@@ -1,10 +1,10 @@
 package xdisk.client.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
 
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
@@ -30,7 +30,7 @@ public class VirtualDisk implements Runnable
 	private String webPanelAddress;
 	private int webPanelPort;
 	private String description; 
-	
+
 	private Library library;
 
 	private String userid;
@@ -44,9 +44,9 @@ public class VirtualDisk implements Runnable
 	private XDiskInputStream input;
 
 	private boolean connect;
-	
+
 	private Thread keepAliveThread;
-	
+
 	private static final int KEEP_ALIVE_SLEEP = 1000 *60;//1000 * 60;
 
 	public VirtualDisk() 
@@ -83,6 +83,12 @@ public class VirtualDisk implements Runnable
 		this.userid = userid;
 		this.password = password;
 		this.localPort = localPort;
+		try {
+			this.library = createLibrary();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -98,10 +104,10 @@ public class VirtualDisk implements Runnable
 
 		// deinizializzazione della connessione
 		deinitConnection();
-		
+
 		keepAliveThread = new Thread(this);
 		keepAliveThread.start();
-		
+
 		return true;
 	}
 
@@ -113,7 +119,7 @@ public class VirtualDisk implements Runnable
 	public synchronized void disconnect() throws UnknownHostException, IOException
 	{
 		keepAliveThread = null;
-		
+
 		// inizializzazione della connessione
 		if (initConnection())
 		{
@@ -124,7 +130,7 @@ public class VirtualDisk implements Runnable
 			// deinizializzazione della connessione
 			deinitConnection();
 		}
-		
+
 		sessionId=null;
 		connect=false;
 		System.out.println("USCITO DSCONNECT");
@@ -141,7 +147,7 @@ public class VirtualDisk implements Runnable
 		System.out.println("ENTRO NEL KEEP ALIVE");
 		if (sessionId == null)
 			return;
-		
+
 		String response="";
 		// inizializzazione della connessione
 		if (initConnection())
@@ -150,9 +156,9 @@ public class VirtualDisk implements Runnable
 			// invio la richiesta al server
 			output.writeUTF("KEEPALIVE");
 			output.send();
-//			System.out.println("Messaggio inviato!!! " + sessionId);
+			//			System.out.println("Messaggio inviato!!! " + sessionId);
 			input.receive();
-//			System.out.println("Messaggio ricevuto!! " + sessionId);
+			//			System.out.println("Messaggio ricevuto!! " + sessionId);
 			response=input.readUTF();
 			if(response.equals("OK")){
 				connect=true;
@@ -751,7 +757,7 @@ public class VirtualDisk implements Runnable
 		// invia il comando keep alive al server per indicare la presenza nella
 		// rete virtuale
 		Thread thisThread = Thread.currentThread();
-            
+
 		while (keepAliveThread == thisThread)
 		{
 			try 
@@ -781,12 +787,30 @@ public class VirtualDisk implements Runnable
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
 	}
-	
-	public Library getLibrary()
+
+	public Library getLibrary() throws IOException
 	{
 		return library;
 	}
-	
+
+	private Library createLibrary() throws IOException{
+		String libraryName = System.getProperty("user.dir")+"/"+name+"_"+serverAddress+".xml";
+		Library library = null;
+		System.out.println("File della libreria:"+libraryName);
+		File libraryFile = new File(libraryName);
+		if(libraryFile.isFile()){
+			System.out.println("Il file libreria esiste, carico la lista dei file");
+			//Se il file esiste, va soltanto caricato...
+			library = new Library(libraryName);
+		}
+		else{
+			//Se il file non esiste, deve essere creato...
+			System.out.println("Il file libreria non esiste, creo il file di liberia");
+			libraryFile.createNewFile();
+		}
+		return library;
+	}
+
 	public String toString(){
 		return name+" - "+description+" - "+serverAddress+":"+serverPort;
 	}
