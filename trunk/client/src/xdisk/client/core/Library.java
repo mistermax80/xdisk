@@ -47,7 +47,11 @@ public class Library
 	
 		localFile = new HashMap<VirtualFile, String>();
 		
-		loadFileConfig();		
+		File f = new File(filename);
+		if (f.exists())
+			loadFileConfig();
+		else
+			saveFileConfig();
 	}
 	
 	/**

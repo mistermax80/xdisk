@@ -30,6 +30,8 @@ public class VirtualDisk implements Runnable
 	private String webPanelAddress;
 	private int webPanelPort;
 	private String description; 
+	
+	private Library library;
 
 	private String userid;
 	private String password;
@@ -786,10 +788,18 @@ public class VirtualDisk implements Runnable
 	}
 
 	private Library createLibrary() throws IOException{
-		String libraryName = System.getProperty("user.dir")+"/"+name+"_"+serverAddress+".xml";
-		Library library = null;
-		System.out.println("File della libreria:"+libraryName);
-		File libraryFile = new File(libraryName);
+		
+		if (library == null)
+		{
+			String libraryName = System.getProperty("user.dir")+"/"+name+"_"+serverAddress+".xml";
+			System.out.println("Creo file della libreria: " + libraryName);
+			library = new Library(libraryName);
+			return library;
+		}
+
+		return library;
+		
+		/*File libraryFile = new File(libraryName);
 		if(libraryFile.isFile()){
 			System.out.println("Il file libreria esiste, carico la lista dei file");
 			//Se il file esiste, va soltanto caricato...
@@ -799,8 +809,7 @@ public class VirtualDisk implements Runnable
 			//Se il file non esiste, deve essere creato...
 			System.out.println("Il file libreria non esiste, creo il file di liberia");
 			libraryFile.createNewFile();
-		}
-		return library;
+		}*/
 	}
 
 	public String toString(){
