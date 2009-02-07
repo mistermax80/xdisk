@@ -39,10 +39,10 @@ public class SourceDownloader implements Runnable
 			throws UnknownHostException, IOException 
 	{
 		this.source = source;
+		this.downloader = downloader;
 		
 		isConnect = false;
-		
-		start();
+
 	}
 	
 	/**
@@ -64,6 +64,7 @@ public class SourceDownloader implements Runnable
 		String response = "";
 		
 		// connessione al client
+		System.out.println("Provo a conettermi a client: " + source);
 		socket = new Socket(source.getIp(), source.getPort());
 
 		// creazione sistema messaggi input/output
@@ -89,13 +90,15 @@ public class SourceDownloader implements Runnable
 			
 			if (response.indexOf("OK") != -1)
 			{
+				System.out.println("Il client mi può fornire il file...");
 				isConnect = true;
 				// .. facciamo partire il thread che controlla il download
-				clientThread = new Thread();
+				clientThread = new Thread(this);
 				clientThread.start();
 			}
 			else
 			{
+				System.out.println("Il client non mi darà il file..." + response);
 				output.close();
 				input.close();
 				socket.close();
@@ -123,7 +126,7 @@ public class SourceDownloader implements Runnable
 		Thread thisThread = Thread.currentThread();
 		String response = "";
             
-		while (clientThread == thisThread)
+		if (clientThread == thisThread)
 		{
 			// ottiene un token			
 			Token token = downloader.getToken();
@@ -138,6 +141,8 @@ public class SourceDownloader implements Runnable
 					output.writeInt(token.getOffset());
 					output.writeInt(token.getSize());
 					output.send();
+					
+					System.out.println("Richiesto token: " + token.getOffset());
 		
 					input.receive();
 					response = input.readUTF();
@@ -147,17 +152,17 @@ public class SourceDownloader implements Runnable
 						byte[] buffer = new byte[token.getSize()];
 						input.read(buffer, token.getOffset(), token.getSize());
 						token.setData(buffer);
-						token.setCompleted(true);
+						downloader.tokenCompleted(token);
+						System.out.println("Token salvato " + token.getOffset());
 					}
 					else
 					{
-						downloader.tokenFree(token);
+						System.out.println("Impossibile salvare il token " + token.getOffset());
 					}
 					
 				}
 				catch (Exception e) 
 				{
-					downloader.tokenFree(token);
 					isConnect = false;
 					clientThread = null;
 				}
