@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: xdisk.server.core.XDiskServer
+Class-Path: mysql-connector-java-5.1.7-bin.jar
