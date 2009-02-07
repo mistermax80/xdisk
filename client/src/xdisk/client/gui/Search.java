@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,9 +18,10 @@ import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
+import xdisk.downloader.DownloadListener;
 import xdisk.downloader.Downloader;
 
-public class Search extends JPanel{
+public class Search extends JPanel implements DownloadListener{
 
 	private static final long serialVersionUID = -4944887504788487152L;
 
@@ -53,7 +55,7 @@ public class Search extends JPanel{
 		button = new JButton("Cerca");
 		button.addActionListener(new ActionSearch());
 		button2 = new JButton("Download");
-		button2.addActionListener(new ActionSearch());
+		button2.addActionListener(new ActionDownload(this));
 		
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
@@ -72,6 +74,13 @@ public class Search extends JPanel{
 	}
 
 	public class ActionDownload implements ActionListener {
+		Search search;
+		
+		public ActionDownload(Search search) 
+		{
+			this.search = search;
+		}
+		
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null){
@@ -80,7 +89,7 @@ public class Search extends JPanel{
 					String tiketId = disk.getFile(current_file);
 					Collection<ClientResource> resources = disk.getSource(current_file);
 					
-					Downloader downloader = new Downloader(current_file, tiketId, null);
+					Downloader downloader = new Downloader(current_file, tiketId, search);
 					
 					Iterator<ClientResource> i = resources.iterator();
 					while (i.hasNext())
@@ -126,5 +135,19 @@ public class Search extends JPanel{
 			}
 		}
 
+	}
+	
+
+	@Override
+	public void completed(String filename, VirtualFile virtualFile) 
+	{
+		try {
+			disk.gotFile(virtualFile);
+			disk.getLibrary().add(filename, virtualFile);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
