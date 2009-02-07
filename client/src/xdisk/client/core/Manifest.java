@@ -49,6 +49,7 @@ public class Manifest
 		// scansione del file manifest
 		virtualDisk.setName(getValue("name"));
 		virtualDisk.setDescription(getValue("description"));
+		virtualDisk.setImageSrc(getValue("image"));
 		virtualDisk.setServerAddress(getValue("serveraddress"));
 		virtualDisk.setServerPort(new Integer(getValue("serverport")));
 		virtualDisk.setWebPanelAddress(getValue("webpaneladdress"));

@@ -123,6 +123,7 @@ public class VirtualDiskManager
 				VirtualDisk virtualDisk = vd.next();
 				
 				fileOut.println("\t\t<name>" + virtualDisk.getName() + "</name>");
+				fileOut.println("\t\t<image>" + virtualDisk.getImageSrc() + "</image>");
 				fileOut.println("\t\t<serverAddress>" + virtualDisk.getServerAddress() + "</serverAddress>");
 				fileOut.println("\t\t<serverPort>" + virtualDisk.getServerPort() + "</serverPort>");
 				fileOut.println("\t\t<webPanelAddress>" + virtualDisk.getWebPanelAddress() + "</webPanelAddress>");
@@ -196,6 +197,8 @@ public class VirtualDiskManager
 //			System.out.println(child.item(i).getNodeName() + " = " + child.item(i).getTextContent());
 			if (isTag(child.item(i), "name"))
 				virtualDisk.setName(child.item(i).getTextContent());
+			else if (isTag(child.item(i), "image"))
+				virtualDisk.setImageSrc(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "serverAddress"))
 				virtualDisk.setServerAddress(child.item(i).getTextContent());
 			else if (isTag(child.item(i), "serverPort"))
