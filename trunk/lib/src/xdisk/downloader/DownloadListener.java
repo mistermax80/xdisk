@@ -4,5 +4,5 @@ import xdisk.VirtualFile;
 
 public interface DownloadListener 
 {
-	public void completed(VirtualFile virtualFile);
+	public void completed(String filename, VirtualFile virtualFile);
 }

@@ -145,7 +145,8 @@ public class Downloader
 					out.write(t.getData(), t.getOffset(), t.getSize());
 				}
 				out.close();
-				listener.completed(virtualFile);
+				listener.completed(path + virtualFile.getFilename() + "." +
+						virtualFile.getExtension(), virtualFile);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				
