@@ -123,8 +123,6 @@ public class ClientShareServer implements ServerProcess
 								System.out.println("TOKEN SENDED offset: " + offset +
 										", size: " + size);
 														
-								// ricezione nuovo messaggio
-								input.receive();
 							}
 							source.close();
 						}
