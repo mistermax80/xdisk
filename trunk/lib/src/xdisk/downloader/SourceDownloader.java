@@ -134,7 +134,7 @@ public class SourceDownloader implements Runnable
 				{
 					// scarica il token, se ok, lo segnala, se errore, o restituisce
 					output.writeUTF("GETTOKEN");
-					output.writeUTF(downloader.getTicketId());
+//					output.writeUTF(downloader.getTicketId());
 					output.writeInt(token.getOffset());
 					output.writeInt(token.getSize());
 					output.send();

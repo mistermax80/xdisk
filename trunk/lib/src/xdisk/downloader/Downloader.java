@@ -2,6 +2,7 @@ package xdisk.downloader;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,20 +36,61 @@ public class Downloader
 	
 	private boolean isStarted;
 	
+	private int numToken;
+	
 	
 	/**
 	 * Crea un nuovo oggetto downloader per scaricare un {@link VirtualFile}
 	 * da diverse fonti.
 	 * @param virtualFile
+	 * @throws IOException 
 	 */
-	public Downloader(VirtualFile virtualFile, String ticketId) 
+	public Downloader(VirtualFile virtualFile, String ticketId) throws IOException 
 	{
 		this.virtualFile = virtualFile;
 		this.tiketId = ticketId;
 		
 		this.isStarted = false;
 		
-		// TODO creazione struttura dei token
+		// preparazione dei token
+		numToken = (int)(virtualFile.getSize() / TOKEN_SIZE);
+		
+		if ( (virtualFile.getSize() % TOKEN_SIZE) > 0) // controllo l'ultimo token
+			numToken++;
+		
+		File f = new File(getFileName());
+		if (f.exists())
+		{
+			loadPartFile();
+		}
+		else // il file non esiste, creiamo i token manualmente
+		{
+			long byteRemaining = virtualFile.getSize();
+			// creazione dei token	
+			for (int i=0; i<numToken; i++)
+			{
+				if (byteRemaining < TOKEN_SIZE)
+				{
+					Token token = new Token(i*TOKEN_SIZE, (int)byteRemaining);
+					tokens.put(i*TOKEN_SIZE, token);
+				}
+				else
+				{
+					Token token = new Token(i*TOKEN_SIZE, TOKEN_SIZE);
+					tokens.put(i*TOKEN_SIZE, token);
+				}
+				
+				byteRemaining-= TOKEN_SIZE;
+			}
+		}
+		
+		// creazione dei token liberi
+		for (int i=0; i<numToken; i++)
+		{
+			Token token = tokens.get(i*TOKEN_SIZE);
+			if (!token.isCompleted())
+				tokensAvaible.put(i*TOKEN_SIZE, token);
+		}
 	}
 	
 	/**
@@ -71,9 +113,10 @@ public class Downloader
 	}
 	
 	/**
-	 * Ferma il download del file.
+	 * Ferma il download del file e salva lo stato attuale
+	 * @throws IOException 
 	 */
-	public synchronized void stop()
+	public synchronized void stop() throws IOException
 	{
 		Iterator<SourceDownloader> iterator = sources.iterator();
 		
@@ -81,6 +124,8 @@ public class Downloader
 		{
 			iterator.next().stop();
 		}
+		
+		savePartFile();
 		
 		isStarted = true;
 	}
@@ -153,7 +198,7 @@ public class Downloader
 	protected void savePartFile() throws IOException
 	{
 		DataOutputStream out = new DataOutputStream(
-				new FileOutputStream(virtualFile.getFilename() + ".part"));
+				new FileOutputStream(getFileName()));
 		
 		// salvataggio dei dati del virtual file
 		out.writeUTF(virtualFile.getFilename());
@@ -189,7 +234,7 @@ public class Downloader
 	protected void loadPartFile() throws IOException
 	{
 		DataInputStream in = new DataInputStream(
-				new FileInputStream(virtualFile.getFilename() + ".part"));
+				new FileInputStream(getFileName()));
 		
 		// lettura del file virtuale
 		virtualFile.setFilename(in.readUTF());
@@ -202,10 +247,31 @@ public class Downloader
 		virtualFile.setSize(in.readLong());
 		
 		// lettura dei token dal file
-		
-		// TODO lettura dei token del file
+		int offset, size;
+		byte[] buffer;
+		for (int i=0; i<numToken; i++)
+		{
+			offset = in.readInt();
+			size = in.readInt();
+			
+			Token token = new Token(offset, size);
+			token.setCompleted(in.readBoolean());
+
+			buffer = new byte[size];
+			in.read(buffer, offset, size);
+			token.setData(buffer);
+		}
 		
 		in.close();
+	}
+	
+	/**
+	 * Ritorna il nome del file part di download
+	 * @return il nome del file part
+	 */
+	private String getFileName()
+	{
+		return virtualFile.getFilename() + ".part";
 	}
 	
 }
