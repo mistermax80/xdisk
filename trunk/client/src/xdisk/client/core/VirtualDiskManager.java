@@ -1,6 +1,5 @@
 package xdisk.client.core;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -145,10 +144,6 @@ public class VirtualDiskManager
 		{
 			e.printStackTrace();
 		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	/**
