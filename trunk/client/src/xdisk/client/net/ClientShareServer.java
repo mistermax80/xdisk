@@ -103,7 +103,7 @@ public class ClientShareServer implements ServerProcess
 							// ascoltiamo le richieste dei token
 							int offset, size;
 							input.receive();
-							while (input.readUTF().indexOf("GETTOKEN") != -1)
+							if (input.readUTF().indexOf("GETTOKEN") != -1)
 							{
 								offset = input.readInt();
 								size = input.readInt();
@@ -166,18 +166,20 @@ public class ClientShareServer implements ServerProcess
 	private DataInputStream getLocalFile(VirtualFile virtualFile) throws FileNotFoundException
 	{
 		// apriamo il file locale e vediamo se esiste...
+		System.out.println("cerco il file " + virtualFile);
+		
 		String localFilename=null;
 		try {
 			localFilename = virtualDisk.getLibrary().
 											getLocalFileName(virtualFile);
+			System.out.println("Trovato locale: " + localFilename);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		if (localFilename != null)
 		{
-			DataInputStream source = new DataInputStream(
-				new FileInputStream(localFilename));
+			return new DataInputStream(new FileInputStream(localFilename));
 		}
 		
 		return null;
