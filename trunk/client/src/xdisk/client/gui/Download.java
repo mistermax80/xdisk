@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -16,11 +18,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualResource;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
 import xdisk.client.data.TreeModel;
+import xdisk.downloader.Downloader;
 
 public class Download extends JPanel{
 
@@ -80,7 +84,22 @@ public class Download extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null)
-					disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+				{
+//					disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+					String tiketId = disk.getFile(current_file);
+					Collection<ClientResource> resources = disk.getSource(current_file);
+					
+					Downloader downloader = new Downloader(current_file, tiketId);
+					
+					Iterator<ClientResource> i = resources.iterator();
+					while (i.hasNext())
+					{
+						downloader.addSource(i.next());
+					}
+					downloader.start();
+					
+					System.out.println("Download file:" + current_file);
+				}
 				else
 					JOptionPane.showMessageDialog(null, 
 							"Seleziona un file da scaricare!!!", "Seleziona", JOptionPane.INFORMATION_MESSAGE);
