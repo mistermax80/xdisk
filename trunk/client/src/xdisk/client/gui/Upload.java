@@ -16,6 +16,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import xdisk.VirtualFile;
+import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.TreeModel;
 
@@ -185,7 +186,7 @@ public class Upload extends JPanel{
 				vFile.setDescription(descr.getText());
 				vFile.setExtension(extension);
 				vFile.setFilename(fileName);
-				vFile.setMime("<mime>");
+				vFile.setMime("mime");
 				vFile.setOwner(disk.getUserid());
 				vFile.setPath(path.getText());
 				vFile.setSize(file.length());
@@ -194,6 +195,10 @@ public class Upload extends JPanel{
 				try {
 					disk.insertFile(vFile);
 					//Salvare lista dei file messi a condividere
+					String libraryName = System.getProperty("user.dir")+"/"+disk.getName()+"_"+disk.getServerAddress()+".xml";
+					System.out.println("File della libreria:"+libraryName);
+					Library library = new Library(libraryName);
+					library.add(file.getAbsolutePath(), vFile);					
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

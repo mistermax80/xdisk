@@ -3,28 +3,20 @@ package xdisk.client.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.ListResourceBundle;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
 
-import xdisk.VirtualFile;
-import xdisk.client.core.Library;
 import xdisk.client.core.Manifest;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.core.VirtualDiskManager;
-import xdisk.client.data.FileModel;
-import xdisk.client.data.TreeModel;
-import xdisk.client.gui.Search.ActionSelectFile;
-import xdisk.client.gui.Upload.ActionAddPath;
-import xdisk.client.gui.Upload.ActionSelectFolder;
 
 public class XdiskManager{
 
@@ -41,6 +33,9 @@ public class XdiskManager{
 	private DefaultListModel listModel;
 
 	private VirtualDisk currentXdisk;
+	private Image imageAdd;
+	private Image imageRemove;
+	private Image imageOpen;
 
 	public XdiskManager() {
 		super();
@@ -66,15 +61,22 @@ public class XdiskManager{
 		}
 		frame = new JFrame("XDISK MANAGER the new file sharing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
 		panel1 = new JPanel();
 
-		button = new JButton("Apri Xdisk");
+		try {
+			imageAdd = ImageIO.read(Xdisk.class.getResource("images/list-add.png"));
+			imageOpen = ImageIO.read(Xdisk.class.getResource("images/media-playback-start.png"));
+			imageRemove= ImageIO.read(Xdisk.class.getResource("images/list-remove.png"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Errore nel recupero delle immagini", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
+
+		button = new JButton("Apri Xdisk",new ImageIcon(imageOpen));
 		button.addActionListener(new ActionOpen());
-		button2 = new JButton("Aggiungi Xdisk");
+		button2 = new JButton("Aggiungi Xdisk",new ImageIcon(imageAdd));
 		button2.addActionListener(new ActionAdd());
-		button3 = new JButton("Elimina Xdisk");
+		button3 = new JButton("Elimina Xdisk",new ImageIcon(imageRemove));
 		button3.addActionListener(new ActionDel());
 
 		listModel = new DefaultListModel();
@@ -89,6 +91,8 @@ public class XdiskManager{
 		list = new JList(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(new ActionSelectDisk());
+		list.addMouseListener(new ActionJList(list));
+
 		panel2 = new JScrollPane(list);
 
 		panel1.add(button);
@@ -130,8 +134,8 @@ public class XdiskManager{
 						VirtualDiskManager.getInstance().saveConfig();
 						listModel.addElement(newDisk);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Errore nel recupero del disco", "Errore", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -140,18 +144,49 @@ public class XdiskManager{
 
 	public class ActionDel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			listModel.removeElement(currentXdisk);
-			VirtualDiskManager.getInstance().removeByAddress(currentXdisk.getServerAddress());
-			VirtualDiskManager.getInstance().saveConfig();
+			if(currentXdisk!=null){
+				listModel.removeElement(currentXdisk);
+				VirtualDiskManager.getInstance().removeByAddress(currentXdisk.getServerAddress());
+				VirtualDiskManager.getInstance().saveConfig();
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Seleziona un disco!!!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 
 	public class ActionOpen implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			Xdisk xdisk = new Xdisk(currentXdisk);
-			xdisk.execute();
+			if(currentXdisk!=null){
+				Xdisk xdisk = new Xdisk(currentXdisk);
+				xdisk.execute();
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Seleziona un disco!!!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
+
+	public class ActionJList extends MouseAdapter{
+		protected JList list;
+
+		public ActionJList(JList l){
+			list = l;
+		}
+
+		public void mouseClicked(MouseEvent e){
+			if(e.getClickCount() == 2){
+				if(currentXdisk!=null){
+					Xdisk xdisk = new Xdisk(currentXdisk);
+					xdisk.execute();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Seleziona un disco!!!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+	}
+
 	public static void main(String[] args){
 
 		XdiskManager xds = new XdiskManager();

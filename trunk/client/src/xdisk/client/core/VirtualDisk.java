@@ -45,7 +45,7 @@ public class VirtualDisk implements Runnable
 	
 	private Thread keepAliveThread;
 	
-	private static final int KEEP_ALIVE_SLEEP = 1000;//1000 * 60;
+	private static final int KEEP_ALIVE_SLEEP = 1000 *60;//1000 * 60;
 
 	public VirtualDisk() 
 	{
@@ -781,6 +781,6 @@ public class VirtualDisk implements Runnable
 	}
 	
 	public String toString(){
-		return name+" - "+description;
+		return name+" - "+description+" - "+serverAddress+":"+serverPort;
 	}
 }
