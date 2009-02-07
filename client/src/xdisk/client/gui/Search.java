@@ -75,12 +75,12 @@ public class Search extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null){
-					VirtualFile file = 	disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+//					VirtualFile file = 	disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
 					
-					String tiketId = disk.getFile(file);
-					Collection<ClientResource> resources = disk.getSource(file);
+					String tiketId = disk.getFile(current_file);
+					Collection<ClientResource> resources = disk.getSource(current_file);
 					
-					Downloader downloader = new Downloader(file, tiketId);
+					Downloader downloader = new Downloader(current_file, tiketId);
 					
 					Iterator<ClientResource> i = resources.iterator();
 					while (i.hasNext())
@@ -89,7 +89,7 @@ public class Search extends JPanel{
 					}
 					downloader.start();
 					
-					System.out.println("Download file:"+file);
+					System.out.println("Download file:" + current_file);
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
