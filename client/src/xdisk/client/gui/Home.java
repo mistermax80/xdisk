@@ -7,10 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import xdisk.VirtualFile;
+import xdisk.client.core.Library;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.core.VirtualDiskManager;
 
@@ -185,6 +188,23 @@ public class Home extends JPanel{
 			try {
 				disk.connect();
 				updateState(disk.isConnect());
+				LinkedList<VirtualFile> files = new LinkedList<VirtualFile>();
+				String libraryName = System.getProperty("user.dir")+"/"+disk.getName()+"_"+disk.getServerAddress()+".xml";
+				System.out.println("File della libreria:"+libraryName);
+				Library library = new Library(libraryName);
+				files.addAll(library.getVirtualFile());
+				for(int i=0;i<files.size();i++){
+					VirtualFile file = files.get(i);
+					try {
+						disk.gotFile(file);
+					} catch (UnknownHostException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			} catch (UnknownHostException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Host "+url+" non raggiungibile", "Errore", JOptionPane.ERROR_MESSAGE);

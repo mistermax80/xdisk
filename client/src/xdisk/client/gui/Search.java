@@ -30,11 +30,11 @@ public class Search extends JPanel{
 	private JButton button2;
 
 	private JList list;
+	private DefaultListModel listModel;
 
 	private VirtualDisk disk;
 	private VirtualFile current_file;
 
-	private DefaultListModel listModel;
 
 	public Search(VirtualDisk disk) {
 		super(new BorderLayout());
