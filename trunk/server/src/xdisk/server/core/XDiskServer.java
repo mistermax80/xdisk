@@ -17,6 +17,7 @@ import xdisk.persistence.Client;
 import xdisk.persistence.File;
 import xdisk.persistence.Folder;
 import xdisk.persistence.Ownership;
+import xdisk.persistence.Request;
 import xdisk.persistence.User;
 import xdisk.persistence.database.ClientController;
 import xdisk.persistence.database.FileController;
@@ -464,6 +465,53 @@ public class XDiskServer implements ServerProcess{
 							}
 							output.send();
 							System.out.print(":OK");								
+						}
+						else{
+							//Invio Errore perchè file già presente
+							output.writeUTF("NOTPRESENT");
+							output.send();
+							System.err.print(":OK - file non presente, è possibile aggiungere il file!");
+						}
+					}catch (Exception e) {
+						//Svuoto l'output stream per inviare il messaggio di errore
+						output.reset();
+						System.err.print("Non è possibile soddisfare la richiesta");
+						output.writeUTF("ERROR");
+						output.send();
+						e.printStackTrace();
+					}
+				}
+				else if(response.equals("GETFILE")){//GETFILE
+					System.out.print("\nRequest GETFILE");
+					try{
+						//Ricevo il file
+						VirtualFile vFile = input.readVirtualFile();
+						//Controllo che il file sia già presente nel path specificato
+						LinkedList<File> files = new LinkedList<File>();
+						files.addAll(FileController.getFile(vFile.getPath()));
+						int i=0;
+						boolean present=false;
+						File file = new File();
+						System.out.println("\n\t\tControllo esistenza file: " + vFile.getPath()+vFile.getFilename()+"."+vFile.getExtension());
+						while(!present && i<files.size()){
+							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename())){
+								present=true;
+								file = files.get(i);
+							}
+							i++;
+						}
+						if(present){
+							//Invio conferma del caricamento
+							output.writeUTF("OK");
+							String ticketId= Md5.md5(_idSession+System.currentTimeMillis());
+							//Inserisco il file nel db
+							Request request = new Request();
+							request.setFile(file.getCode());
+							request.setUserid(_userId);
+							request.setTicketid(ticketId);
+							RequestController.insert(request);
+							output.send();
+							System.out.print(":OK     ticket:"+ticketId);								
 						}
 						else{
 							//Invio Errore perchè file già presente

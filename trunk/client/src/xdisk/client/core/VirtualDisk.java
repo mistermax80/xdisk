@@ -1,12 +1,9 @@
 package xdisk.client.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import javax.sql.rowset.spi.SyncResolver;
 
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
@@ -369,10 +366,41 @@ public class VirtualDisk implements Runnable
 	 * @param virtualFile il file virtuale da scaricare
 	 * @return il tickeId di prenotazione per lo scaricamento, o null se non
 	 * è possibile scaricare il file.
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public synchronized String getFile(VirtualFile virtualFile)
+	public synchronized String getFile(VirtualFile virtualFile) throws UnknownHostException, IOException
 	{
-		return null;
+		String ticketId = null;
+		String response;
+		// inizializzazione della connessione
+		if (initConnection())
+		{
+			System.out.println("Invio richiesta GETFILE...");
+			// invio la richiesta al server
+			output.writeUTF("GETFILE");
+			output.writeVirtualFile(virtualFile);
+			output.send();
+
+
+			// ricevo e analizzo la risposta
+			input.receive();
+			response = input.readUTF();
+			System.out.println("Response:"+response);
+			if (response.equals("OK"))
+			{
+				ticketId = input.readUTF();
+				System.out.println("TokenId ricevuto correttamente! ticketId:"+ticketId);
+			}
+			else
+			{
+				System.err.println("Impossibile ricevere il token!!!");
+			}
+
+			// deinizializzazione della connessione
+			deinitConnection();
+		}
+		return ticketId;
 	}
 
 	/**
