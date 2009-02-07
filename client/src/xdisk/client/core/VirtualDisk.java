@@ -31,8 +31,6 @@ public class VirtualDisk implements Runnable
 	private int webPanelPort;
 	private String description; 
 
-	private Library library;
-
 	private String userid;
 	private String password;
 	private int localPort;
@@ -83,12 +81,6 @@ public class VirtualDisk implements Runnable
 		this.userid = userid;
 		this.password = password;
 		this.localPort = localPort;
-		try {
-			this.library = createLibrary();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -790,7 +782,7 @@ public class VirtualDisk implements Runnable
 
 	public Library getLibrary() throws IOException
 	{
-		return library;
+		return createLibrary();
 	}
 
 	private Library createLibrary() throws IOException{
