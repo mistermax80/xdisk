@@ -169,6 +169,7 @@ public class OwnershipDCS
 		try {
 			stm = con.prepareStatement(SELECT_ONLINE_SQL_BY_CODE);
 			stm.setString(1, code);
+			System.out.println("§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§"+stm);
 			rst=stm.executeQuery();
 			all = processCollectionResultSet(rst);
 		} catch (SQLException e) {

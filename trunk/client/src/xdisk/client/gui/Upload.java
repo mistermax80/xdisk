@@ -195,6 +195,7 @@ public class Upload extends JPanel{
 					if(disk.insertFile(vFile)){
 						//Salvare lista dei file messi a condividere
 						disk.getLibrary().add(file.getAbsolutePath(), vFile);
+						disk.gotFile(vFile);
 						JOptionPane.showMessageDialog(null, "File caricato correttamente", "File caricato", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
