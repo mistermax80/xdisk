@@ -195,7 +195,7 @@ public class VirtualDiskManager
 		NodeList child = node.getChildNodes();
 		VirtualDisk virtualDisk = new VirtualDisk();
 			
-		System.out.println("Add node: " + node.getNodeName() + " - figli:" + child.getLength());
+//		System.out.println("Add node: " + node.getNodeName() + " - figli:" + child.getLength());
 		for (int i=0; i<child.getLength(); i++)
 		{
 			System.out.println(child.item(i).getNodeName() + " = " + child.item(i).getTextContent());
