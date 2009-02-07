@@ -176,10 +176,11 @@ public class Download extends JPanel implements DownloadListener
 	}
 
 	@Override
-	public void completed(VirtualFile virtualFile) 
+	public void completed(String filename, VirtualFile virtualFile) 
 	{
 		try {
 			disk.gotFile(virtualFile);
+			disk.getLibrary().add(filename, virtualFile);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
