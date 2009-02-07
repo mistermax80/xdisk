@@ -20,6 +20,7 @@ import xdisk.persistence.Ownership;
 import xdisk.persistence.Request;
 import xdisk.persistence.User;
 import xdisk.persistence.database.ClientController;
+import xdisk.persistence.database.ExtensionController;
 import xdisk.persistence.database.FileController;
 import xdisk.persistence.database.FolderController;
 import xdisk.persistence.database.OwnershipController;
@@ -29,6 +30,8 @@ import xdisk.utils.Md5;
 
 public class XDiskServer implements ServerProcess{
 
+	private static final int NUM_THREAD = 15;
+	private static final int NUM_MAX_CONNECTION = 5;
 	private Server server;
 	private int port;
 
@@ -42,10 +45,10 @@ public class XDiskServer implements ServerProcess{
 		super();
 		port = 4444;
 		server = new Server(this, port);
-		server.setListenerThread(15);
-		server.setMaxConnection(5);
+		server.setListenerThread(NUM_THREAD);
+		server.setMaxConnection(NUM_MAX_CONNECTION);
 		server.start();
-		System.out.println("Server Started listening on port:"+port);
+		System.out.println("Server Started listening on port:"+port+" \n\tNumber Thread:"+NUM_THREAD+" \n\tNum Max Connection:"+NUM_MAX_CONNECTION);
 	}
 
 	@Override
@@ -62,12 +65,12 @@ public class XDiskServer implements ServerProcess{
 		System.out.println("\n\n\n\n=======================================================================");
 		String ipClient = client.getInetAddress().getHostAddress();
 		String hostname = client.getInetAddress().getCanonicalHostName();
-		int portClient = client.getPort();
 		String _idSession;
 		String _userId;
+		int portClient = client.getPort();
 		Client userClient = new Client();
 
-		System.out.println("Connection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport:"+portClient);
+		System.out.println("Connection required from \n\thost:"+hostname+"\n\tip client:"+ipClient+"\n\tport client:"+portClient);
 		try {
 			output = new XDiskOutputStream(client.getOutputStream());
 			input = new XDiskInputStream(client.getInputStream());
@@ -89,6 +92,7 @@ public class XDiskServer implements ServerProcess{
 				if(input.readUTF().equals("LOGIN")){
 					String userid = input.readUTF();
 					String password = input.readUTF();
+					int portLocal = input.readInt();
 					User user = new User();
 					user.setUsername(userid);
 					//Carico dati utente
@@ -118,8 +122,9 @@ public class XDiskServer implements ServerProcess{
 						userClient.setUserid(user.getUsername());
 						userClient.setIdSession(id);
 						userClient.setIpAddress(client.getInetAddress().getHostAddress());
-						userClient.setPortNumber(client.getPort());
+						userClient.setPortNumber(portLocal);
 						userClient.setConnType("TCP");
+						System.out.print("\n\tIl client è in ascolto per lo share sulla porta:"+portLocal);
 						//inserimanto o aggiornamento
 						if(ClientController.isPresent(userClient)){
 							ClientController.update(userClient);
@@ -216,34 +221,45 @@ public class XDiskServer implements ServerProcess{
 						int i=0;
 						boolean present=false;
 						System.out.println("\n\t\tControllo se inserimento possibile: " + vFile.getPath()+vFile.getFilename()+"."+vFile.getExtension());
+
 						while(!present && i<files.size()){
 							if(files.get(i).getName().equalsIgnoreCase(vFile.getFilename()))
 								present=true;
 							i++;
 						}
-						if(!present){
-							//Invio conferma del caricamento
-							output.writeUTF("OK");
-							//Inserisco il file nel db
-							File file = new File();
-							file.setCode(Md5.md5(vFile.getFilename()+System.currentTimeMillis()));
-							file.setName(vFile.getFilename());
-							file.setExtension(vFile.getExtension());
-							file.setDescription(vFile.getDescription());
-							file.setOwner(vFile.getOwner());
-							file.setTags(vFile.getTags());
-							file.setSize(vFile.getSize());
-							file.setMime(vFile.getMime());
-							file.setParent(FolderController.getFolder(vFile.getPath()).getCodice());
-							FileController.insert(file);
+
+						String extension = vFile.getExtension();
+						if(!ExtensionController.checkAllow(extension)){
+							output.writeUTF("NOTALLOW");
 							output.send();
-							System.out.print(":OK");
+							System.out.print(":OK - Il file non può essere caricato perchè non è una estenzione permessa");
 						}
 						else{
-							//Invio Errore perchè file già presente
-							output.writeUTF("PRESENT");
-							output.send();
-							System.err.print(":OK - file già presente, non è possibile aggiungere il file!");
+
+							if(!present){
+								//Invio conferma del caricamento
+								output.writeUTF("OK");
+								//Inserisco il file nel db
+								File file = new File();
+								file.setCode(Md5.md5(vFile.getFilename()+System.currentTimeMillis()));
+								file.setName(vFile.getFilename());
+								file.setExtension(vFile.getExtension());
+								file.setDescription(vFile.getDescription());
+								file.setOwner(vFile.getOwner());
+								file.setTags(vFile.getTags());
+								file.setSize(vFile.getSize());
+								file.setMime(vFile.getMime());
+								file.setParent(FolderController.getFolder(vFile.getPath()).getCodice());
+								FileController.insert(file);
+								output.send();
+								System.out.print(":OK");
+							}
+							else{
+								//Invio Errore perchè file già presente
+								output.writeUTF("PRESENT");
+								output.send();
+								System.err.print(":OK - file già presente, non è possibile aggiungere il file!");
+							}
 						}
 					}
 					catch (Exception e) {
@@ -510,6 +526,8 @@ public class XDiskServer implements ServerProcess{
 							request.setUserid(_userId);
 							request.setTicketid(ticketId);
 							RequestController.insert(request);
+
+							output.writeUTF(ticketId);
 							output.send();
 							System.out.print(":OK     ticket:"+ticketId);								
 						}
@@ -517,7 +535,7 @@ public class XDiskServer implements ServerProcess{
 							//Invio Errore perchè file già presente
 							output.writeUTF("NOTPRESENT");
 							output.send();
-							System.err.print(":OK - file non presente, è possibile aggiungere il file!");
+							System.err.print(":OK - file non presente, non è possibile richiederlo!");
 						}
 					}catch (Exception e) {
 						//Svuoto l'output stream per inviare il messaggio di errore

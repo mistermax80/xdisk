@@ -52,7 +52,7 @@ public class Upload extends JPanel{
 	public Upload(VirtualDisk disk) {
 		super(new BorderLayout());
 		this.disk=disk;
-		
+
 		panel = new JPanel(new GridLayout(4,2));
 		panelOk = new JPanel(new BorderLayout());
 		panelButt = new JPanel(new BorderLayout());
@@ -178,7 +178,7 @@ public class Upload extends JPanel{
 				if(i==name.length-1)
 					extension = name[name.length-1];					
 			}
-			
+
 			fileName=fileName.substring(0,fileName.length()-1);
 			if(file!=null){
 				VirtualFile vFile = new VirtualFile();
@@ -192,15 +192,19 @@ public class Upload extends JPanel{
 				vFile.setTags(tags.getText());
 				System.out.println("file virt che carico"+vFile);
 				try {
-					disk.insertFile(vFile);
-					//Salvare lista dei file messi a condividere
-					disk.getLibrary().add(file.getAbsolutePath(), vFile);					
+					if(disk.insertFile(vFile)){
+						//Salvare lista dei file messi a condividere
+						disk.getLibrary().add(file.getAbsolutePath(), vFile);
+						JOptionPane.showMessageDialog(null, "File caricato correttamente", "File caricato", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+						JOptionPane.showMessageDialog(null, "Controlla se il file non sia già presente o se stai inviando un file con estensione non permessa", "Errore", JOptionPane.ERROR_MESSAGE);
 				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Host server non raggiungibile", "Errore", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Errore di comunicazione", "Errore", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
