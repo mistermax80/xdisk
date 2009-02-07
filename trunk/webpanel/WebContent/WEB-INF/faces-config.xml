@@ -73,6 +73,11 @@
 		<managed-bean-class>xdisk.persistence.File</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>itemFileS</managed-bean-name>
+		<managed-bean-class>xdisk.ItemFileS</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>index</display-name>
 		<from-view-id>/index.jsp</from-view-id>
@@ -198,6 +203,46 @@
 		<navigation-case>
 			<from-outcome>loginClient</from-outcome>
 			<to-view-id>/client.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>returnClient</from-outcome>
+			<to-view-id>/client.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>client</display-name>
+		<from-view-id>/client.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>searchFile</from-outcome>
+			<to-view-id>/searchFile.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>client</display-name>
+		<from-view-id>/client.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>personalClient</from-outcome>
+			<to-view-id>/personalClient.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>personalClient</display-name>
+		<from-view-id>/personalClient.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>returnClient</from-outcome>
+			<to-view-id>/client.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>searchFile</display-name>
+		<from-view-id>/searchFile.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>search</from-outcome>
+			<to-view-id>/listFiles.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

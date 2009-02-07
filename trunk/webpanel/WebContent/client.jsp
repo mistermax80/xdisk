@@ -55,22 +55,17 @@
 				<li>
 					<h2><h:outputText value="Menu #{userBean.username}"/></h2>
 					<ul><h:form>
-						<li><h:commandLink value="Home" action="return"></h:commandLink></li>
-						<li><h:commandLink value="Profilo" action="personal"></h:commandLink></li>
+						<li><h:commandLink value="Home" action="returnClient"></h:commandLink></li>
+						<li><h:commandLink value="Profilo" action="personalClient"></h:commandLink></li>
 						<li><h:commandLink value="Logout" action="logout" actionListener="#{actionGeneric.logout}"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>
 				<li>
-					<h2><h:outputText value="#{msg.manage} #{msg.folders} e #{msg.files}"/></h2>
+					<h2><h:outputText value="Download Files"/></h2>
 					<ul><h:form>
-						<li><h:commandLink value="#{msg.folders}" action="listFolder"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add} #{msg.folder}" action="newFolder"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.del} #{msg.folder}" action="deleteFolder"></h:commandLink></li>
+						<li><h:commandLink value="Cerca File" action="searchFile"></h:commandLink></li>
 						<li><h:commandLink value="#{msg.file}" action="listFile"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add}/#{msg.del} #{msg.files}" action="file"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.extensions}" action="listExtension"></h:commandLink></li>
-						<li><h:commandLink value="#{msg.add}/#{msg.del} #{msg.extension}" action="extension"></h:commandLink></li>
 						</h:form>
 					</ul>
 				</li>
