@@ -17,9 +17,7 @@ import xdisk.VirtualFile;
 
 /**
  * La classe che si occupa dello scaricamento del file dalle varie fonti client.
- * Sarà possibile fermare e far ripartire il download ed aggiungere i client alla
- * lista delle fonti. L'aggiunta delle fonti (ip e address), avviene in maniera
- * dinamica.
+ * 
  * @author biio
  * @version 6/2/2009
  */
@@ -61,9 +59,7 @@ public class Downloader
 	}
 	
 	/**
-	 * Fa partire il download del file. Se non ci sono risorse, lo scaricamento
-	 * viene considerato in coda, e all'aggiunta della prima risorsa client
-	 * disponibile partirà lo scaricamento.
+	 * Fa partire il download del file. 
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
@@ -93,9 +89,7 @@ public class Downloader
 	}
 	
 	/**
-	 * Aggiunge una risorsa client alla lista. Se il download è attivo, si 
-	 * avvierà il thread di scaricamento da questo client.
-	 * @param source il client fornitore da aggiungere.
+	 * Aggiunge una risorsa client alla lista.
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
