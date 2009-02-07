@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
+import xdisk.downloader.Downloader;
 
 public class Search extends JPanel{
 
@@ -75,9 +77,18 @@ public class Search extends JPanel{
 				if(current_file!=null){
 					VirtualFile file = 	disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
 					
+					String tiketId = disk.getFile(file);
 					Collection<ClientResource> resources = disk.getSource(file);
 					
-//					Downloader
+					Downloader downloader = new Downloader(file, tiketId);
+					
+					Iterator<ClientResource> i = resources.iterator();
+					while (i.hasNext())
+					{
+						downloader.addSource(i.next());
+					}
+					downloader.start();
+					
 					System.out.println("Download file:"+file);
 				}
 			} catch (IOException e1) {
