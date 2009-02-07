@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <library>
 	<file>
+		<local_filename>/media/Multimedia/Musica/Fabri Fibra - Bugiardo/04-fabri_fibra-andiamo_a_sanremo_(prodotto_da_antwan_amadeus_thompson).mp3</local_filename>
+		<filename>04-fabri_fibra-andiamo_a_sanremo_(prodotto_da_antwan_amadeus_thompson)</filename>
+		<extension>mp3</extension>
+		<description>dd</description>
+		<owner>ciips</owner>
+		<tags>ddd</tags>
+		<size>7137579</size>
+		<mime>mime</mime>
+		<path>/prova/</path>
+	</file>
+	<file>
+		<local_filename>/media/Multimedia/Musica/Claudio Baglioni/Amore Bello.mp3</local_filename>
+		<filename>Amore Bello</filename>
+		<extension>mp3</extension>
+		<description>dd</description>
+		<owner>ciips</owner>
+		<tags>tt</tags>
+		<size>5602453</size>
+		<mime>mime</mime>
+		<path>/lulu/</path>
+	</file>
+	<file>
+		<local_filename>/home/massimo/massimo.png</local_filename>
+		<filename>massimo</filename>
+		<extension>png</extension>
+		<description>rr</description>
+		<owner>ciips</owner>
+		<tags>eww</tags>
+		<size>65176</size>
+		<mime>mime</mime>
+		<path>/ricevuti/</path>
+	</file>
+	<file>
+		<local_filename>/media/Multimedia/Musica/Artisti Vari/07 - Avril Lavigne - Tomorrow.mp3</local_filename>
+		<filename>07 - Avril Lavigne - Tomorrow</filename>
+		<extension>mp3</extension>
+		<description>ddd</description>
+		<owner>ciips</owner>
+		<tags>ddd</tags>
+		<size>3660615</size>
+		<mime>mime</mime>
+		<path>/lulu/</path>
+	</file>
+	<file>
 		<local_filename>/home/massimo/Examples/case_Skegness.pdf</local_filename>
 		<filename>case_Skegness</filename>
 		<extension>pdf</extension>

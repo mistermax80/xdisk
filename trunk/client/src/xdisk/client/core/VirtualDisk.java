@@ -261,8 +261,11 @@ public class VirtualDisk implements Runnable
 				ret=true;
 				System.out.println("File inserito correttamente!");
 			}
+			else if(response.equals("NOTALLOW")){
+				System.err.println("Impossibile inserire il file estensione non ammessa!!!");
+			}
 			else if(response.equals("PRESENT")){
-				System.err.println("Impossibile inserire il file file già presente!!!");
+				System.err.println("Impossibile inserire il file perchè già presente!!!");
 			}
 			else
 			{
