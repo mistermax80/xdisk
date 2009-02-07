@@ -56,7 +56,7 @@ public class SourceDownloader implements Runnable
 	
 	/**
 	 * Effettua la connessione al fornitore, e se il client decide di fornire
-	 * la risorsa, fa partire il thread per lo scaricamento dei token.
+	 * la risorsa, fa partire il thread per lo scaricamento del token.
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
