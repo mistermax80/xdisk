@@ -174,6 +174,7 @@ public class Library
 		}
 		
 		localFile.put(virtualFile, local_filename);
+		System.out.println("Aggiunto nella libreria: " + virtualFile + "\n" + local_filename);
 		
 	}
 
