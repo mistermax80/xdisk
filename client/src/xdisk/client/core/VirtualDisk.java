@@ -30,6 +30,8 @@ public class VirtualDisk implements Runnable
 	private String webPanelAddress;
 	private int webPanelPort;
 	private String description; 
+	
+	private Library library;
 
 	private String userid;
 	private String password;
@@ -778,6 +780,11 @@ public class VirtualDisk implements Runnable
 
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
+	}
+	
+	public Library getLibrary()
+	{
+		return library;
 	}
 	
 	public String toString(){
