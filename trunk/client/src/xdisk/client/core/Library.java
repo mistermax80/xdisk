@@ -94,6 +94,17 @@ public class Library
 	}
 	
 	/**
+	 * Ritorna il nome del file in locale
+	 * @param virtualFile il file virtuale di cui occorre conoscere il nome locale
+	 * @return il nome del file locale, o null se il filenon è presente nella
+	 * libreria
+	 */
+	public String getLocalFileName(VirtualFile virtualFile)
+	{
+		return localFile.get(virtualFile);
+	}
+	
+	/**
 	 * Carica i dati di connessione tra i file virtuali e quelli locali dal 
 	 * file di configurazione.
 	 */
