@@ -9,6 +9,7 @@ import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
 import xdisk.VirtualResource;
+import xdisk.client.net.ClientShareServer;
 import xdisk.net.XDiskInputStream;
 import xdisk.net.XDiskOutputStream;
 
@@ -47,7 +48,7 @@ public class VirtualDisk implements Runnable
 
 	private Thread keepAliveThread;
 
-	private static final int KEEP_ALIVE_SLEEP = 1000 *60;//1000 * 60;
+	private static final int KEEP_ALIVE_SLEEP = 1000 *60 * 3;//1000 * 60;
 
 	public VirtualDisk() 
 	{
@@ -101,6 +102,9 @@ public class VirtualDisk implements Runnable
 
 		keepAliveThread = new Thread(this);
 		keepAliveThread.start();
+		
+		// parte il listener di condivisione..
+		new ClientShareServer(this);	
 
 		return true;
 	}
@@ -742,6 +746,7 @@ public class VirtualDisk implements Runnable
 				output.writeUTF("LOGIN");
 				output.writeUTF(userid);
 				output.writeUTF(password);
+				output.writeInt(getLocalPort());
 				output.send();
 
 				input.receive();
