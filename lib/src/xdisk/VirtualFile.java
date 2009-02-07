@@ -96,7 +96,7 @@ public class VirtualFile implements VirtualResource
 	 * Imposta il proprietario del file
 	 * @param owner il proprietario del file
 	 */
-	public void setOwner(String owner) 
+	public void setOwner(String owner)
 	{
 		this.owner = owner;
 	}
@@ -185,6 +185,74 @@ public class VirtualFile implements VirtualResource
 			"\npath: "+path;
 		return ret+"\n***********************";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((extension == null) ? 0 : extension.hashCode());
+		result = prime * result
+				+ ((filename == null) ? 0 : filename.hashCode());
+		result = prime * result + ((mime == null) ? 0 : mime.hashCode());
+		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		result = prime * result + (int) (size ^ (size >>> 32));
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VirtualFile other = (VirtualFile) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (extension == null) {
+			if (other.extension != null)
+				return false;
+		} else if (!extension.equals(other.extension))
+			return false;
+		if (filename == null) {
+			if (other.filename != null)
+				return false;
+		} else if (!filename.equals(other.filename))
+			return false;
+		if (mime == null) {
+			if (other.mime != null)
+				return false;
+		} else if (!mime.equals(other.mime))
+			return false;
+		if (owner == null) {
+			if (other.owner != null)
+				return false;
+		} else if (!owner.equals(other.owner))
+			return false;
+		if (path == null) {
+			if (other.path != null)
+				return false;
+		} else if (!path.equals(other.path))
+			return false;
+		if (size != other.size)
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		return true;
+	}
+	
 	
 	
 	

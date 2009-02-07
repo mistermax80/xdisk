@@ -31,12 +31,13 @@ public class Downloader
 	private static final int TOKEN_SIZE = 1024;
 	
 	private ArrayList<SourceDownloader> sources;
-	private HashMap<Integer, Token> tokens;
-	private HashMap<Integer, Token> tokensAvaible;
-	
-	private boolean isStarted;
+	private ArrayList<Token> tokens;
+	private ArrayList<Token> tokensCompleted;
 	
 	private int numToken;
+	private int numTokenCompleted;
+	
+	private String path = System.getProperty("user.dir") + "/download/";
 	
 	
 	/**
@@ -50,47 +51,10 @@ public class Downloader
 		this.virtualFile = virtualFile;
 		this.tiketId = ticketId;
 		
-		this.isStarted = false;
+		tokens = new ArrayList<Token>();
+		tokensCompleted = new ArrayList<Token>();
+		sources  = new ArrayList<SourceDownloader>();
 		
-		// preparazione dei token
-		numToken = (int)(virtualFile.getSize() / TOKEN_SIZE);
-		
-		if ( (virtualFile.getSize() % TOKEN_SIZE) > 0) // controllo l'ultimo token
-			numToken++;
-		
-		File f = new File(getFileName());
-		if (f.exists())
-		{
-			loadPartFile();
-		}
-		else // il file non esiste, creiamo i token manualmente
-		{
-			long byteRemaining = virtualFile.getSize();
-			// creazione dei token	
-			for (int i=0; i<numToken; i++)
-			{
-				if (byteRemaining < TOKEN_SIZE)
-				{
-					Token token = new Token(i*TOKEN_SIZE, (int)byteRemaining);
-					tokens.put(i*TOKEN_SIZE, token);
-				}
-				else
-				{
-					Token token = new Token(i*TOKEN_SIZE, TOKEN_SIZE);
-					tokens.put(i*TOKEN_SIZE, token);
-				}
-				
-				byteRemaining-= TOKEN_SIZE;
-			}
-		}
-		
-		// creazione dei token liberi
-		for (int i=0; i<numToken; i++)
-		{
-			Token token = tokens.get(i*TOKEN_SIZE);
-			if (!token.isCompleted())
-				tokensAvaible.put(i*TOKEN_SIZE, token);
-		}
 	}
 	
 	/**
@@ -103,31 +67,26 @@ public class Downloader
 	public synchronized void start() throws UnknownHostException, IOException
 	{
 		Iterator<SourceDownloader> iterator = sources.iterator();
+
+		// preparazione dei token
+		numToken = sources.size();
+		numTokenCompleted = 0;
+		
+		int tokenSize = (int)(virtualFile.getSize() / numToken);
+		int offset = 0;
+		for (int i=0; i<numToken -1; i++)
+		{
+			Token token = new Token(offset, tokenSize);
+			offset+=tokenSize;
+			tokens.add(token);
+		}
+		Token token = new Token(offset, (int)(virtualFile.getSize() - offset));
+		tokens.add(token);
 		
 		while (iterator.hasNext())
 		{
 			iterator.next().start();
 		}
-			
-		isStarted = true;
-	}
-	
-	/**
-	 * Ferma il download del file e salva lo stato attuale
-	 * @throws IOException 
-	 */
-	public synchronized void stop() throws IOException
-	{
-		Iterator<SourceDownloader> iterator = sources.iterator();
-		
-		while (iterator.hasNext())
-		{
-			iterator.next().stop();
-		}
-		
-		savePartFile();
-		
-		isStarted = true;
 	}
 	
 	/**
@@ -142,9 +101,6 @@ public class Downloader
 	{
 		SourceDownloader sourceDownloader = new SourceDownloader(this, source); 
 		sources.add(sourceDownloader);
-		
-		if (isStarted)
-			sourceDownloader.start();
 	}
 	
 	/**
@@ -155,9 +111,11 @@ public class Downloader
 	 */
 	public synchronized Token getToken()
 	{
-		Token token = tokensAvaible.get(0);
+		System.out.println(tokens);
+		Token token = tokens.get(0);
 		
-		tokensAvaible.remove(token);
+		
+		tokens.remove(token);
 		
 		return token;
 	}
@@ -169,17 +127,48 @@ public class Downloader
 	 */
 	public synchronized void tokenCompleted(Token token)
 	{
-//		tokensAvaible.remove(token);
+		numTokenCompleted++;
+		tokensCompleted.add(token);
+		
+		if (numToken == numTokenCompleted) // scaricamento completato
+		{
+			Token t = null;
+			try {
+				DataOutputStream out = new DataOutputStream(
+						new FileOutputStream(path + virtualFile.getFilename() + "." +
+								virtualFile.getExtension()));
+				while ((t = getLowOffset()) != null)
+				{
+					out.write(t.getData(), t.getOffset(), t.getSize());
+				}
+				out.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}			
 	}
 	
-	/**
-	 * Segnala al downloader che il token in questione non è stato scaricato
-	 * correttamente. 
-	 * @param token il token da rimettere a disposizione per il download
-	 */
-	public synchronized void tokenFree(Token token)
+	private Token getLowOffset()
 	{
-		tokensAvaible.put(token.getOffset(), token);
+		Token t = null;
+		Iterator<Token> i = tokensCompleted.iterator();
+		
+		int offset = (int)virtualFile.getSize();
+		while (i.hasNext())
+		{
+			Token curr = i.next();
+			if (curr.getOffset() <= offset)
+				t = curr;
+		}
+		if (t != null)
+			tokensCompleted.remove(t);
+		
+		return t;
 	}
 	
 	/**
@@ -189,89 +178,6 @@ public class Downloader
 	public String getTicketId()
 	{
 		return tiketId;
-	}
-	
-	/**
-	 * Salva lo stato attuale del download su un file.
-	 * @throws IOException 
-	 */
-	protected void savePartFile() throws IOException
-	{
-		DataOutputStream out = new DataOutputStream(
-				new FileOutputStream(getFileName()));
-		
-		// salvataggio dei dati del virtual file
-		out.writeUTF(virtualFile.getFilename());
-		out.writeUTF(virtualFile.getDescription());
-		out.writeUTF(virtualFile.getExtension());
-		out.writeUTF(virtualFile.getMime());
-		out.writeUTF(virtualFile.getOwner());
-		out.writeUTF(virtualFile.getPath());
-		out.writeUTF(virtualFile.getTags());
-		out.writeLong(virtualFile.getSize());
-		
-		// salvataggio dei token
-		Iterator<Integer> iterator = tokens.keySet().iterator();
-		while (iterator.hasNext())
-		{
-			Token token = tokens.get(iterator.next());
-			
-			out.writeInt(token.getOffset());
-			out.writeInt(token.getSize());
-			out.writeBoolean(token.isCompleted());
-			out.write(token.getData(), token.getOffset(), token.getSize());
-		}
-		
-		// chiusura del file
-		out.close();
-	}
-	
-	/**
-	 * Carica lo stato di un download da un file di specifica per poter eseguire
-	 * il resume.
-	 * @throws IOException 
-	 */
-	protected void loadPartFile() throws IOException
-	{
-		DataInputStream in = new DataInputStream(
-				new FileInputStream(getFileName()));
-		
-		// lettura del file virtuale
-		virtualFile.setFilename(in.readUTF());
-		virtualFile.setDescription(in.readUTF());
-		virtualFile.setExtension(in.readUTF());
-		virtualFile.setMime(in.readUTF());
-		virtualFile.setOwner(in.readUTF());
-		virtualFile.setPath(in.readUTF());
-		virtualFile.setTags(in.readUTF());
-		virtualFile.setSize(in.readLong());
-		
-		// lettura dei token dal file
-		int offset, size;
-		byte[] buffer;
-		for (int i=0; i<numToken; i++)
-		{
-			offset = in.readInt();
-			size = in.readInt();
-			
-			Token token = new Token(offset, size);
-			token.setCompleted(in.readBoolean());
-
-			buffer = new byte[size];
-			in.read(buffer, offset, size);
-			token.setData(buffer);
-		}
-		
-		in.close();
-	}
-	
-	/**
-	 * Ritorna il nome del file part di download
-	 * @return il nome del file part
-	 */
-	private String getFileName()
-	{
-		return virtualFile.getFilename() + ".part";
 	}
 	
 }
