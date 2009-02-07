@@ -56,12 +56,12 @@ public class Xdisk {
 			Image imageShare = ImageIO.read(Xdisk.class.getResource("images/share.png"));
 			Image imageTransfert = ImageIO.read(Xdisk.class.getResource("images/transfert.png"));
 			
-			tab.addTab("Home",new ImageIcon(imageHome),home);
-			tab.addTab("Upload",new ImageIcon(imageUpload),upload);
-			tab.addTab("Download",new ImageIcon(imageDownload),download);
-			tab.addTab("Search",new ImageIcon(imageSearch),search);
-			tab.addTab("Share",new ImageIcon(imageShare),share);
-			tab.addTab("Transfert",new ImageIcon(imageTransfert),transfert);
+			tab.addTab("Home",new ImageIcon(imageHome),home,"Utilizza questo pannello per controllare il tuo stato e le informazioni del server");
+			tab.addTab("Upload",new ImageIcon(imageUpload),upload,"Utilizza questo pannello per caricare un file in xdisk");
+			tab.addTab("Download",new ImageIcon(imageDownload),download,"Utilizza questo pannello per scaricare un file da xdisk");
+			tab.addTab("Search",new ImageIcon(imageSearch),search,"Utilizza questo pannello per cercare un file in xdisk, in relazione al nome, tags, e descrizione");
+			tab.addTab("Share",new ImageIcon(imageShare),share,"Utilizza questo pannello per vedere l'elenco dei file che condividi con xdisk");
+			tab.addTab("Transfert",new ImageIcon(imageTransfert),transfert,"Utilizza questo pannello per vedere l'elenco dei file che sono in trasferimanto da/ad altri client");
 
 		} catch (Exception e) {
 			e.printStackTrace();
