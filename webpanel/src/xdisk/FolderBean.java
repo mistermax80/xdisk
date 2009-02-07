@@ -10,6 +10,7 @@ import xdisk.persistence.database.FileController;
 import xdisk.persistence.database.FolderController;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class FolderBean {
 
 	public Graph getTreeGraph() throws PersistenceException {
 		if (treeGraph == null) {
-			
+
 			Folder rootFolder = FolderController.getRoot();
 			String name = String.valueOf(rootFolder.getCodice());
 			String label = rootFolder.getNome();
@@ -42,10 +43,10 @@ public class FolderBean {
 		}
 		return treeGraph;
 	}
-	
+
 	public Graph getTreeGraphFile() throws PersistenceException {
 		if (treeGraph == null) {
-			
+
 			Folder rootFolder = FolderController.getRoot();
 			String name = String.valueOf(rootFolder.getCodice());
 			String label = rootFolder.getNome();
@@ -55,11 +56,11 @@ public class FolderBean {
 		}
 		return treeGraph;
 	}
-	
+
 	public static void addChildsFile(Node parent) throws PersistenceException {
 		Node child = null;
 		Node file = null;
-		
+
 		Folder folder = new Folder();
 		folder.setCodice(Integer.parseInt(parent.getName()));
 		FolderController.load(folder);
@@ -76,25 +77,27 @@ public class FolderBean {
 			parent.addChild(child);
 			addChildsFile(child);
 		}
-
-		for(int i=0;i<files.size();i++){
-			files.addAll(FileController.getFile(childs.get(0)));
-			String name = String.valueOf(files.get(i).getCode());
-			String label = files.get(i).getName();
-			file = new Node("f_"+name, "file:"+label+"-"+name, link, icon_file , false, true);
-			System.out.println("file:"+file);
-			parent.addChild(file);
+		if(childs.size()>0){
+			for(int i=0;i<files.size();i++){
+				files.addAll(FileController.getFile(childs.get(0)));
+				String name = files.get(i).getCode();
+				String extension = files.get(i).getExtension();
+				String label = files.get(i).getName();
+				file = new Node(name, "file:"+label+"."+extension, link, icon_file , false, true);
+				System.out.println("file:"+file);
+				parent.addChild(file);
+			}
 		}
 	}
 
 	public static void addChilds(Node parent) throws PersistenceException {
 		Node child = null;
-		
+
 		Folder folder = new Folder();
 		folder.setCodice(Integer.parseInt(parent.getName()));
 		LinkedList<Folder> childs = new LinkedList<Folder>();
 		childs.addAll(FolderController.getFolder(folder));
-		
+
 		for(int i=0;i<childs.size();i++){
 			String name = String.valueOf(childs.get(i).getCodice());
 			String label = childs.get(i).getNome();
@@ -103,7 +106,7 @@ public class FolderBean {
 			addChilds(child);
 		}
 	}
-	
+
 	public static void addFolder(){
 		JOptionPane.showInputDialog("Aggiungi Cartella", "Nome cartella");
 	}

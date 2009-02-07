@@ -60,10 +60,10 @@ public class UserBean{
 		try {
 			System.out.println("Controllo login!");
 			user=UserController.login(this.username, this.password);
-			if(true)
+			if(user.getAdmin())
 				ret = "loginAdmin";
 			else
-				ret = "loginUser";
+				ret = "loginClient";
 			error=false;
 		} catch (UsernameLoginException e) {
 			msgError="Username non presente nel sistema!!!";
