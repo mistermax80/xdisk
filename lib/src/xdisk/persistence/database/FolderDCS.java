@@ -78,7 +78,7 @@ public class FolderDCS {
 	private static final String SELECT_CHILDS_SQL = "SELECT * FROM folder WHERE parent=?";
 	
 	public static Collection<Folder> getFolders(Folder folder) throws PersistenceException {
-		Collection<Folder> all=null;
+		Collection<Folder> all=new LinkedList<Folder>();
 		Connection con=null;
 		PreparedStatement stm=null;
 		ResultSet rst=null;
