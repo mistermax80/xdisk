@@ -11,6 +11,9 @@ public class Xdisk {
 	
 	private VirtualDisk disk;
 	
+	private int width = 800;
+	private int height = 640;
+	
 	public Xdisk(VirtualDisk disk) {
 		super();
 		this.disk=disk;
@@ -70,8 +73,11 @@ public class Xdisk {
 		frame.getContentPane().add(tab, BorderLayout.CENTER);
 		//Display the window.
 		frame.pack();
-		frame.setSize(670, 500);
-		frame.setLocation(300, 200);
+		frame.pack();
+		Dimension scrn = frame.getToolkit().getScreenSize();
+		frame.setBounds( (scrn.width-width)/2, (scrn.height-height)/2, width, height);
+
+	    
 		frame.setVisible(true);
 	}
 }

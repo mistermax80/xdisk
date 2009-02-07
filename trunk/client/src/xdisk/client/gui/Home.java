@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
@@ -114,9 +115,20 @@ public class Home extends JPanel{
 		passwordText = new JPasswordField(password);
 		localPortText = new JTextField(String.valueOf(localPort));
 		stateText = new JTextField(state);
+
+		try 
+		{
+			imageBackground = ImageIO.read(Xdisk.class.getResource("images/disk.png"));
+			imageBackground = ImageIO.read(new URL(disk.getImageSrc()));			
+		} 
+		catch (IOException e1) 
+		{
+			System.out.println("Immagine remota del disco non trovata...");
+		}
+
 		
 		try {
-			imageBackground = ImageIO.read(Xdisk.class.getResource("images/disk.png"));
+		
 			imageConnect = ImageIO.read(Xdisk.class.getResource("images/connect.png"));
 			imageDisconnect = ImageIO.read(Xdisk.class.getResource("images/disconnect.png"));
 			imageSave = ImageIO.read(Xdisk.class.getResource("images/save1.png"));

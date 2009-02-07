@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.VirtualFolder;
@@ -25,6 +27,7 @@ import xdisk.net.XDiskOutputStream;
 public class VirtualDisk implements Runnable
 {
 	private String name;
+	private String imageSrc;
 	private String serverAddress;
 	private int serverPort;
 	private String webPanelAddress;
@@ -319,21 +322,21 @@ public class VirtualDisk implements Runnable
 	}
 
 	/**
-	 * Ritorna il file virtuale sul disco con con nome del file pari a filename
+	 * Ritorna il file virtuale sul disco con nome del file pari a filename
 	 * @param canonicalName il nome del file del disco virtuale da recuperare con tutto il suo path
 	 * @return il file virtuale se presente sul disco, false altrimenti
 	 * @throws IOException
 	 */
-	public synchronized VirtualFile getFile(String canonicalName) throws IOException
+	public synchronized VirtualFile getVirtualFile(String canonicalName) throws IOException
 	{
 		VirtualFile file = new VirtualFile();
 		String response;
 		// inizializzazione della connessione
 		if (initConnection())
 		{
-			System.out.println("Invio richiesta GET...file:"+canonicalName);
+			System.out.println("Invio richiesta GETVIRTUALFILE...file:"+canonicalName);
 			// invio la richiesta al server
-			output.writeUTF("GET");
+			output.writeUTF("GETVIRTUALFILE");
 			output.writeUTF(canonicalName);
 			output.send();
 
@@ -357,6 +360,19 @@ public class VirtualDisk implements Runnable
 			deinitConnection();
 		}
 		return file;
+	}
+	
+
+	/**
+	 * Chiede al server lo scaricamento del file e ottiene lo scaricamento del
+	 * file se disponibile. 
+	 * @param virtualFile il file virtuale da scaricare
+	 * @return il tickeId di prenotazione per lo scaricamento, o null se non
+	 * è possibile scaricare il file.
+	 */
+	public synchronized String getFile(VirtualFile virtualFile)
+	{
+		return null;
 	}
 
 	/**
@@ -627,7 +643,17 @@ public class VirtualDisk implements Runnable
 	{
 		this.description = description;
 	}
+	
+	
 
+	public String getImageSrc() {
+		return imageSrc;
+	}
+
+
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
 
 
 	public void setServerPort(int serverPort) 

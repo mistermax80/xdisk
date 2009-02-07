@@ -5,12 +5,14 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import xdisk.ClientResource;
 import xdisk.VirtualFile;
 import xdisk.client.core.VirtualDisk;
 import xdisk.client.data.FileModel;
@@ -71,7 +73,11 @@ public class Search extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null){
-					VirtualFile file = 	disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+					VirtualFile file = 	disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+					
+					Collection<ClientResource> resources = disk.getSource(file);
+					
+//					Downloader
 					System.out.println("Download file:"+file);
 				}
 			} catch (IOException e1) {

@@ -195,10 +195,7 @@ public class Upload extends JPanel{
 				try {
 					disk.insertFile(vFile);
 					//Salvare lista dei file messi a condividere
-					String libraryName = System.getProperty("user.dir")+"/"+disk.getName()+"_"+disk.getServerAddress()+".xml";
-					System.out.println("File della libreria:"+libraryName);
-					Library library = new Library(libraryName);
-					library.add(file.getAbsolutePath(), vFile);					
+					disk.getLibrary().add(file.getAbsolutePath(), vFile);					
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

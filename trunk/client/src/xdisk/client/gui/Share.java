@@ -109,6 +109,7 @@ public class Share extends JPanel{
 			VirtualFile vFile = files.get(i);
 			FileModel file = new FileModel(vFile);
 			listModel.addElement(file);
+			System.out.println("File share: " + file);
 		}
 	}
 }

@@ -80,7 +80,7 @@ public class Download extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(current_file!=null)
-					disk.getFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
+					disk.getVirtualFile(current_file.getPath()+current_file.getFilename()+"."+current_file.getExtension());
 				else
 					JOptionPane.showMessageDialog(null, 
 							"Seleziona un file da scaricare!!!", "Seleziona", JOptionPane.INFORMATION_MESSAGE);
