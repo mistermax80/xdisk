@@ -375,7 +375,7 @@ public class XDiskServer implements ServerProcess{
 					try{
 						//Leggo il file per trovare chi lo possiede
 						VirtualFile vFile = input.readVirtualFile();
-						System.out.println("\tRicevuto il file");
+						System.out.println("\tRicevuto il file :"+vFile);
 						File file = new File();
 						String nameFile=vFile.getFilename();
 						int parent = FolderController.getFolder(vFile.getPath()).getCodice();
