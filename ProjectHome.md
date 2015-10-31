@@ -1,0 +1,1 @@
+Disco virtuale distribuito con delocalizzazione dei contenuti nella rete dei client, con autorizzazioni di accesso.
